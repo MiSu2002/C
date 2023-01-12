@@ -1,31 +1,40 @@
-import React from "react";
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchMovies, getGenres } from "../store";
+import React, { useEffect, useState } from "react";
 import Navbar from "../components/navbar";
 import Trending from "../components/trending";
+import { useSelector, useDispatch } from "react-redux";
+import { fetchMovies, getGenres } from "../store";
+import Slider from "../components/slider";
 
-const Homepage = () => {
+function Homepage() {
+  const [isScrolled, setIsScrolled] = useState(false);
+  const movies = useSelector((state) => state.cinera.movies);
+  const genres = useSelector((state) => state.cinera.genres);
+  const genresLoaded = useSelector((state) => state.cinera.genresLoaded);
 
   const dispatch = useDispatch();
 
-  const genresLoaded = useSelector((state) => state.cinera.genresLoaded);
-  
   useEffect(() => {
-  dispatch(getGenres())
-}, []);
+    dispatch(getGenres());
+  }, []);
 
-useEffect(() => {
-  if(genresLoaded)
-  dispatch(fetchMovies({type: "all"}));
-})
+  useEffect(() => {
+    if (genresLoaded) {
+      dispatch(fetchMovies({ genres, type: "all" }));
+    }
+  }, [genresLoaded]);
+
+  window.onscroll = () => {
+    setIsScrolled(window.pageYOffset === 0 ? false : true);
+    return () => (window.onscroll = null);
+  };
 
   return (
-    <div>
-      <Navbar/>
+      <>
+      <Navbar isScrolled={isScrolled} />
       <Trending/>
-    </div>
+      <Slider movies={movies} />
+      </>
   );
-};
+}
 
 export default Homepage;

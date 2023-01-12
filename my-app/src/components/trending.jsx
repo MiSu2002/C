@@ -21,7 +21,7 @@ const Trending = () => {
                         </div>
                 </div>
             </div>
-
+            
         </div>
     );
 }

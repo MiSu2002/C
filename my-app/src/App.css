@@ -113,4 +113,28 @@ li .sign{
   margin-top: 7vh;
 }
 
+.card{
+  width: 28rem;
+  border: none !important;
+}
 
+.wrapper{
+  width: max-content;
+}
+
+.slider-action-left,.slider-action-right{
+  position: absolute;
+  z-index: 99;
+  height: 100%;
+  transition: 0.3s ease-in-out;
+  top: 0;
+  bottom: 0;
+}
+
+.slider-action-left{
+  left: 0;
+}
+
+.slider-action-right{
+  right: 0;
+}

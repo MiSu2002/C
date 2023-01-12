@@ -23,7 +23,7 @@ const createArrayFromRawData = (array,moviesArray,genres) => {
         if(movie.backdrop_path){
             moviesArray.push({
                 id: movie.id,
-                name: movie ?. original_name ? movie.original_name : movie.original_title,
+                name: movie?.original_name ? movie.original_name : movie.original_title,
                 image: movie.backdrop_path,
                 genres: movieGenres.slice(0,3),
             })
@@ -34,10 +34,10 @@ const createArrayFromRawData = (array,moviesArray,genres) => {
 const getRawData = async (api, genres, paging) => {
     const moviesArray = [];
     for(let i=1;moviesArray.length < 60 && i<10;i++){
-        const {data: results} = await axios.get(
-            `${api}${paging ? `&page=${i}` : ""}`,
-            createArrayFromRawData(results,moviesArray,genres)
-            );
+        const {
+            data: {results},
+        } = await axios.get(`${api}${paging ? `&page=${i}` : ""}`);
+            createArrayFromRawData(results,moviesArray,genres);
             return moviesArray;
     }
 }
@@ -68,6 +68,9 @@ const CineraSlice = createSlice({
         builder.addCase(getGenres.fulfilled,(state, action) =>{
         state.genres = action.payload;
         state.genresLoaded = true;
+        })
+        builder.addCase(fetchMovies.fulfilled,(state, action) =>{
+        state.movies = action.payload;
         })
     },
 });
