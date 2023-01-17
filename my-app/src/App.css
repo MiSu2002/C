@@ -17,6 +17,7 @@ html, body, .App{
   background-color: #101222;
   margin: 0;
   padding: 0;
+  overflow-x: hidden;
 }
 
 .navbar{
@@ -103,14 +104,33 @@ li .sign{
   font-family: Montserrat;
 }
 
-.trending-row{
-  color: #fff;
-  margin-top: 7vh !important;
+.trending-heading-sm{
+  font-size: 3.5rem;
+  letter-spacing: 0.2rem;
+}
+
+@media screen and (max-width: 780px){
+  .trending-heading-sm{
+    font-size: 2rem;
+  }
 }
 
 .trending-heading{
-  color: #fff;
-  margin-top: 7vh;
+  margin-top: 23vh;
+  font-size: 5rem;
+  z-index: 9;
+  letter-spacing: 0.3rem;
+  right: 0;
+  top:0;
+  margin-right: 30%;
+  width: 5%;
+}
+
+@media screen and (min-width: 1900px){
+  .trending-heading{
+    font-size: 7rem;
+    line-height: 8.5rem;
+  }
 }
 
 .card{
@@ -137,4 +157,9 @@ li .sign{
 
 .slider-action-right{
   right: 0;
+}
+
+.carousel-xxl{
+  width: 70%;
+  margin-top: 10vh !important;;
 }

@@ -25,13 +25,12 @@ export default React.memo(function CardSlider ({data,title}) {
         onMouseEnter={() => setShowControls(true)}
         onMouseLeave={() => setShowControls(false)}
         >
-            <h2 className="ms-4 mt-5">{title}</h2>
             
             <div className="wrapper">
             <div className="slider-action-left">
             <AiOutlineLeft onClick={() => handleDirection("left")} />
             </div>
-            <div className="card-slider d-flex me-4" ref={listRef}>
+            <div className="card-slider me-4" ref={listRef}>
             {data.map((movie, index) => {
                 return <Card movieData={movie} index={index} key={movie.id} />;
             })}
