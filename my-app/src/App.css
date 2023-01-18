@@ -105,7 +105,7 @@ li .sign{
 }
 
 .trending-heading-sm{
-  font-size: 3.5rem;
+  font-size: 3.2rem;
   letter-spacing: 0.2rem;
 }
 
@@ -117,19 +117,26 @@ li .sign{
 
 .trending-heading{
   margin-top: 23vh;
-  font-size: 5rem;
+  font-size: 4.7rem;
   z-index: 9;
-  letter-spacing: 0.3rem;
+  letter-spacing: 0.2rem;
   right: 0;
   top:0;
-  margin-right: 30%;
+  margin-right: 31%;
+  line-height: 8.5rem;
   width: 5%;
+  text-shadow: -1px -1px 0 #2a2a47, 1px -1px 0 #2a2a47, -1px 1px 0 #2a2a47, 1px 1px 8px #2a2a47;
 }
 
-@media screen and (min-width: 1900px){
+@media screen and (min-width: 1570px) and (max-width: 2099px){
+  .trending-heading{
+    font-size: 5.5rem;
+  }
+}
+
+@media screen and (min-width: 2100px){
   .trending-heading{
     font-size: 7rem;
-    line-height: 8.5rem;
   }
 }
 
@@ -160,6 +167,26 @@ li .sign{
 }
 
 .carousel-xxl{
-  width: 70%;
-  margin-top: 10vh !important;;
+  margin-top: 10vh !important
+}
+
+.carousel{
+  border: 0.3rem solid #101222;
+  border-bottom: none;
+  box-shadow: 0.2rem 0 1.5rem 0 #62668858;
+}
+
+.trailer-link{
+  color: #FFF0C8;
+}
+
+.details{
+  margin-top: 32vh;
+}
+
+@media screen and (max-width: 1400px){
+  .details{
+    margin-top: 5vh;
+    font-size: 1.5rem;
+  }
 }

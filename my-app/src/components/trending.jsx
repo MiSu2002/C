@@ -1,7 +1,6 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchMovies, getGenres } from "../store";
-import Slider from "../components/slider";
 import Carousel from "../components/carousel";
 
 const Trending = () => {
@@ -33,9 +32,10 @@ const Trending = () => {
                     TOP TRENDING
                 </div>
 
-            <div className="position-relative carousel-xxl ms-5">
-                <Carousel/>
-            </div>
+    <div className="position-relative col-12 carousel-xxl ms-5">
+        <Carousel/>
+</div>
+
             </div>
 
                 {/* <Slider movies={movies}/> */}
