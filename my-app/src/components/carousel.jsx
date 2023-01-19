@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import {Link} from 'react-router-dom';
 import Carousel from 'react-bootstrap/Carousel';
 
 import { API_KEY } from '../utils/constants';
@@ -30,7 +31,7 @@ const MovieCarousel = () => {
 
   useEffect(() => {
     if (selectedMovie) {
-      axios.get(`https://api.themoviedb.org/3/movie/${selectedMovie.id}/videos?api_key=${API_KEY}&language=en-US`)
+      axios.get(`https://api.themoviedb.org/3/movie/${selectedMovie.id}/videos?api_key=${API_KEY}&type=trailer`)
         .then(res => {
           const youtubeVideos = res.data.results.filter(video => video.site === 'YouTube');
           setYoutubeVideoKey(youtubeVideos[0].key);
@@ -55,6 +56,9 @@ const MovieCarousel = () => {
         });
     }
   }, [selectedMovie]);
+
+  const overview = movies.length && movies[activeIndex] && movies[activeIndex].overview && typeof movies[activeIndex].overview === 'string' ? movies[activeIndex].overview.slice(0, 100) + '...' : null;
+
 
   const handleClick = (movie) => {
     setSelectedMovie(movie);
@@ -113,15 +117,19 @@ const MovieCarousel = () => {
           </a>
         )}
         <p className='trailer-link ms-3 me-3'> | </p>
-        {platformName && <p className='trailer-link'>Available on : {platformName} </p>}
+        <Link to='/movie-details' className='trailer-link text-decoration-none'>View More</Link>
         </div>
       </div>
       )}
     </div>
-    <div className="col-xxl-4 col-12 text-white">
-      <p className='details ms-4 d-flex fs-3'>{movies.length ? <p>{movies[activeIndex].title}</p> : null}
-</p>
-    </div>
+
+    {(!selectedMovie || (selectedMovie !== movies[activeIndex])) && (
+  <div className="col-xxl-4 col-12 text-white">
+    <p className='details ms-4 d-flex fs-2'>{movies.length ? <p>{movies[activeIndex].title}</p> : null}</p>
+    <p className='overview ms-4 fs-5'>{movies.length ? <p>{overview}<Link to='/movie-details' className='ms-4 fs-5 trailer-link'>View More</Link></p> : null}</p>
+  </div>
+)}
+
     </div>
   );
 }

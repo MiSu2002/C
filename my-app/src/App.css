@@ -176,12 +176,24 @@ li .sign{
   box-shadow: 0.2rem 0 1.5rem 0 #62668858;
 }
 
-.trailer-link{
+.trailer-link, .more{
   color: #FFF0C8;
+}
+
+.more{
+  font-size: 2vh;
+}
+
+.overview{
+  margin-top: -2.5vh;
+  width: 80%;
+  color: rgb(211, 211, 211);
 }
 
 .details{
   margin-top: 32vh;
+  font-weight: 500;
+  width: 80%;
 }
 
 @media screen and (max-width: 1400px){
