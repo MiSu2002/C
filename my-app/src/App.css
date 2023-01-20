@@ -176,29 +176,60 @@ li .sign{
   box-shadow: 0.2rem 0 1.5rem 0 #62668858;
 }
 
-.trailer-link, .more{
+.trailer-link, .index{
   color: #FFF0C8;
 }
 
-.more{
-  font-size: 2vh;
+.title, .overview, .details, .index{
+  width: 78%;
 }
-
 .overview{
   margin-top: -2.5vh;
-  width: 80%;
   color: rgb(211, 211, 211);
+  font-size: 1.2rem;
 }
 
-.details{
-  margin-top: 32vh;
+.details, .index{
   font-weight: 500;
-  width: 80%;
 }
 
-@media screen and (max-width: 1400px){
+.index{
+  font-size: 7rem;
+  position: relative;
+  z-index: 11;
+  margin-top: 33vh;
+  display: flex;
+}
+
+@media screen and (max-width: 1650px){
   .details{
     margin-top: 5vh;
     font-size: 1.5rem;
+  }
+  .index{
+    display: none;
+  }
+  .title{
+    margin-top: 33vh;
+  }
+}
+
+@media screen and (min-width: 801px) and (max-width: 1400px){
+  .overview{
+    font-size: 1rem;
+    width: 85%;
+  }
+  .title{
+    margin-top: 4vh;
+  }
+}
+
+@media screen and (max-width: 800px){
+  .overview{
+    font-size: 1rem;
+    width: 92%;
+  }
+  .title{
+    margin-top: 4vh;
   }
 }

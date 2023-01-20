@@ -9,7 +9,6 @@ const MovieCarousel = () => {
   const [movies, setMovies] = useState([]);
   const [selectedMovie, setSelectedMovie] = useState(null);
   const [activeIndex, setActiveIndex] = useState(0);
-  const [platformName, setPlatformName] = useState(null);
   const [youtubeVideoKey, setYoutubeVideoKey] = useState(null);
   const [isLoading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -42,22 +41,7 @@ const MovieCarousel = () => {
     }
   }, [selectedMovie]);
 
-  useEffect(() => {
-    if (selectedMovie) {
-      axios.get(`https://api.themoviedb.org/3/movie/${selectedMovie.id}/release_dates?api_key=${API_KEY}`)
-        .then(res => {
-          const releaseDates = res.data.results;
-          const digitalReleases = releaseDates.filter(release => release.release_type === 2);
-          const platform = digitalReleases.map(release => release.note);
-          setPlatformName(platform);
-        })
-        .catch(err => {
-          console.log(err);
-        });
-    }
-  }, [selectedMovie]);
-
-  const overview = movies.length && movies[activeIndex] && movies[activeIndex].overview && typeof movies[activeIndex].overview === 'string' ? movies[activeIndex].overview.slice(0, 100) + '...' : null;
+  const overview = movies.length && movies[activeIndex] && movies[activeIndex].overview && typeof movies[activeIndex].overview === 'string' ? movies[activeIndex].overview.slice(0, 150) + '...' : null;
 
 
   const handleClick = (movie) => {
@@ -67,7 +51,6 @@ const MovieCarousel = () => {
   const handleSelect = (selectedIndex) => {
     setActiveIndex(selectedIndex);
     setYoutubeVideoKey(null);
-    setPlatformName(null);
   }
 
   if (isLoading) {
@@ -108,7 +91,7 @@ const MovieCarousel = () => {
         </div>
 
         {selectedMovie && movies[activeIndex] === selectedMovie && (
-        <div className='m-4'>
+        <div className='m-4 d-block d-xxl-none'>
         <h2 className='text-light'>{movies[activeIndex].title}</h2>
         <div className="d-flex">
         {youtubeVideoKey &&  (
@@ -119,17 +102,19 @@ const MovieCarousel = () => {
         <p className='trailer-link ms-3 me-3'> | </p>
         <Link to='/movie-details' className='trailer-link text-decoration-none'>View More</Link>
         </div>
+        <div className="extra-details d-block d-xxl-none">
+    </div>
       </div>
-      )}
+        )}
     </div>
 
-    {(!selectedMovie || (selectedMovie !== movies[activeIndex])) && (
   <div className="col-xxl-4 col-12 text-white">
-    <p className='details ms-4 d-flex fs-2'>{movies.length ? <p>{movies[activeIndex].title}</p> : null}</p>
-    <p className='overview ms-4 fs-5'>{movies.length ? <p>{overview}<Link to='/movie-details' className='ms-4 fs-5 trailer-link'>View More</Link></p> : null}</p>
+    <div>
+      <h1 className='index mb-5 justify-content-center trailer-link'>{activeIndex + 1}</h1>
+      <p className='title ms-4 d-flex fs-2'>{movies.length ? <p>{movies[activeIndex].title}</p> : null}</p>
+    <p className='overview ms-4'>{movies.length ? <p>{overview}<Link to='/movie-details' className='ms-4 trailer-link'>Know More</Link></p> : null}</p>
+      </div>
   </div>
-)}
-
     </div>
   );
 }
