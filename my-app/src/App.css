@@ -123,7 +123,7 @@ li .sign{
   right: 0;
   top:0;
   margin-right: 31%;
-  line-height: 8.5rem;
+  line-height: 6.5rem;
   width: 5%;
   text-shadow: -1px -1px 0 #2a2a47, 1px -1px 0 #2a2a47, -1px 1px 0 #2a2a47, 1px 1px 8px #2a2a47;
 }
@@ -210,11 +210,11 @@ li .sign{
     display: none;
   }
   .title{
-    margin-top: 33vh;
+    margin-top: 28vh;
   }
 }
 
-@media screen and (min-width: 801px) and (max-width: 1400px){
+@media screen and (min-width: 801px) and (max-width: 1200px){
   .overview{
     font-size: 1rem;
     width: 85%;

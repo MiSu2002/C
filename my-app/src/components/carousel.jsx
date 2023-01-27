@@ -63,7 +63,7 @@ const MovieCarousel = () => {
 
   return (
     <div className='row g-0'>
-      <div className='col-xxl-8 carousel col-12'>
+      <div className='col-xl-8 carousel col-12'>
       <Carousel activeIndex={activeIndex} onSelect={handleSelect} indicators={false} interval={6000}>
         {movies.map(movie => (
           <Carousel.Item key={movie.id}>
@@ -73,6 +73,9 @@ const MovieCarousel = () => {
               alt={movie.title}
               onClick={() => handleClick(movie)}
             />
+            {youtubeVideoKey &&(
+      <iframe className="position-absolute" title={`${movie.title}`} style={{width: '100%', height:'100.5%',top:0,left:0,right:0,bottom:0}} src={`https://www.youtube.com/embed/${youtubeVideoKey}`} frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+  )}
             </Carousel.Item>
         ))}
       </Carousel>
@@ -84,31 +87,14 @@ const MovieCarousel = () => {
               className={`d-flex justify-content-center mb-4 align-items-center rounded-circle m-2 ${
                 index === activeIndex ? "text-white bg-secondary" : "bg-dark"
               }`}
-              style={{ width: "12px", height: "12px" }}
+              style={{ width: "1vh", height: "1vh" }}
               onClick={() => handleSelect(index)}
             ></div>
           ))}
         </div>
-
-        {selectedMovie && movies[activeIndex] === selectedMovie && (
-        <div className='m-4 d-block d-xxl-none'>
-        <h2 className='text-light'>{movies[activeIndex].title}</h2>
-        <div className="d-flex">
-        {youtubeVideoKey &&  (
-          <a href={`https://www.youtube.com/watch?v=${youtubeVideoKey}`} className='trailer-link text-decoration-none' target="_blank" rel="noopener noreferrer">
-            Watch Trailer
-          </a>
-        )}
-        <p className='trailer-link ms-3 me-3'> | </p>
-        <Link to='/movie-details' className='trailer-link text-decoration-none'>View More</Link>
-        </div>
-        <div className="extra-details d-block d-xxl-none">
-    </div>
-      </div>
-        )}
     </div>
 
-  <div className="col-xxl-4 col-12 text-white">
+  <div className="col-xl-4 col-12 text-white">
     <div>
       <h1 className='index mb-5 justify-content-center trailer-link'>{activeIndex + 1}</h1>
       <p className='title ms-4 d-flex fs-2'>{movies.length ? <p>{movies[activeIndex].title}</p> : null}</p>
