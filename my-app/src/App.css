@@ -100,12 +100,11 @@ li .sign{
 
 .trending-content-div{
   background-color: #101222;
-  height: 100vh !important;
   font-family: Montserrat;
 }
 
 .trending-heading-sm{
-  font-size: 3.2rem;
+  font-size: 2.5rem;
   letter-spacing: 0.2rem;
 }
 
@@ -117,53 +116,29 @@ li .sign{
 
 .trending-heading{
   margin-top: 23vh;
-  font-size: 4.7rem;
+  font-size: 4rem;
   z-index: 9;
   letter-spacing: 0.2rem;
   right: 0;
   top:0;
   margin-right: 31%;
-  line-height: 6.5rem;
+  line-height: 5.5rem;
   width: 5%;
   text-shadow: -1px -1px 0 #2a2a47, 1px -1px 0 #2a2a47, -1px 1px 0 #2a2a47, 1px 1px 8px #2a2a47;
 }
 
 @media screen and (min-width: 1570px) and (max-width: 2099px){
   .trending-heading{
-    font-size: 5.5rem;
+    font-size: 5rem;
+    line-height: 6.5rem;
   }
 }
 
 @media screen and (min-width: 2100px){
   .trending-heading{
-    font-size: 7rem;
+    font-size: 6.5rem;
+    line-height: 7.5rem;
   }
-}
-
-.card{
-  width: 28rem;
-  border: none !important;
-}
-
-.wrapper{
-  width: max-content;
-}
-
-.slider-action-left,.slider-action-right{
-  position: absolute;
-  z-index: 99;
-  height: 100%;
-  transition: 0.3s ease-in-out;
-  top: 0;
-  bottom: 0;
-}
-
-.slider-action-left{
-  left: 0;
-}
-
-.slider-action-right{
-  right: 0;
 }
 
 .carousel-xxl{
@@ -176,48 +151,86 @@ li .sign{
   box-shadow: 0.2rem 0 1.5rem 0 #62668858;
 }
 
-.trailer-link, .index{
+.trailer-link, .index, .liked{
   color: #FFF0C8;
 }
 
-.title, .overview, .details, .index{
-  width: 78%;
+.movie-title, .liked{
+  font-family: Poppins;
 }
+
+.liked{
+  font-size: 0.9rem;
+}
+
+.overview, .movie-title{
+  font-size: 1rem;
+}
+
 .overview{
   margin-top: -2.5vh;
   color: rgb(211, 211, 211);
-  font-size: 1.2rem;
 }
 
-.details, .index{
-  font-weight: 500;
+.title, .trending-week{
+  font-size: 2.2rem;
 }
 
 .index{
   font-size: 7rem;
+  width: 80%;
+  font-weight: 500;
   position: relative;
   z-index: 11;
-  margin-top: 33vh;
+  margin-top: 30vh;
   display: flex;
 }
 
+.trending-slider{
+  overflow: scroll;
+}
+
+.arrow{
+  width: 5vh;
+  right: 0;
+  background-color: #000;
+  margin-top: 8%;
+  border-radius: 5rem;
+}
+
+.trending-week{
+  font-family: Montserrat;
+  margin-top: 10vh;
+}
+
+.small-arrow{
+  width: calc(12px + 0.7%);
+  height: calc(12px + 0.7%);
+  margin-top: 10.9vh;
+}
+
 @media screen and (max-width: 1650px){
-  .details{
-    margin-top: 5vh;
-    font-size: 1.5rem;
-  }
   .index{
     display: none;
   }
   .title{
     margin-top: 28vh;
+    font-size: 1.8rem;
+  }
+  .trending-week{
+    font-size: 1.7rem;
   }
 }
 
-@media screen and (min-width: 801px) and (max-width: 1200px){
-  .overview{
-    font-size: 1rem;
-    width: 85%;
+@media screen and (min-width: 801px) and (max-width: 1195px){
+  .liked{
+    font-size: 0.8rem;
+  }
+  .overview, .movie-title{
+    font-size: 0.9rem;
+  }
+  .trending-week{
+    font-size: 1.7rem;
   }
   .title{
     margin-top: 4vh;
@@ -225,11 +238,21 @@ li .sign{
 }
 
 @media screen and (max-width: 800px){
-  .overview{
-    font-size: 1rem;
-    width: 92%;
+  .liked{
+    font-size: 0.6rem;
+  }
+  .overview, .movie-title{
+    font-size: 0.7rem;
+  }
+  .trending-week{
+    font-size: 1.2rem;
+    margin-top: 5vh;
+  }
+  .small-arrow{
+    margin-top: 5.4vh;
   }
   .title{
     margin-top: 4vh;
+    font-size: 1.3rem;
   }
 }

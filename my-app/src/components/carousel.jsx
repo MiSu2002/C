@@ -41,7 +41,7 @@ const MovieCarousel = () => {
     }
   }, [selectedMovie]);
 
-  const overview = movies.length && movies[activeIndex] && movies[activeIndex].overview && typeof movies[activeIndex].overview === 'string' ? movies[activeIndex].overview.slice(0, 150) + '...' : null;
+  const overview = movies.length && movies[activeIndex] && movies[activeIndex].overview && typeof movies[activeIndex].overview === 'string' ? movies[activeIndex].overview.slice(0, 100) + '...' : null;
 
 
   const handleClick = (movie) => {
@@ -64,7 +64,7 @@ const MovieCarousel = () => {
   return (
     <div className='row g-0'>
       <div className='col-xl-8 carousel col-12'>
-      <Carousel activeIndex={activeIndex} onSelect={handleSelect} indicators={false} interval={6000}>
+      <Carousel activeIndex={activeIndex} onSelect={handleSelect} indicators={false} interval={8000}>
         {movies.map(movie => (
           <Carousel.Item key={movie.id}>
             <img
@@ -97,8 +97,8 @@ const MovieCarousel = () => {
   <div className="col-xl-4 col-12 text-white">
     <div>
       <h1 className='index mb-5 justify-content-center trailer-link'>{activeIndex + 1}</h1>
-      <p className='title ms-4 d-flex fs-2'>{movies.length ? <p>{movies[activeIndex].title}</p> : null}</p>
-    <p className='overview ms-4'>{movies.length ? <p>{overview}<Link to='/movie-details' className='ms-4 trailer-link'>Know More</Link></p> : null}</p>
+      <p className='title ms-4 pe-5 me-4 d-flex'>{movies.length ? <p>{movies[activeIndex].title}</p> : null}</p>
+    <p className='overview ms-4 pe-5 me-4'>{movies.length ? <p>{overview}<Link to='/movie-details' className='ms-4 trailer-link'>Know More</Link></p> : null}</p>
       </div>
   </div>
     </div>

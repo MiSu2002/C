@@ -1,6 +1,7 @@
 import React, {useState} from "react";
 import Navbar from "../components/navbar";
 import Trending from "../components/trending";
+import TrendingWeek from "../components/trendingWeek";
 
 function Homepage() {
 
@@ -15,6 +16,7 @@ function Homepage() {
       <>
       <Navbar isScrolled={isScrolled} />
       <Trending/>
+      <TrendingWeek/>
       </>
   );
 }
