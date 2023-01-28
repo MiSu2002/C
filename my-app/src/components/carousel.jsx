@@ -98,7 +98,7 @@ const MovieCarousel = () => {
     <div>
       <h1 className='index mb-5 justify-content-center trailer-link'>{activeIndex + 1}</h1>
       <p className='title ms-4 pe-5 me-4 d-flex'>{movies.length ? <p>{movies[activeIndex].title}</p> : null}</p>
-    <p className='overview ms-4 pe-5 me-4'>{movies.length ? <p>{overview}<Link to='/movie-details' className='ms-4 trailer-link'>Know More</Link></p> : null}</p>
+    <p className='overview ms-4 pe-5 me-4'>{movies.length ? <p>{overview}<Link to={`/movie/${movies[activeIndex].id}`} className='ms-4 trailer-link'>Know More</Link></p> : null}</p>
       </div>
   </div>
     </div>

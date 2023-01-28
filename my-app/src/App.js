@@ -1,14 +1,16 @@
 import './App.css';
-import { Route, Routes } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import Homepage from './pages/Homepage';
+import MovieDetails from './pages/movieDetails';
 
 function App() {
   return (
-    <div className="App">
+      <div className="App">
       <Routes>
-      <Route path="/" element={<Homepage/>}/>
+      <Route path="/" exact element={<Homepage/>}/>
+      <Route path="/movie/:id" element={<MovieDetails/>}/>
       </Routes>
-    </div>
+      </div>
   );
 }
 
