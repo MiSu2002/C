@@ -187,15 +187,20 @@ li .sign{
 }
 
 .trending-slider{
+  display: none;
+}
+
+.trending-slider-sm{
   overflow: scroll;
+  display: flex;
 }
 
 .arrow{
+  right:0;
   width: 5vh;
-  right: 0;
   background-color: #000;
-  margin-top: 8%;
   border-radius: 5rem;
+  border: 2px solid rgba(22, 170, 255, 0.343);
 }
 
 .trending-week{
@@ -254,5 +259,14 @@ li .sign{
   .title{
     margin-top: 4vh;
     font-size: 1.3rem;
+  }
+}
+
+@media screen and (min-width: 992px){
+  .trending-slider{
+    display: flex;
+  }
+  .trending-slider-sm{
+    display: none;
   }
 }
