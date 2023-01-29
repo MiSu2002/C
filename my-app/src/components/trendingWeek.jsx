@@ -43,10 +43,10 @@ const TrendingWeek = () => {
       {data.slice(currentIndex, currentIndex + 7).map(movie => (
         <div key={movie.id}>
           <Link to={`/movie/${movie.id}`}>
-          <img className='me-4' style={{width:'12vw'}} src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`} alt={movie.title} />
+          <img className='me-4' style={{width:'15vw'}} src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`} alt={movie.title} />
           </Link>
-          <p className='liked fw-bolder me-4 mt-2 mb-0 text-center' style={{width:'12vw'}}>{Math.round((movie.vote_average + Number.EPSILON)*1000)/100}% Liked This</p>
-          <p className='movie-title me-4 text-white fw-bolder mt-1 text-center' style={{width:'12vw'}}>{movie.title}</p>
+          <p className='liked fw-bolder me-4 mt-2 mb-0 text-center' style={{width:'15vw'}}>{Math.round((movie.vote_average + Number.EPSILON)*1000)/100}% Liked This</p>
+          <p className='movie-title me-4 text-white fw-bolder mt-1 text-center' style={{width:'15vw'}}>{movie.title}</p>
         </div>
       ))}
       <div>
@@ -67,10 +67,10 @@ const TrendingWeek = () => {
       {data.map(movie => (
         <div key={movie.id}>
           <Link to={`/movie/${movie.id}`}>
-          <img className='me-3 ms-3' style={{width:'15vw'}} src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`} alt={movie.title} />
+          <img className='me-3 ms-3' style={{width:'25vw'}} src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`} alt={movie.title} />
           </Link>
-          <p className='liked fw-bolder me-3 ms-3 mt-2 mb-0 text-center' style={{width:'15vw'}}>{Math.round((movie.vote_average + Number.EPSILON)*1000)/100}% Liked This</p>
-          <p className='movie-title me-3 ms-3 text-white fw-bolder mt-1 text-center' style={{width:'15vw'}}>{movie.title}</p>
+          <p className='liked fw-bolder me-3 ms-3 mt-2 mb-0 text-center' style={{width:'25vw'}}>{Math.round((movie.vote_average + Number.EPSILON)*1000)/100}% Liked This</p>
+          <p className='movie-title me-3 ms-3 text-white fw-bolder mt-1 text-center' style={{width:'25vw'}}>{movie.title}</p>
         </div>
       ))}
       </div>

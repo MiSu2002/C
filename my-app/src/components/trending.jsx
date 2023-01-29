@@ -19,7 +19,7 @@ const Trending = () => {
 
             </div>
 
-                <div className="d-block d-xl-none  container-fluid">
+                <div className="d-block d-xl-none m-0 p-0 container-fluid">
             <div className="ms-3 ms-lg-4 text-white mt-5 fw-bold trending-heading-sm">
                     TOP TRENDING
                 </div>

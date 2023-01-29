@@ -84,10 +84,10 @@ const MovieCarousel = () => {
           {movies.map((_, index) => (
                         <div
               key={index}
-              className={`d-flex justify-content-center mb-4 align-items-center rounded-circle m-2 ${
+              className={`d-flex justify-content-center mb-4 align-items-center rounded-circle m-1 ms-md-2 me-md-2 ${
                 index === activeIndex ? "text-white bg-secondary" : "bg-dark"
               }`}
-              style={{ width: "1vh", height: "1vh" }}
+              style={{ width: "0.9vh", height: "0.9vh" }}
               onClick={() => handleSelect(index)}
             ></div>
           ))}
