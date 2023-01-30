@@ -108,10 +108,28 @@ li .sign{
   letter-spacing: 0.2rem;
 }
 
-@media screen and (max-width: 780px){
-  .trending-heading-sm{
-    font-size: 2rem;
-  }
+.details{
+  position: relative;
+  background-size: cover;
+  font-family: Poppins;
+}
+
+.details::before{
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  content: "";
+  background-color: #101222df;
+  z-index: 7;
+}
+
+.details-img{
+  width: 50%;
+  border-radius: 2vh;
+  margin-left: auto;
+  margin-right: 5%;
 }
 
 .trending-heading{
@@ -219,8 +237,10 @@ li .sign{
   height: 100vh;
 }
 
-.details{
-  top: 105vh;
+.likeButton{
+  width: 25px;
+  height: 25px;
+  cursor: pointer;
 }
 
 @media screen and (max-width: 1650px){
@@ -233,6 +253,9 @@ li .sign{
   }
   .trending-week{
     font-size: 1.7rem;
+  }
+  .details-img{
+    width: 70%;
   }
 }
 
@@ -252,8 +275,8 @@ li .sign{
   .trailer{
     height: 60vh;
   }
-  .details{
-    top: 60vh;
+  .details-img{
+    width: 80%;
   }
 }
 
@@ -281,8 +304,12 @@ li .sign{
   .trailer{
     height: 40vh;
   }
-  .details{
-    top: 40vh;
+  .trending-heading-sm{
+    font-size: 2rem;
+  }
+  .details-img{
+    width: 100%;
+    margin-left: 10%;
   }
 }
 

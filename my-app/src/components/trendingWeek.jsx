@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import arrow from '../icons/right-arrow.png';
+import arrow from '../assets/icons/right-arrow.png';
 import { API_KEY } from "../utils/constants";
 
 const TrendingWeek = () => {
