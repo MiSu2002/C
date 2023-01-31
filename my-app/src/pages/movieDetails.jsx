@@ -171,8 +171,8 @@ function MovieDetails() {
     <div className="me-4" style={{zIndex: '9'}}>
     <img src={`https://image.tmdb.org/t/p/w500/${actor.profile_path}`} alt={actor.name} style={{width:'15vw', height:'18vw',borderRadius:'1vh'}}/>
   <div className="card-body mt-1">
-    <h5 className="movie-title fw-bolder text-white text-center" style={{fontSize: '1.6vw'}}>{actor.name}</h5>
-    <p className="card-text liked text-center" style={{fontSize: '1.5vw'}}>{actor.character}</p>
+    <h5 className="movie-title fw-bolder text-white text-center" style={{fontSize: '2vw'}}>{actor.name}</h5>
+    <p className="card-text liked text-center" style={{fontSize: '1.9vw'}}>{actor.character}</p>
   </div>
     </div>
 ) : null
@@ -185,8 +185,8 @@ function MovieDetails() {
       <div className="me-4 me-xl-5" style={{zIndex: '9'}}>
         <img className="cast-image" src={`https://image.tmdb.org/t/p/w500/${actor.profile_path}`} alt={actor.name}/>
       <div className="card-body mt-1">
-        <h5 className="movie-title fw-bolder text-white text-center" style={{fontSize: '0.9vw'}}>{actor.name}</h5>
-        <p className="card-text liked text-center" style={{fontSize: '0.9vw'}}>{actor.character}</p>
+        <h5 className="movie-title fw-bolder text-white text-center" style={{fontSize: '0.8vw'}}>{actor.name}</h5>
+        <p className="card-text liked text-center" style={{fontSize: '0.8vw'}}>{actor.character}</p>
       </div>
         </div>
   ) : null
@@ -202,17 +202,55 @@ function MovieDetails() {
       </button>}
 </div>
 
-<h3 className="mt-4 reviews text-white position-relative" style={{fontFamily: 'Montserrat', zIndex:'9'}}>Reviews :</h3>
+<h3 className="mt-4 mt-xl-5 reviews text-white position-relative" style={{fontFamily: 'Montserrat', zIndex:'9'}}>Reviews :</h3>
 
-        <div className="text-white position-relative" style={{zIndex: '9'}}>
-    <div className="m-4 overview" key={reviews[0].id} style={{width: '90%', fontWeight:'900'}}>
-      {/* <p className="trailer-link">
-        {reviews[0].content.length > 500
-          ? `${reviews[0].content.substring(0, 500)}...`
-          : reviews[0].content}
+        <div className="text-white review position-relative" style={{zIndex: '9'}}>
+
+    <div className="mt-4 d-md-none" key={reviews.id} style={{width: '95%', fontWeight:'900', fontSize:'2.4vw', backgroundColor: "rgb(0,0,0,0.3)"}}>
+    {reviews.slice(0,1).map((review) => (
+      <div key={review.id}>
+        <p className="trailer-link">
+        {review.content.length > 500
+          ? `${review.content.substring(0, 500)}...`
+          : review.content}
       </p>
-      <p>~ {reviews[0].author}</p> */}
+      <div className="d-flex">
+      <p>~ {review.author}</p>
+      <p className="ms-4 text-decoration-underline text-warning">Read more</p>
+      </div>
+      </div>
+    ))}
     </div>
+
+    <div className="mt-4 details-overview review-1 d-none d-md-block" key={reviews.id} style={{fontWeight:'900', backgroundColor: "rgb(0,0,0,0.3)"}}>
+    {reviews.slice(0,1).map((review) => (
+      <div key={review.id}>
+        <p className="trailer-link">{review.content}</p>
+      <div className="d-flex">
+      <p>~ {review.author}</p>
+      <p className="ms-4 text-decoration-underline text-warning d-xxl-none">Read more</p>
+      </div>
+      </div>
+    ))}
+    </div>
+
+
+    <div className="mt-4 details-overview review-1 d-none d-xxl-block" key={reviews.id} style={{fontWeight:'900', backgroundColor: "rgb(0,0,0,0.3)"}}>
+    {reviews.slice(1,2).map((review) => (
+      <div key={review.id}>
+        <p className="trailer-link">
+        {review.content.length > 500
+          ? `${review.content.substring(0, 500)}...`
+          : review.content}
+      </p>
+      <div className="d-flex">
+      <p>~ {review.author}</p>
+      <p className="ms-4 text-decoration-underline text-warning">Read more</p>
+      </div>
+      </div>
+    ))}
+    </div>
+
 </div>
 
       </div>

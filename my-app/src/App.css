@@ -150,12 +150,12 @@ li .sign{
   border-radius: 1vh;
 }
 
-.details .trending-slider, .cast, .reviews{
+.details .trending-slider, .cast, .reviews, .review{
   margin-left: 8.3%;
 }
 
 @media screen and (max-width: 1195px){
-  .details .trending-slider, .cast, .reviews{
+  .details .trending-slider, .cast, .reviews, .review{
     margin-left: 4%;
   }
 }
@@ -166,6 +166,10 @@ li .sign{
   border-radius: 5rem;
   border: 2px solid rgba(22, 170, 255, 0.343);
   padding: 1vh;
+}
+
+.review-1{
+  width: 95%;
 }
 
 @media screen and (min-width: 1651px) {
@@ -184,17 +188,20 @@ li .sign{
   .details-overview{
     width: 100%;
     text-align: justify;
-    font-size: 1vw;
+    font-size: 0.9vw;
   }
   .movie-head{
     width: 103.5%;
   }
-  .details .trending-slider, .cast, .reviews{
+  .details .trending-slider, .cast, .reviews, .review{
     margin-left: 0;
   }
   .cast-image{
     width: 8vw;
     height: 10vw;
+  }
+  .review-1{
+    width: auto;
   }
 }
 
