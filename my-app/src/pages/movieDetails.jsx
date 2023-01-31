@@ -15,8 +15,9 @@ function MovieDetails() {
   const [isLiked, setIsLiked] = useState(false);
   const [cast, setCast] = useState([]);
   const [director, setDirector] = useState([]);
+  const [reviews, setReviews] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const isLastIndex = currentIndex + 8 >= cast.length;
+  const isLastIndex = currentIndex + 7 >= cast.length;
   const isFirstIndex = currentIndex <= 0;
 
   // Use effect to fetch the data for movie details, video, genres and cast
@@ -38,6 +39,9 @@ function MovieDetails() {
         const trailer = videoResponse.data.results.find((video) => video.type === "Trailer");
         setVideo(trailer ? trailer : videoResponse.data.results[0]);
 
+        const reviewResponse = await axios.get(`https://api.themoviedb.org/3/movie/${id}/reviews?api_key=${API_KEY}`);
+        setReviews(reviewResponse.data.results);
+
         // Uncomment if movie review is needed
         // const reviewResponse = await axios.get(`https://api.themoviedb.org/3/movie/${id}/reviews?api_key=${API_KEY}&language=en-US&page=1`);
         // setRating
@@ -54,11 +58,11 @@ function MovieDetails() {
   };
 
   const handleClicked = () => {
-    setCurrentIndex(prevCurrentIndex => prevCurrentIndex + 8);
+    setCurrentIndex(prevCurrentIndex => prevCurrentIndex + 7);
   }
 
   const handleClickedBack = () => {
-    setCurrentIndex(prevCurrentIndex => prevCurrentIndex - 8);
+    setCurrentIndex(prevCurrentIndex => prevCurrentIndex - 7);
   }
 
   return (
@@ -73,8 +77,24 @@ function MovieDetails() {
           allowFullScreen
         />
       )}
+
+<style>
+  {`
+   .details{
+    background-image: url(https://image.tmdb.org/t/p/original/${movie.poster_path});
+   }
+
+   @media screen and (min-width: 1000px){
+    .details{
+      background-image: url(https://image.tmdb.org/t/p/original/${movie.backdrop_path});
+     }
+   }
+  `}
+</style>
       
-      <div className="details" style={{backgroundImage: `url(https://image.tmdb.org/t/p/original/${movie.poster_path})`}}>
+      <div className="details">
+
+      <div className="details-content">
 
       <div className="row">
         <div className="col-4 mt-4 mt-xl-5 mb-4 mb-xl-5" style={{zIndex: '9'}}>
@@ -88,11 +108,11 @@ function MovieDetails() {
 
         <div className="col-8 mt-4 mt-xl-5 ps-2" style={{zIndex: '9'}}>
 
-          <div className="d-flex" style={{width: '85%'}}>
+          <div className="d-flex movie-head">
 
             <div className="col-8 col-lg-10">
               {/* Movie title */}
-          <h2 className="fs-1 ms-4 me-4" style={{ zIndex: "7", color: "#FFF0C8", fontFamily:'Montserrat'}}>
+          <h2 className="fs-1 ms-4 me-4 trailer-link" style={{ zIndex: "7", fontFamily:'Montserrat'}}>
             {movie.title}
           </h2>
             </div>
@@ -102,7 +122,7 @@ function MovieDetails() {
           <svg viewBox="0 0 512 512" onClick={handleClick} className='mt-2 likeButton'>
             <path 
             d="M462.3 62.6C407.5 15.9 326 24.3 275.7 76.2L256 96.5l-19.7-20.3C186.1 24.3 104.5 15.9 49.7 62.6c-62.8 53.6-66.1 149.8-9.9 207.9l193.5 199.8c12.5 12.9 32.8 12.9 45.3 0l193.5-199.8c56.3-58.1 53-154.3-9.8-207.9z" 
-            fill={isLiked ? "pink" : "white"}
+            fill={isLiked ? "#FFEF9F" : "white"}
             style={isLiked ? { opacity: '1' } : { opacity: '0.3' }}
             />
           </svg>
@@ -112,30 +132,30 @@ function MovieDetails() {
 
 
           {/* Overview of movie */}
-          <h6 className="text-white ms-4 mt-2 mt-xl-4" style={{textAlign: "justify", lineHeight:'1.7', width:'80%', fontWeight: '900'}}>
+          <h6 className="text-white details-overview ms-4 mt-2 mt-xl-4">
             {movie.overview}
           </h6>
 
           {/* Display movie genres */}
-          <h6 className="text-white ms-4 mt-4 me-5 d-flex" style={{fontWeight: '900'}}>
+          <h6 className="text-white details-overview ms-4 mt-4 me-5 d-flex" style={{fontWeight: '900'}}>
             <p className="me-2 trailer-link">Genres: </p>
             {genres.length ? genres.map(genre => genre.name).join(", ") : 'No genres available'}
           </h6>
 
           {/* Display movie director */}
-          <h6 className="text-white ms-4 mt-4 me-5 d-flex" style={{fontWeight: '900'}}>
+          <h6 className="text-white details-overview ms-4 mt-4 me-5 d-flex" style={{fontWeight: '900'}}>
             <p className="me-2 trailer-link">Director: </p>
             {director}
           </h6>
           
           {/* Display movie cast */}
-          <h6 className="text-white ms-4 mt-4 me-5 d-flex" style={{fontWeight: '900'}}>
+          <h6 className="text-white details-overview ms-4 mt-4 me-5 d-flex" style={{fontWeight: '900'}}>
             <p className="me-2 trailer-link">Cast: </p>
             {cast.length > 0 ? cast.slice(0, 4).map(c => c.name).join(", ") : 'No cast information available'}
           </h6>
           
           {/* Display movie rating */}
-          <h6 className="text-white ms-4 mt-4 me-5 d-flex" style={{fontWeight: '900'}}>
+          <h6 className="text-white details-overview ms-4 mt-4 me-5 d-flex" style={{fontWeight: '900'}}>
             <p className="me-2 trailer-link">Rating: </p>
             {Math.round(movie.vote_average)} / 10
             <p className="ms-2 text-light">( {(movie.vote_count/1000).toFixed(2)}k votes )</p>
@@ -143,46 +163,60 @@ function MovieDetails() {
         </div>
   </div>
 
-  <h3 className="mt-4 ms-4 text-white position-relative" style={{fontFamily: 'Montserrat', zIndex:'9'}}>Cast :</h3>
+           <h3 className="mt-4 cast text-white position-relative" style={{fontFamily: 'Montserrat', zIndex:'9'}}>Cast :</h3>
 
-  <div className="trending-slider-sm m-4 position-relative">
-  {cast.map((actor, index) => (
-    actor.profile_path ? (
-      <div className="me-4" style={{zIndex: '9'}}>
-      <img src={`https://image.tmdb.org/t/p/w500/${actor.profile_path}`} alt={actor.name} style={{width:'17vw', height:'22vw',borderRadius:'1vh'}}/>
-    <div className="card-body mt-1" style={{width: '17vw'}}>
-      <h5 className="movie-title fw-bolder text-white text-center" style={{fontSize: '1.6vw'}}>{actor.name}</h5>
-      <p className="card-text liked text-center" style={{fontSize: '1.5vw'}}>{actor.character}</p>
+<div className="trending-slider-sm m-4 position-relative">
+{cast.map((actor, index) => (
+  actor.profile_path ? (
+    <div className="me-4" style={{zIndex: '9'}}>
+    <img src={`https://image.tmdb.org/t/p/w500/${actor.profile_path}`} alt={actor.name} style={{width:'15vw', height:'18vw',borderRadius:'1vh'}}/>
+  <div className="card-body mt-1">
+    <h5 className="movie-title fw-bolder text-white text-center" style={{fontSize: '1.6vw'}}>{actor.name}</h5>
+    <p className="card-text liked text-center" style={{fontSize: '1.5vw'}}>{actor.character}</p>
+  </div>
     </div>
+) : null
+))}
+  </div>
+
+  <div className="trending-slider mt-4">
+{cast.slice(currentIndex, currentIndex + 6).map((actor, index) => (
+  actor.profile_path ? (
+      <div className="me-4 me-xl-5" style={{zIndex: '9'}}>
+        <img className="cast-image" src={`https://image.tmdb.org/t/p/w500/${actor.profile_path}`} alt={actor.name}/>
+      <div className="card-body mt-1">
+        <h5 className="movie-title fw-bolder text-white text-center" style={{fontSize: '0.9vw'}}>{actor.name}</h5>
+        <p className="card-text liked text-center" style={{fontSize: '0.9vw'}}>{actor.character}</p>
       </div>
+        </div>
   ) : null
 ))}
-    </div>
-
-    <div className="trending-slider m-4">
-  {cast.slice(currentIndex, currentIndex + 7).map((actor, index) => (
-    actor.profile_path ? (
-        <div className="me-5" style={{zIndex: '9'}}>
-          <img src={`https://image.tmdb.org/t/p/w500/${actor.profile_path}`} alt={actor.name} style={{width:'8vw', height:'11vw',borderRadius:'1vh'}}/>
-        <div className="card-body mt-1" style={{width: '8vw'}}>
-          <h5 className="movie-title fw-bolder text-white text-center" style={{fontSize: '0.7vw'}}>{actor.name}</h5>
-          <p className="card-text liked text-center" style={{fontSize: '0.7vw'}}>{actor.character}</p>
-        </div>
-          </div>
-    ) : null
-  ))}
-  { !isFirstIndex && 
-      <button style={{border: 'none', backgroundColor: 'transparent', marginTop:'-20%', zIndex:'9'}} onClick={handleClickedBack}>
-        <img src={arrow} className='arrow position-absolute me-3 me-md-5 p-3' style={{marginTop:'4.5%', rotate: '180deg'}} alt='slide back'/>
-      </button>
+{ !isFirstIndex && 
+    <button style={{border: 'none', backgroundColor: 'transparent', marginTop:'-25vh', zIndex:'9'}} onClick={handleClickedBack}>
+      <img src={arrow} className='details-arrow position-absolute me-3 me-md-5' style={{marginTop:'4.5%', rotate: '180deg'}} alt='slide back'/>
+    </button>
 }
-      { !isLastIndex && 
-        <button style={{border: 'none', backgroundColor: 'transparent', marginTop:'-20%', zIndex:'9'}} onClick={handleClicked}>
-        <img src={arrow} className='arrow position-absolute me-3 me-md-5 p-3' style={{marginTop:'10.5%'}} alt='slide next'/>
-        </button>}
-
+    { !isLastIndex && 
+      <button style={{border: 'none', backgroundColor: 'transparent', marginTop:'-45vh', zIndex:'9'}} onClick={handleClicked}>
+      <img src={arrow} className='details-arrow position-absolute me-3 me-md-5' style={{marginTop:'10.5%'}} alt='slide next'/>
+      </button>}
 </div>
 
+<h3 className="mt-4 reviews text-white position-relative" style={{fontFamily: 'Montserrat', zIndex:'9'}}>Reviews :</h3>
+
+        <div className="text-white position-relative" style={{zIndex: '9'}}>
+    <div className="m-4 overview" key={reviews[0].id} style={{width: '90%', fontWeight:'900'}}>
+      {/* <p className="trailer-link">
+        {reviews[0].content.length > 500
+          ? `${reviews[0].content.substring(0, 500)}...`
+          : reviews[0].content}
+      </p>
+      <p>~ {reviews[0].author}</p> */}
+    </div>
+</div>
+
+      </div>
+  
       </div>
 </div>
 

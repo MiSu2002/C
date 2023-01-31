@@ -112,6 +112,7 @@ li .sign{
   position: relative;
   background-size: cover;
   font-family: Poppins;
+  background-repeat: no-repeat;
 }
 
 .details::before{
@@ -129,7 +130,72 @@ li .sign{
   width: 50%;
   border-radius: 2vh;
   margin-left: auto;
+  margin-right: auto;
   margin-right: 5%;
+}
+
+.details-overview{
+  line-height: 1.7;
+  width: 80%;
+  font-weight: 900;
+}
+
+.movie-head{
+  width: 85%;
+}
+
+.cast-image{
+  width: 10vw;
+  height: 12vw;
+  border-radius: 1vh;
+}
+
+.details .trending-slider, .cast, .reviews{
+  margin-left: 8.3%;
+}
+
+@media screen and (max-width: 1195px){
+  .details .trending-slider, .cast, .reviews{
+    margin-left: 4%;
+  }
+}
+
+.details-arrow{
+  width: 5vh;
+  background-color: #000;
+  border-radius: 5rem;
+  border: 2px solid rgba(22, 170, 255, 0.343);
+  padding: 1vh;
+}
+
+@media screen and (min-width: 1651px) {
+  .details-content{
+    margin-left: 17%;
+    margin-right: 17%;
+  }
+  .details-img{
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+  }
+  .details-arrow{
+    padding: 1.5vh;
+  }
+  .details-overview{
+    width: 100%;
+    text-align: justify;
+    font-size: 1vw;
+  }
+  .movie-head{
+    width: 103.5%;
+  }
+  .details .trending-slider, .cast, .reviews{
+    margin-left: 0;
+  }
+  .cast-image{
+    width: 8vw;
+    height: 10vw;
+  }
 }
 
 .trending-heading{
