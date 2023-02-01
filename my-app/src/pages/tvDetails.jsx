@@ -4,12 +4,12 @@ import { Link, useParams } from 'react-router-dom';
 import arrow from '../assets/icons/right-arrow.png';
 import { API_KEY } from "../utils/constants";
 
-function MovieDetails() {
+function TVDetails() {
   // Destructure the id from the URL parameters
   const { id } = useParams();
 
-  // State variables to store movie details, video, genres, like and cast
-  const [movie, setMovie] = useState({});
+  // State variables to store show details, video, genres, like and cast
+  const [show, setShow] = useState({});
   const [video, setVideo] = useState(null);
   const [genres, setGenres] = useState([]);
   const [isLiked, setIsLiked] = useState(false);
@@ -20,26 +20,26 @@ function MovieDetails() {
   const isLastIndex = currentIndex + 6 >= cast.length;
   const isFirstIndex = currentIndex <= 0;
 
-  // Use effect to fetch the data for movie details, video, genres and cast
+  // Use effect to fetch the data for show details, video, genres and cast
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Fetch movie details
-        const movieResponse = await axios.get(`https://api.themoviedb.org/3/movie/${id}?api_key=${API_KEY}`);
-        setMovie(movieResponse.data);
-        setGenres(movieResponse.data.genres);
+        // Fetch show details
+        const tvResponse = await axios.get(`https://api.themoviedb.org/3/tv/${id}?api_key=${API_KEY}&language=en-US`);
+        setShow(tvResponse.data);
+        setGenres(tvResponse.data.genres);
 
-        // Fetch movie cast
-        const castResponse = await axios.get(`https://api.themoviedb.org/3/movie/${id}/credits?api_key=${API_KEY}&language=en-US`);
+        // Fetch show cast
+        const castResponse = await axios.get(`https://api.themoviedb.org/3/tv/${id}/credits?api_key=${API_KEY}&language=en-US`);
         setCast(castResponse.data.cast);
         setDirector(castResponse.data.crew.find(member => member.job === 'Director').name);
 
-        // Fetch movie video
-        const videoResponse = await axios.get(`https://api.themoviedb.org/3/movie/${id}/videos?api_key=${API_KEY}&language=en-US`);
+        // Fetch show video
+        const videoResponse = await axios.get(`https://api.themoviedb.org/3/tv/${id}/videos?api_key=${API_KEY}&language=en-US`);
         const trailer = videoResponse.data.results.find((video) => video.type === "Trailer");
-        setVideo(trailer ? trailer : videoResponse.data.results[0]);
+        setVideo(trailer || videoResponse.data.results[0]);
 
-        const reviewResponse = await axios.get(`https://api.themoviedb.org/3/movie/${id}/reviews?api_key=${API_KEY}`);
+        const reviewResponse = await axios.get(`https://api.themoviedb.org/3/tv/${id}/reviews?api_key=${API_KEY}`);
         setReviews(reviewResponse.data.results);
       } catch (error) {
         console.error(error);
@@ -63,13 +63,13 @@ function MovieDetails() {
 
   return (
     <div>
-      {/* Display the movie trailer if it is available */}
+      {/* Display the show trailer if it is available */}
       {video && (
         <iframe
           className="trailer"
-          title={`${movie.title}`}
+          title={`${show.original_name}`}
           src={`https://www.youtube.com/embed/${video.key}?rel=0`}
-          allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in- picture"
+          allow="accelerometer; autoplay; encrypted-media; gyroscope;"
           allowFullScreen
         />
       )}
@@ -77,12 +77,12 @@ function MovieDetails() {
 <style>
   {`
    .details{
-    background-image: url(https://image.tmdb.org/t/p/original/${movie.poster_path});
+    background-image: url(https://image.tmdb.org/t/p/original/${show.poster_path});
    }
 
    @media screen and (min-width: 1000px){
     .details{
-      background-image: url(https://image.tmdb.org/t/p/original/${movie.backdrop_path});
+      background-image: url(https://image.tmdb.org/t/p/original/${show.backdrop_path});
      }
    }
   `}
@@ -95,26 +95,26 @@ function MovieDetails() {
       <div className="row">
         <div className="col-4 mt-4 mt-xl-5 mb-4 mb-xl-5" style={{zIndex: '9'}}>
 
-        {/* Display the movie poster */}
+        {/* Display the show poster */}
         <img className="details-img d-flex"
-              src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
-              alt={movie.title}
+              src={`https://image.tmdb.org/t/p/w500/${show.poster_path}`}
+              alt={show.original_name}
             />
         </div>
 
         <div className="col-8 mt-4 mt-xl-5 ps-2" style={{zIndex: '9'}}>
 
-          <div className="d-flex movie-head">
+          <div className="d-flex show-head">
 
-            <div className="col-9 col-lg-10">
-              {/* Movie title */}
+            <div className="col-8 col-lg-10">
+              {/* TV title */}
           <h2 className="fs-1 ms-4 me-4 trailer-link" style={{ zIndex: "7", fontFamily:'Montserrat'}}>
-            {movie.title}
+            {show.original_name}
           </h2>
             </div>
           
           <div className="col d-flex justify-content-end">
-            {/* Like button to like the movie */}
+            {/* Like button to like the show */}
           <svg viewBox="0 0 512 512" onClick={handleClick} className='mt-2 me-5 likeButton'>
             <path 
             d="M462.3 62.6C407.5 15.9 326 24.3 275.7 76.2L256 96.5l-19.7-20.3C186.1 24.3 104.5 15.9 49.7 62.6c-62.8 53.6-66.1 149.8-9.9 207.9l193.5 199.8c12.5 12.9 32.8 12.9 45.3 0l193.5-199.8c56.3-58.1 53-154.3-9.8-207.9z" 
@@ -127,34 +127,34 @@ function MovieDetails() {
           </div>
 
 
-          {/* Overview of movie */}
+          {/* Overview of show */}
           <h6 className="text-white details-overview ms-4 mt-2 mt-xl-4">
-            {movie.overview}
+            {show.overview}
           </h6>
 
-          {/* Display movie genres */}
+          {/* Display show genres */}
           <h6 className="text-white details-overview ms-4 mt-4 me-5 d-flex" style={{fontWeight: '900'}}>
             <p className="me-2 trailer-link">Genres: </p>
             {genres.length ? genres.map(genre => genre.name).join(", ") : 'No genres available'}
           </h6>
 
-          {/* Display movie director */}
+          {/* Display show director */}
           <h6 className="text-white details-overview ms-4 mt-4 me-5 d-flex" style={{fontWeight: '900'}}>
             <p className="me-2 trailer-link">Director: </p>
-            {director}
+            {director.length ? director : <p>No Director Available</p>}
           </h6>
           
-          {/* Display movie cast */}
+          {/* Display show cast */}
           <h6 className="text-white details-overview ms-4 mt-4 me-5 d-flex" style={{fontWeight: '900'}}>
             <p className="me-2 trailer-link">Cast: </p>
             {cast.length > 0 ? cast.slice(0, 4).map(c => c.name).join(", ") : 'No cast information available'}
           </h6>
           
-          {/* Display movie rating */}
+          {/* Display show rating */}
           <h6 className="text-white details-overview ms-4 mt-4 me-5 d-flex" style={{fontWeight: '900'}}>
             <p className="me-2 trailer-link">Rating: </p>
-            {Math.round(movie.vote_average)} / 10
-            <p className="ms-2 text-light">( {(movie.vote_count/1000).toFixed(2)}k votes )</p>
+            {Math.round(show.vote_average)} / 10
+            <p className="ms-2 text-light">( {(show.vote_count/1000).toFixed(2)}k votes )</p>
           </h6>
         </div>
   </div>
@@ -170,7 +170,7 @@ function MovieDetails() {
     <img src={`https://image.tmdb.org/t/p/w500/${actor.profile_path}`} alt={actor.name} style={{width:'130px', height:'160px',borderRadius:'1vh'}}/>
     </Link>
   <div className="card-body mt-1">
-    <h5 className="movie-title fw-bolder text-white text-center" style={{fontSize: '2.15vw', width:'130px'}}>{actor.name}</h5>
+    <h5 className="show-title fw-bolder text-white text-center" style={{fontSize: '2.15vw', width:'130px'}}>{actor.name}</h5>
     <p className="card-text liked text-center" style={{fontSize: '2.05vw', width:'130px'}}>{actor.character}</p>
   </div>
     </div>
@@ -219,7 +219,7 @@ function MovieDetails() {
         </p>
         <div className="d-flex">
         <p>~ {review.author}</p>
-        <Link to={`/movie/${movie.id}/reviews`}>
+        <Link to={`/show/${show.id}/reviews`}>
         <p className="ms-4 text-decoration-underline text-warning">Read more</p>
         </Link>
         </div>
@@ -241,7 +241,7 @@ function MovieDetails() {
         </p>
         <div className="d-flex">
         <p>~ {review.author}</p>
-        <Link to={`/movie/${movie.id}/reviews`}>
+        <Link to={`/show/${show.id}/reviews`}>
       <p className="ms-4 text-decoration-underline d-xxl-none text-warning">Read more</p>
       </Link>
         </div>
@@ -264,7 +264,7 @@ function MovieDetails() {
       </p>
       <div className="d-flex">
       <p>~ {review.author}</p>
-      <Link to={`/movie/${movie.id}/reviews`}>
+      <Link to={`/show/${show.id}/reviews`}>
       <p className="ms-4 text-decoration-underline text-warning">Read more</p>
       </Link>
       </div>
@@ -285,4 +285,4 @@ function MovieDetails() {
   );
 }
 
-export default MovieDetails;
+export default TVDetails;
