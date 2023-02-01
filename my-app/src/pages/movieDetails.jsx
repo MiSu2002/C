@@ -171,11 +171,11 @@ function MovieDetails() {
   actor.profile_path ? (
     <div className="me-4" key={actor.id} style={{zIndex: '9'}}>
     <Link to={`/actor/${actor.id}`}>
-    <img src={`https://image.tmdb.org/t/p/w500/${actor.profile_path}`} alt={actor.name} style={{width:'150px', height:'180px',borderRadius:'1vh'}}/>
+    <img src={`https://image.tmdb.org/t/p/w500/${actor.profile_path}`} alt={actor.name} style={{width:'130px', height:'160px',borderRadius:'1vh'}}/>
     </Link>
   <div className="card-body mt-1">
-    <h5 className="movie-title fw-bolder text-white text-center" style={{fontSize: '2vw', width:'150px'}}>{actor.name}</h5>
-    <p className="card-text liked text-center" style={{fontSize: '1.9vw', width:'150px'}}>{actor.character}</p>
+    <h5 className="movie-title fw-bolder text-white text-center" style={{fontSize: '2.15vw', width:'130px'}}>{actor.name}</h5>
+    <p className="card-text liked text-center" style={{fontSize: '2.05vw', width:'130px'}}>{actor.character}</p>
   </div>
     </div>
 ) : null
@@ -195,8 +195,8 @@ function MovieDetails() {
             <img src={`https://image.tmdb.org/t/p/w500/${actor.profile_path}`} alt={actor.name} style={{width:"130px", height:"140px"}}/>
           </Link>
           <div className="card-body mt-2">
-            <h5 className="fw-bolder text-white text-center" style={{fontSize: '0.9vw', width:"130px"}}>{actor.name}</h5>
-            <p className="card-text liked text-center" style={{fontSize: '0.9vw', width:"130px"}}>{actor.character}</p>
+            <h5 className="fw-bolder text-white text-center" style={{fontSize: '2.1vh', width:"130px"}}>{actor.name}</h5>
+            <p className="card-text liked text-center" style={{fontSize: '2vh', width:"130px"}}>{actor.character}</p>
           </div>
         </div>
     ) : null

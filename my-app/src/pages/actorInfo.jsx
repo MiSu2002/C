@@ -9,6 +9,7 @@ function ActorInfo() {
   // State variables to store actor and credits information
   const [actor, setActor] = useState({});
   const [cast, setMovie] = useState([]);
+  const [tv, setTv] = useState([]);
 
   // Use effect to fetch the data for the actor
   useEffect(() => {
@@ -22,6 +23,10 @@ function ActorInfo() {
         const creditsResponse = await axios.get(`https://api.themoviedb.org/3/person/${actorId}/movie_credits?api_key=${API_KEY}`);
         setMovie(creditsResponse.data.cast);
 
+        //Fetch tv credits of that actor
+        const creditResponse = await axios.get(`https://api.themoviedb.org/3/person/${actorId}/tv_credits?api_key=${API_KEY}`);
+        setTv(creditResponse.data.cast);
+
       } catch (error) {
         console.error(error);
       }
@@ -34,7 +39,7 @@ function ActorInfo() {
       
       <div className="d-lg-none mx-auto" style={{width: "80%"}}>
         <div className="d-flex justify-content-center mt-5">
-        <img src={`https://image.tmdb.org/t/p/w500/${actor.profile_path}`} alt={actor.name} style={{width:"50%", border: "1px solid rgb(255,255,255,0.7)", borderRadius:"1vh"}}/>
+        <img src={`https://image.tmdb.org/t/p/w500/${actor.profile_path}`} alt={actor.name} style={{width:"50%", border: "1px solid rgb(255,255,255,0.5)", borderRadius:"1vh"}}/>
         </div>
         <div className="mt-4 mt-lg-5" style={{backgroundColor:"rgb(20,20,50,0.5"}}>
           <h1 className="d-flex trailer-link justify-content-center justify-content-lg-start" style={{fontFamily:"Montserrat"}}>{actor.name}</h1>
@@ -44,7 +49,7 @@ function ActorInfo() {
       <div className="d-none d-lg-block d-xxl-none">
         <div className="row mx-auto" style={{width: "80%"}}>
         <div className="col-4 d-flex justify-content-center mt-5">
-        <img src={`https://image.tmdb.org/t/p/w500/${actor.profile_path}`} alt={actor.name} style={{width:"100%", height:"70%", border: "1px solid rgb(255,255,255,0.7)", borderRadius:"1vh"}}/>
+        <img src={`https://image.tmdb.org/t/p/w500/${actor.profile_path}`} alt={actor.name} style={{width:"100%", height:"70%", border: "1px solid rgb(255,255,255,0.5)", borderRadius:"1vh"}}/>
         </div>
         <div className="col mt-4 mt-lg-5" style={{backgroundColor:"rgb(20,20,50,0.5"}}>
           <h1 className="d-flex trailer-link justify-content-center justify-content-lg-start" style={{fontFamily:"Montserrat"}}>{actor.name}</h1>
@@ -55,7 +60,7 @@ function ActorInfo() {
       <div className="d-none d-xxl-block">
         <div className="row mx-auto" style={{width: "80%"}}>
         <div className="col-4 d-flex justify-content-center mt-5">
-        <img src={`https://image.tmdb.org/t/p/w500/${actor.profile_path}`} alt={actor.name} style={{width:"75%", height:"90%", border: "1px solid rgb(255,255,255,0.7)", borderRadius:"1vh"}}/>
+        <img src={`https://image.tmdb.org/t/p/w500/${actor.profile_path}`} alt={actor.name} style={{width:"75%", height:"90%", border: "1px solid rgb(255,255,255,0.5)", borderRadius:"1vh"}}/>
         </div>
         <div className="col mt-4 mt-lg-5" style={{backgroundColor:"rgb(20,20,50,0.5"}}>
           <h1 className="d-flex trailer-link justify-content-center justify-content-lg-start" style={{fontFamily:"Montserrat"}}>{actor.name}</h1>
@@ -79,8 +84,29 @@ function ActorInfo() {
   ))}
 </div>
       </div>
+
+      <div className="mx-auto" style={{width:"85%"}}>
+      <h3 className="mt-5 trailer-link" style={{marginLeft:"4%", fontFamily:"Montserrat"}}>TV Shows: </h3>
+
+<div className="d-flex flex-wrap">
+  {tv ? (
+    tv.map((show) => (
+      show.poster_path && show.name ? (
+        <div style={{marginLeft:"4%"}} key={show.id}>
+          <Link to={`/tv/${show.id}`}>
+          <img className="mt-5" style={{width: "200px", height: "300px"}} src={`https://image.tmdb.org/t/p/w500/${show.poster_path}`} alt={show.title}/>
+          </Link>
+          <p className="text-center mt-2" style={{width:"200px", fontFamily:"Poppins", fontWeight:"900"}} key={show.id}>{show.name}</p>
+        </div>
+        ) : null
+    ))
+      ) : (
+      <p>Not Available</p>
+     )}
+</div>
+
+      </div>
       
-    
   </div>
   );
 }
