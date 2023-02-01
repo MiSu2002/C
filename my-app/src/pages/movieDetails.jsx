@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from 'axios';
-import { Link } from "react-router-dom";
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import arrow from '../assets/icons/right-arrow.png';
 import { API_KEY } from "../utils/constants";
 
@@ -169,8 +168,10 @@ function MovieDetails() {
 <div className="trending-slider-sm m-4 position-relative">
 {cast.map((actor, index) => (
   actor.profile_path ? (
-    <div className="me-4" style={{zIndex: '9'}}>
+    <div className="me-4" key={actor.id} style={{zIndex: '9'}}>
+    <Link to={`/actor/${actor.id}`}>
     <img src={`https://image.tmdb.org/t/p/w500/${actor.profile_path}`} alt={actor.name} style={{width:'15vw', height:'18vw',borderRadius:'1vh'}}/>
+    </Link>
   <div className="card-body mt-1">
     <h5 className="movie-title fw-bolder text-white text-center" style={{fontSize: '2vw'}}>{actor.name}</h5>
     <p className="card-text liked text-center" style={{fontSize: '1.9vw'}}>{actor.character}</p>
@@ -183,8 +184,10 @@ function MovieDetails() {
   <div className="trending-slider mt-4">
 {cast.slice(currentIndex, currentIndex + 6).map((actor, index) => (
   actor.profile_path ? (
-      <div className="me-4 me-xl-5" style={{zIndex: '9'}}>
+      <div className="me-4 me-xl-5" key={cast.id} style={{zIndex: '9'}}>
+        <Link to={`/actor/${actor.id}`}>
         <img className="cast-image" src={`https://image.tmdb.org/t/p/w500/${actor.profile_path}`} alt={actor.name}/>
+        </Link>
       <div className="card-body mt-1">
         <h5 className="movie-title fw-bolder text-white text-center" style={{fontSize: '0.8vw'}}>{actor.name}</h5>
         <p className="card-text liked text-center" style={{fontSize: '0.8vw'}}>{actor.character}</p>

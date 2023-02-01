@@ -26,7 +26,6 @@ function Reviews() {
 
   return (
       <div className="mt-4 mt-xxl-5" style={{marginLeft: "7%", marginRight:"7%"}}>
-        
     <h3 className="trailer-link" style={{fontFamily: 'Montserrat'}}>Reviews :</h3>
 
     <div className="text-white mt-4 mb-4" key={reviews.id} style={{fontWeight:'900', fontFamily:"Poppins", fontSize:'1.1rem', borderTop: "1px solid gray"}}>
