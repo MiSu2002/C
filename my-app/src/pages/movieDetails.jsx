@@ -17,7 +17,7 @@ function MovieDetails() {
   const [director, setDirector] = useState([]);
   const [reviews, setReviews] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const isLastIndex = currentIndex + 7 >= cast.length;
+  const isLastIndex = currentIndex + 6 >= cast.length;
   const isFirstIndex = currentIndex <= 0;
 
   // Use effect to fetch the data for movie details, video, genres and cast
@@ -58,11 +58,11 @@ function MovieDetails() {
   };
 
   const handleClicked = () => {
-    setCurrentIndex(prevCurrentIndex => prevCurrentIndex + 7);
+    setCurrentIndex(prevCurrentIndex => prevCurrentIndex + 6);
   }
 
   const handleClickedBack = () => {
-    setCurrentIndex(prevCurrentIndex => prevCurrentIndex - 7);
+    setCurrentIndex(prevCurrentIndex => prevCurrentIndex - 6);
   }
 
   return (
@@ -166,15 +166,16 @@ function MovieDetails() {
            <h3 className="mt-4 cast text-white position-relative" style={{fontFamily: 'Montserrat', zIndex:'9'}}>Cast :</h3>
 
 <div className="trending-slider-sm m-4 position-relative">
+
 {cast.map((actor, index) => (
   actor.profile_path ? (
     <div className="me-4" key={actor.id} style={{zIndex: '9'}}>
     <Link to={`/actor/${actor.id}`}>
-    <img src={`https://image.tmdb.org/t/p/w500/${actor.profile_path}`} alt={actor.name} style={{width:'15vw', height:'18vw',borderRadius:'1vh'}}/>
+    <img src={`https://image.tmdb.org/t/p/w500/${actor.profile_path}`} alt={actor.name} style={{width:'150px', height:'180px',borderRadius:'1vh'}}/>
     </Link>
   <div className="card-body mt-1">
-    <h5 className="movie-title fw-bolder text-white text-center" style={{fontSize: '2vw'}}>{actor.name}</h5>
-    <p className="card-text liked text-center" style={{fontSize: '1.9vw'}}>{actor.character}</p>
+    <h5 className="movie-title fw-bolder text-white text-center" style={{fontSize: '2vw', width:'150px'}}>{actor.name}</h5>
+    <p className="card-text liked text-center" style={{fontSize: '1.9vw', width:'150px'}}>{actor.character}</p>
   </div>
     </div>
 ) : null
@@ -182,39 +183,40 @@ function MovieDetails() {
   </div>
 
   <div className="trending-slider mt-4">
-{cast.slice(currentIndex, currentIndex + 6).map((actor, index) => (
-  actor.profile_path ? (
-      <div className="me-4 me-xl-5" key={actor.id} style={{zIndex: '9'}}>
-        <Link to={`/actor/${actor.id}`}>
-        <img className="cast-image" src={`https://image.tmdb.org/t/p/w500/${actor.profile_path}`} alt={actor.name}/>
-        </Link>
-      <div className="card-body mt-1">
-        <h5 className="movie-title fw-bolder text-white text-center" style={{fontSize: '0.8vw'}}>{actor.name}</h5>
-        <p className="card-text liked text-center" style={{fontSize: '0.8vw'}}>{actor.character}</p>
-      </div>
-        </div>
-  ) : null
-))}
-{ !isFirstIndex && 
-    <button style={{border: 'none', backgroundColor: 'transparent', marginTop:'-25vh', zIndex:'9'}} onClick={handleClickedBack}>
-      <img src={arrow} className='details-arrow position-absolute me-3 me-md-5' style={{marginTop:'4.5%', rotate: '180deg'}} alt='slide back'/>
+  { !isFirstIndex && 
+    <button className="me-4 me-md-5" style={{border: 'none', backgroundColor: 'transparent', marginTop:'-5vh', zIndex:'10'}} onClick={handleClickedBack}>
+      <img src={arrow} className='d-flex details-arrow position-relative' style={{marginTop:'4.5%', rotate: '180deg'}} alt='slide back'/>
     </button>
-}
-    { !isLastIndex && 
-      <button style={{border: 'none', backgroundColor: 'transparent', marginTop:'-45vh', zIndex:'9'}} onClick={handleClicked}>
-      <img src={arrow} className='details-arrow position-absolute me-3 me-md-5' style={{marginTop:'10.5%'}} alt='slide next'/>
-      </button>}
+  }
+  {cast.slice(currentIndex, currentIndex + 6).map((actor) => (
+    actor.profile_path ? (
+        <div className="me-4 me-xl-5" key={actor.id} style={{zIndex: '9'}}>
+          <Link to={`/actor/${actor.id}`}>
+            <img src={`https://image.tmdb.org/t/p/w500/${actor.profile_path}`} alt={actor.name} style={{width:"130px", height:"140px"}}/>
+          </Link>
+          <div className="card-body mt-2">
+            <h5 className="fw-bolder text-white text-center" style={{fontSize: '0.9vw', width:"130px"}}>{actor.name}</h5>
+            <p className="card-text liked text-center" style={{fontSize: '0.9vw', width:"130px"}}>{actor.character}</p>
+          </div>
+        </div>
+    ) : null
+  ))}
+  { !isLastIndex && 
+    <button className="ms-4 ms-xl-2" style={{border: 'none', backgroundColor: 'transparent', marginTop:'-5vh', zIndex:'10'}} onClick={handleClicked}>
+      <img src={arrow} className='details-arrow position-relative' style={{marginTop:'10.5%'}} alt='slide next'/>
+    </button>
+  }
 </div>
 
 <h3 className="mt-4 mt-xl-5 reviews text-white position-relative" style={{fontFamily: 'Montserrat', zIndex:'9'}}>Reviews :</h3>
 
-        <div className="text-white review position-relative" style={{zIndex: '9'}}>
+        <div className="text-white review position-relative pb-5" style={{zIndex: '9'}}>
 
     <div className="mt-4 d-md-none" key={reviews.id} style={{width: '95%', fontWeight:'900', fontSize:'2.4vw', backgroundColor: "rgb(0,0,0,0.3)"}}>
     {reviews.length ? (
       reviews.slice(0,1).map((review) => (
         <div key={review.id}>
-          <p className="trailer-link">
+          <p className="mt-3 trailer-link" style={{fontSize:"1rem"}}>
           {review.content.length > 500
             ? `${review.content.substring(0, 500)}...`
             : review.content}
@@ -235,17 +237,21 @@ function MovieDetails() {
     <div className="mt-4 details-overview review-1 d-none d-md-block" key={reviews.id} style={{fontWeight:'900', backgroundColor: "rgb(0,0,0,0.3)"}}>
     {reviews.length ? (
       reviews.slice(0,1).map((review) => (
-      <div key={review.id}>
-        <p className="trailer-link">{review.content}</p>
-      <div className="d-flex">
-      <p>~ {review.author}</p>
-      <Link to={`/movie/${movie.id}/reviews`}>
-      <p className="ms-4 text-decoration-underline text-warning d-xxl-none">Read more</p>
+        <div key={review.id}>
+          <p className="mt-3 trailer-link" style={{fontSize:"1rem"}}>
+          {review.content.length > 800
+            ? `${review.content.substring(0, 800)}...`
+            : review.content}
+        </p>
+        <div className="d-flex">
+        <p>~ {review.author}</p>
+        <Link to={`/movie/${movie.id}/reviews`}>
+      <p className="ms-4 text-decoration-underline d-xxl-none text-warning">Read more</p>
       </Link>
-      </div>
-      </div>
-      ))
-    )  : (
+        </div>
+        </div>
+    ))
+    ) : (
       <p>No Reviews Available</p>
     )}
     </div>

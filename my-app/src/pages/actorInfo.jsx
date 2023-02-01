@@ -63,19 +63,21 @@ function ActorInfo() {
       </div>
       </div>
 
+      <div className="mx-auto" style={{width:"85%"}}>
       <h3 className="mt-5 trailer-link" style={{marginLeft:"4%", fontFamily:"Montserrat"}}>Movies: </h3>
 
-      <div className="d-flex ms-4 flex-wrap justify-content-center">
-        {cast.map(movie => (
-           movie.title && movie.poster_path ? (
-            <div>
-              <Link to={`/movie/${movie.id}`}>
-              <img className="me-4 mt-5" style={{width: "200px", height: "300px"}} src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`} alt={movie.title}/>
-              </Link>
-              <p className="text-center me-4 mt-2" style={{width:"200px", fontFamily:"Poppins", fontWeight:"900"}} key={movie.id}>{movie.title}</p>
-            </div>
-          ) : null
-        ))}
+<div className="d-flex flex-wrap">
+  {cast.map(movie => (
+     movie.title && movie.poster_path ? (
+      <div style={{marginLeft:"4%"}}>
+        <Link to={`/movie/${movie.id}`}>
+        <img className="mt-5" style={{width: "200px", height: "300px"}} src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`} alt={movie.title}/>
+        </Link>
+        <p className="text-center mt-2" style={{width:"200px", fontFamily:"Poppins", fontWeight:"900"}} key={movie.id}>{movie.title}</p>
+      </div>
+    ) : null
+  ))}
+</div>
       </div>
       
     

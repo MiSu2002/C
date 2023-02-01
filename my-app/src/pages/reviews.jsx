@@ -31,7 +31,7 @@ function Reviews() {
     <div className="text-white mt-4 mb-4" key={reviews.id} style={{fontWeight:'900', fontFamily:"Poppins", fontSize:'1.1rem', borderTop: "1px solid gray"}}>
     {reviews.length ? (
         reviews.map((review) => (
-      <div className=" mt-4 mb-4" key={review.id} style={{borderBottom: "1px solid gray"}}>
+      <div className="overview text-white mt-4 mb-4" key={review.id} style={{borderBottom: "1px solid gray"}}>
         <p>{review.content}</p>
       <p className="trailer-link mb-4">~ {review.author}</p>
       </div>
