@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import { Link } from "react-router-dom";
+import { useParams } from 'react-router-dom';
 import arrow from '../assets/icons/right-arrow.png';
 import { API_KEY } from "../utils/constants";
 
@@ -207,36 +208,49 @@ function MovieDetails() {
         <div className="text-white review position-relative" style={{zIndex: '9'}}>
 
     <div className="mt-4 d-md-none" key={reviews.id} style={{width: '95%', fontWeight:'900', fontSize:'2.4vw', backgroundColor: "rgb(0,0,0,0.3)"}}>
-    {reviews.slice(0,1).map((review) => (
-      <div key={review.id}>
-        <p className="trailer-link">
-        {review.content.length > 500
-          ? `${review.content.substring(0, 500)}...`
-          : review.content}
-      </p>
-      <div className="d-flex">
-      <p>~ {review.author}</p>
-      <p className="ms-4 text-decoration-underline text-warning">Read more</p>
-      </div>
-      </div>
-    ))}
+    {reviews.length ? (
+      reviews.slice(0,1).map((review) => (
+        <div key={review.id}>
+          <p className="trailer-link">
+          {review.content.length > 500
+            ? `${review.content.substring(0, 500)}...`
+            : review.content}
+        </p>
+        <div className="d-flex">
+        <p>~ {review.author}</p>
+        <Link to={`/movie/${movie.id}/reviews`}>
+        <p className="ms-4 text-decoration-underline text-warning">Read more</p>
+        </Link>
+        </div>
+        </div>
+    ))
+    ) : (
+      <p>No Reviews Available</p>
+    )}
     </div>
 
     <div className="mt-4 details-overview review-1 d-none d-md-block" key={reviews.id} style={{fontWeight:'900', backgroundColor: "rgb(0,0,0,0.3)"}}>
-    {reviews.slice(0,1).map((review) => (
+    {reviews.length ? (
+      reviews.slice(0,1).map((review) => (
       <div key={review.id}>
         <p className="trailer-link">{review.content}</p>
       <div className="d-flex">
       <p>~ {review.author}</p>
+      <Link to={`/movie/${movie.id}/reviews`}>
       <p className="ms-4 text-decoration-underline text-warning d-xxl-none">Read more</p>
+      </Link>
       </div>
       </div>
-    ))}
+      ))
+    )  : (
+      <p>No Reviews Available</p>
+    )}
     </div>
 
 
     <div className="mt-4 details-overview review-1 d-none d-xxl-block" key={reviews.id} style={{fontWeight:'900', backgroundColor: "rgb(0,0,0,0.3)"}}>
-    {reviews.slice(1,2).map((review) => (
+    {reviews.length ? (
+      reviews.slice(1,2).map((review) => (
       <div key={review.id}>
         <p className="trailer-link">
         {review.content.length > 500
@@ -245,10 +259,15 @@ function MovieDetails() {
       </p>
       <div className="d-flex">
       <p>~ {review.author}</p>
+      <Link to={`/movie/${movie.id}/reviews`}>
       <p className="ms-4 text-decoration-underline text-warning">Read more</p>
+      </Link>
       </div>
       </div>
-    ))}
+      ))
+    ) : (
+      <p>No Reviews Available</p>
+    )}
     </div>
 
 </div>
