@@ -355,13 +355,13 @@ li .sign{
 
 @media screen and (max-width: 800px){
   .liked{
-    font-size: 0.6rem;
-  }
-  .overview{
     font-size: 0.8rem;
   }
+  .overview{
+    font-size: 0.9rem;
+  }
   .movie-title{
-    font-size: 0.7rem;
+    font-size: 0.9rem;
   }
   .trending-week{
     font-size: 1.2rem;

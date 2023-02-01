@@ -184,7 +184,7 @@ function MovieDetails() {
   <div className="trending-slider mt-4">
 {cast.slice(currentIndex, currentIndex + 6).map((actor, index) => (
   actor.profile_path ? (
-      <div className="me-4 me-xl-5" key={cast.id} style={{zIndex: '9'}}>
+      <div className="me-4 me-xl-5" key={actor.id} style={{zIndex: '9'}}>
         <Link to={`/actor/${actor.id}`}>
         <img className="cast-image" src={`https://image.tmdb.org/t/p/w500/${actor.profile_path}`} alt={actor.name}/>
         </Link>
