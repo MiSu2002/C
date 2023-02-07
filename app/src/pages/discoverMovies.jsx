@@ -49,31 +49,31 @@ useEffect(() => {
             <Navbar/>
             <div className="d-flex mt-5 mb-4 ">
             <h2 className="ms-4 ms-md-5 trailer-link" style={{fontFamily:'Montserrat'}}>Discover Movies</h2>
-            <div class="dropdown ms-auto me-4 me-md-5">
-  <button class="btn btn-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <div className="dropdown ms-auto me-4 me-md-5">
+  <button className="btn btn-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
   {selectedGenre}
   </button>
-  <ul class="dropdown-menu">
-  <li><a class="dropdown-item active" onClick={() => handleOnClick(null, "Genres")} href="/movies">All Movies</a></li>
-    <li><a class="dropdown-item" onClick={() => handleOnClick(28, "Genre: Action")} href="/movies">Action</a></li>
-    <li><a class="dropdown-item" onClick={() => handleOnClick(12, "Genre: Adventure")} href="/movies">Adventure</a></li>
-    <li><a class="dropdown-item" onClick={() => handleOnClick(16, "Genre: Animation")} href="/movies">Animation</a></li>
-    <li><a class="dropdown-item" onClick={() => handleOnClick(35, "Genre: Comedy")} href="/movies">Comedy</a></li>
-    <li><a class="dropdown-item" onClick={() => handleOnClick(80, "Genre: Crime")} href="/movies">Crime</a></li>
-    <li><a class="dropdown-item" onClick={() => handleOnClick(99, "Genre: Documentary")} href="/movies">Documentry</a></li>
-    <li><a class="dropdown-item" onClick={() => handleOnClick(18, "Genre: Drama")} href="/movies">Drama</a></li>
-    <li><a class="dropdown-item" onClick={() => handleOnClick(10751, "Genre: Family")} href="/movies">Family</a></li>
-    <li><a class="dropdown-item" onClick={() => handleOnClick(14, "Genre: Fantasy")} href="/movies">Fantasy</a></li>
-    <li><a class="dropdown-item" onClick={() => handleOnClick(36, "Genre: History")} href="/movies">History</a></li>
-    <li><a class="dropdown-item" onClick={() => handleOnClick(27, "Genre: Horror")} href="/movies">Horror</a></li>
-    <li><a class="dropdown-item" onClick={() => handleOnClick(10402, "Genre: Music")} href="/movies">Music</a></li>
-    <li><a class="dropdown-item" onClick={() => handleOnClick(9648, "Genre: Mystery")}href="/movies">Mystery</a></li>
-    <li><a class="dropdown-item" onClick={() => handleOnClick(10749, "Genre: Romance")} href="/movies">Romance</a></li>
-    <li><a class="dropdown-item" onClick={() => handleOnClick(878, "Genre: Sci-fi")} href="/movies">Sci-fi</a></li>
-    <li><a class="dropdown-item" onClick={() => handleOnClick(10770, "Genre: TV Movie")}href="/movies">TV Movie</a></li>
-    <li><a class="dropdown-item" onClick={() => handleOnClick(53, "Genre: Thriller")} href="/movies">Thriller</a></li>
-    <li><a class="dropdown-item" onClick={() => handleOnClick(10752, "Genre: War")} href="/movies">War</a></li>
-    <li><a class="dropdown-item" onClick={() => handleOnClick(37, "Genre: Western")} href="/movies">Western</a></li>
+  <ul className="dropdown-menu">
+  <li className="dropdown-item active" onClick={() => handleOnClick(null, "Genres")}>All Movies</li>
+    <li className="dropdown-item" onClick={() => handleOnClick(28, "Genre: Action")}>Action</li>
+    <li className="dropdown-item" onClick={() => handleOnClick(12, "Genre: Adventure")}>Adventure</li>
+    <li className="dropdown-item" onClick={() => handleOnClick(16, "Genre: Animation")}>Animation</li>
+    <li className="dropdown-item" onClick={() => handleOnClick(35, "Genre: Comedy")}>Comedy</li>
+    <li className="dropdown-item" onClick={() => handleOnClick(80, "Genre: Crime")}>Crime</li>
+    <li className="dropdown-item" onClick={() => handleOnClick(99, "Genre: Documentary")}>Documentry</li>
+    <li className="dropdown-item" onClick={() => handleOnClick(18, "Genre: Drama")}>Drama</li>
+    <li className="dropdown-item" onClick={() => handleOnClick(10751, "Genre: Family")}>Family</li>
+    <li className="dropdown-item" onClick={() => handleOnClick(14, "Genre: Fantasy")}>Fantasy</li>
+    <li className="dropdown-item" onClick={() => handleOnClick(36, "Genre: History")}>History</li>
+    <li className="dropdown-item" onClick={() => handleOnClick(27, "Genre: Horror")}>Horror</li>
+    <li className="dropdown-item" onClick={() => handleOnClick(10402, "Genre: Music")}>Music</li>
+    <li className="dropdown-item" onClick={() => handleOnClick(9648, "Genre: Mystery")}href="/movies">Mystery</li>
+    <li className="dropdown-item" onClick={() => handleOnClick(10749, "Genre: Romance")}>Romance</li>
+    <li className="dropdown-item" onClick={() => handleOnClick(878, "Genre: Sci-fi")}>Sci-fi</li>
+    <li className="dropdown-item" onClick={() => handleOnClick(10770, "Genre: TV Movie")}href="/movies">TV Movie</li>
+    <li className="dropdown-item" onClick={() => handleOnClick(53, "Genre: Thriller")}>Thriller</li>
+    <li className="dropdown-item" onClick={() => handleOnClick(10752, "Genre: War")}>War</li>
+    <li className="dropdown-item" onClick={() => handleOnClick(37, "Genre: Western")}>Western</li>
   </ul>
 </div>
             </div>
