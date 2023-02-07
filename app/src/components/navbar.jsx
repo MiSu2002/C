@@ -1,7 +1,16 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, Link, useLocation } from "react-router-dom";
 
 const Navbar = () => {
+
+  const location = useLocation();
+  const isHomePage = location.pathname === "/";
+  const isAboutPage = location.pathname === "/about";
+  const isDiscoverPage = location.pathname === "/movies" || location.pathname === "/shows";
+  const isWatchPage = location.pathname === "/watchlist";
+  const isProfilePage = location.pathname === "/profile";
+  const isReviewPage = location.pathname === "/reviews";
+
   return (
     <div className="navbar-section">
       {/* -------- Upper Navbar -------- */}
@@ -42,7 +51,7 @@ const Navbar = () => {
         <div className="navbar navbar-expand-lg navbar-dark">
 
           {/* Navbar Brand for smaller devices */}
-          <li className="navbar-brand ms-4 d-block d-lg-none">CINÈRA</li>
+          <Link to='/' className="navbar-brand ms-4 d-block d-lg-none text-decoration-none">CINÈRA</Link>
 
           {/* Menu button */}
           <button
@@ -64,7 +73,7 @@ const Navbar = () => {
               {/* Home link */}
               <NavLink className={"ms-auto me-auto"} to="/" style={{ textDecoration: "none" }}>
                 <li className="nav-item me-lg-5">
-                  <li className="nav-link active" aria-current="page">
+                  <li className={"nav-link" + (isHomePage ? " active" : "")} aria-current="page">
                     HOME
                   </li>
                 </li>
@@ -73,14 +82,14 @@ const Navbar = () => {
               {/* About link */}
               <NavLink className={"ms-auto me-auto"} to="/about" style={{ textDecoration: "none" }}>
                 <li className="nav-item me-lg-5">
-                  <li className="nav-link">ABOUT</li>
+                  <li className={"nav-link" + (isAboutPage ? " active" : "")}>ABOUT</li>
                 </li>
               </NavLink>
 
               {/* Discover dropdown link */}
               <li className="nav-item dropdown me-lg-5 ms-auto me-auto">
                 <li
-                  className="nav-link dropdown-toggle"
+                  className={"nav-link dropdown-toggle" + (isDiscoverPage ? " active" : "")}
                   role="button"
                   data-bs-toggle="dropdown"
                   aria-expanded="false"
@@ -89,8 +98,8 @@ const Navbar = () => {
                 </li>
 
                 {/* Dropdown menu of Discover */}
-                <ul className="dropdown-menu me-lg-5 ms-auto me-auto">
-                  <div className="row">
+                <ul className="dropdown-menu me-lg-5 ms-auto me-auto" style={{width: '400px'}}>
+                  <div className="row g-0">
                     <div className="col-6">
                       {/* Movies link */}
                       <NavLink to="/movies" style={{ textDecoration: "none" }}>
@@ -98,16 +107,8 @@ const Navbar = () => {
                       </NavLink>
 
                       {/* Series link */}
-                      <NavLink to="/series" style={{ textDecoration: "none" }}>
-                        <li className="dropdown-item">Series</li>
-                      </NavLink>
-
-                      {/* Tv-shows link */}
-                      <NavLink
-                        to="/tv-shows"
-                        style={{ textDecoration: "none" }}
-                      >
-                        <li className="dropdown-item">TV-Shows</li>
+                      <NavLink to="/shows" style={{ textDecoration: "none" }}>
+                        <li className="dropdown-item">Shows</li>
                       </NavLink>
 
                       {/* Recommended link */}
@@ -120,49 +121,45 @@ const Navbar = () => {
                     </div>
 
                     <div className="col-6">
-                      {/* Genres link */}
-                      <NavLink to="/genres" style={{ textDecoration: "none" }}>
-                        <li className="dropdown-item">Genres</li>
-                      </NavLink>
-
-                      {/* Artists link */}
-                      <NavLink to="/artists" style={{ textDecoration: "none" }}>
-                        <li className="dropdown-item">Artists</li>
+                      {/* Popular link */}
+                      <NavLink to="/popular" style={{ textDecoration: "none" }}>
+                        <li className="dropdown-item">Popular</li>
                       </NavLink>
 
                       {/* Trending link */}
-                      <NavLink
-                        to="/trending"
-                        style={{ textDecoration: "none" }}
-                      >
+                      <NavLink to="/trending" style={{ textDecoration: "none" }}>
                         <li className="dropdown-item">Trending</li>
                       </NavLink>
 
-                      {/* Super-hits link */}
-                      <NavLink to="/hits" style={{ textDecoration: "none" }}>
-                        <li className="dropdown-item">Super Hits</li>
+                      {/* Top Rated link */}
+                      <NavLink
+                        to="/top-rated"
+                        style={{ textDecoration: "none" }}
+                      >
+                        <li className="dropdown-item">Top Rated</li>
                       </NavLink>
+
                     </div>
                   </div>
                 </ul>
               </li>
 
               {/* Nabar Brand for larger devices */}
-              <li className="navbar-brand ms-auto me-auto me-lg-5 d-none d-lg-block">
+              <Link to='/' className="navbar-brand ms-auto me-auto me-lg-5 d-none d-lg-block text-decoration-none">
                 CINÈRA
-              </li>
+              </Link>
 
               {/* Watchlist link */}
               <NavLink className={"ms-auto me-auto"} to="/watchlist" style={{ textDecoration: "none" }}>
                 <li className="nav-item me-lg-5">
-                  <li className="nav-link watchlist">WATCHLIST</li>
+                  <li className={"nav-link watchlist" + (isWatchPage ? " active" : "")}>WATCHLIST</li>
                 </li>
               </NavLink>
 
               {/* Profile link */}
               <NavLink className={"ms-auto me-auto"} to="/profile" style={{ textDecoration: "none" }}>
                 <li className="nav-item me-lg-5">
-                  <li className="nav-link" role="button" aria-expanded="false">
+                  <li className={"nav-link" + (isProfilePage ? " active" : "")} role="button" aria-expanded="false">
                     PROFILE
                   </li>
                 </li>
@@ -171,7 +168,7 @@ const Navbar = () => {
               {/* Review link */}
               <NavLink className={"ms-auto me-auto"} to="/review" style={{ textDecoration: "none" }}>
                 <li className="nav-item">
-                  <li className="nav-link last">REVIEW</li>
+                  <li className={"nav-link review" + (isReviewPage ? " active" : "")}>REVIEW</li>
                 </li>
               </NavLink>
 

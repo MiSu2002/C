@@ -75,7 +75,7 @@ function ActorInfo() {
       </div>
 
       <div className="mx-auto mb-5" style={{width:"85%", borderBottom: "2px solid gray"}}>
-      <h3 className="mt-5 trailer-link" style={{marginLeft:"4%", fontFamily:"Montserrat"}}>TV Shows: </h3>
+      <h3 className="mt-5 trailer-link" style={{marginLeft:"4%", fontFamily:"Montserrat"}}>TV Shows / Series: </h3>
 
 <div className="d-flex flex-wrap mb-5">
   {tv ? (

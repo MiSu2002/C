@@ -81,7 +81,8 @@ li .sign{
 
 .dropdown-menu{
   cursor: pointer;
-  background-color: #24252ea1 !important;
+  background-color: #24252ecc !important;
+  font-family: Montserrat;
   width: 40vw;
 }
 
@@ -295,18 +296,11 @@ li .sign{
   width: 5vh;
   background-color: #000;
   border-radius: 5rem;
-  border: 2px solid rgba(22, 170, 255, 0.343);
+  border: 2px solid #fff0c8c7;
 }
 
 .trending-week{
   font-family: Montserrat;
-  margin-top: 10vh;
-}
-
-.small-arrow{
-  width: calc(12px + 0.7%);
-  height: calc(12px + 0.7%);
-  margin-top: 10.9vh;
 }
 
 .trailer{

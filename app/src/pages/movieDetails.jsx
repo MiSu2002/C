@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Link, useParams } from 'react-router-dom';
 import arrow from '../assets/icons/right-arrow.png';
 import { API_KEY } from "../utils/constants";
+import { languageCodes } from "../utils/languageCodes";
 
 function MovieDetails() {
   // Destructure the id from the URL parameters
@@ -60,6 +61,8 @@ function MovieDetails() {
   const handleClickedBack = () => {
     setCurrentIndex(prevCurrentIndex => prevCurrentIndex - 6);
   }
+
+  const languageName = languageCodes[movie.original_language] || movie.original_language;
 
   return (
     <div>
@@ -156,6 +159,13 @@ function MovieDetails() {
             {Math.round(movie.vote_average)} / 10
             <p className="ms-2 text-light">( {(movie.vote_count/1000).toFixed(2)}k votes )</p>
           </h6>
+
+          {/* Language of movie */}
+          <h6 className="text-white details-overview ms-4 mt-4 me-5 d-flex" style={{fontWeight: '900'}}>
+            <p className="me-2 trailer-link">Language: </p>
+            {languageName}
+          </h6>
+          
         </div>
   </div>
 
