@@ -2,10 +2,22 @@ import React from "react";
 
 const Footer = () => {
     return(
-        <div style={{backgroundColor:'#2a2a47', height: '5vh'}}>
+        <div className="footer" style={{backgroundColor:'#2a2a47'}}>
+            <style>
+            {`
+            .footer{
+                height: 5vh;
+            }
+            @media screen and (max-width: 768px){
+                .footer{
+                    height: 7vh;
+                }
+            }
+            `}
+        </style>
             <div className="row text-secondary mx-auto" style={{width:'90%'}}>
             <div className="col d-flex justify-content-end mt-2 mt-xxl-3">
-            © Cinèra 2023
+            Cinèra &nbsp; © 2023
             </div>
             <div className="col-3 col-md-2 mt-2 mt-xxl-3 d-flex justify-content-center">
                 TMDB API

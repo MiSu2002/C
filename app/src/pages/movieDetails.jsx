@@ -4,6 +4,7 @@ import { Link, useParams } from 'react-router-dom';
 import arrow from '../assets/icons/right-arrow.png';
 import { API_KEY } from "../utils/constants";
 import { languageCodes } from "../utils/languageCodes";
+import Footer from "../components/footer";
 
 function MovieDetails() {
   // Destructure the id from the URL parameters
@@ -290,6 +291,7 @@ function MovieDetails() {
       </div>
   
       </div>
+      <Footer/>
 </div>
 
   );
