@@ -18,6 +18,7 @@ function MovieDetails() {
   const [cast, setCast] = useState([]);
   const [director, setDirector] = useState([]);
   const [reviews, setReviews] = useState([]);
+  const [similar, setSimilar] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const isLastIndex = currentIndex + 6 >= cast.length;
   const isFirstIndex = currentIndex <= 0;
@@ -43,6 +44,10 @@ function MovieDetails() {
 
         const reviewResponse = await axios.get(`https://api.themoviedb.org/3/movie/${id}/reviews?api_key=${API_KEY}`);
         setReviews(reviewResponse.data.results);
+
+        const similarResponse = await axios.get(`https://api.themoviedb.org/3/movie/${id}/similar?api_key=${API_KEY}&language=en-US&adult=false&page=1`);
+        setSimilar(similarResponse.data.results);
+
       } catch (error) {
         console.error(error);
       }
@@ -287,6 +292,22 @@ function MovieDetails() {
     </div>
 
 </div>
+
+<h3 className="mt-4 mt-xl-5 reviews text-white position-relative" style={{fontFamily: 'Montserrat', zIndex:'9'}}>Similar Movies :</h3>
+    <div className="d-flex flex-wrap reviews mb-4 justify-content-center justify-content-md-start position-relative" style={{zIndex:'9'}}>
+    {similar.slice(0,6).map(movies => (
+              movies.poster_path && movies.title && (
+        <div key={movies.id}>
+          <Link to={`/movie/${movies.id}`}>
+          <img className='ms-4 me-4 mt-5' style={{width:'220px', height: '320px'}} src={`https://image.tmdb.org/t/p/w500/${movies.poster_path}`} alt={movies.title} />
+          </Link>
+          <p className='liked fw-bolder ms-4 me-4 mt-2 mb-0 text-center' style={{width:'220px'}}>{Math.round((movies.vote_average + Number.EPSILON)*1000)/100}% Liked This</p>
+          <p className='movie-title ms-4 me-4 text-white fw-bolder mt-1 text-center' style={{width:'220px', fontFamily:"Poppins"}}>{movies.title}</p>
+        </div>
+              )
+      ))}
+    </div>
+    <p className="trailer-link position-relative mb-5 text-end me-4 e-md-5" style={{zIndex:'9'}}>View More</p>
 
       </div>
   
