@@ -5,6 +5,7 @@ import arrow from '../assets/icons/right-arrow.png';
 import { API_KEY } from "../utils/constants";
 import { languageCodes } from "../utils/languageCodes";
 import Footer from "../components/footer";
+import Navbar from "../components/navbar";
 
 function TVDetails() {
   // Destructure the id from the URL parameters
@@ -18,7 +19,9 @@ function TVDetails() {
   const [cast, setCast] = useState([]);
   const [director, setDirector] = useState([]);
   const [reviews, setReviews] = useState([]);
+  const [showNavbar, setShowNavbar] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [similar, setSimilar] = useState([]);
   const isLastIndex = currentIndex + 6 >= cast.length;
   const isFirstIndex = currentIndex <= 0;
 
@@ -43,12 +46,31 @@ function TVDetails() {
 
         const reviewResponse = await axios.get(`https://api.themoviedb.org/3/tv/${id}/reviews?api_key=${API_KEY}`);
         setReviews(reviewResponse.data.results);
+
+        const similarResponse = await axios.get(`https://api.themoviedb.org/3/tv/${id}/similar?api_key=${API_KEY}&language=en-US&adult=false`);
+        setSimilar(similarResponse.data.results);
       } catch (error) {
         console.error(error);
       }
     };
     fetchData();
   }, [id]); // Re-run the effect only when the id changes
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if ((window.scrollY < window.innerHeight * 0.5) || (window.scrollY > window.innerHeight * 0.95)) {
+        setShowNavbar(false);
+      } else {
+        setShowNavbar(true);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
 
   // This function toggles the state of the like button between liked and not liked
   const handleClick = () => {
@@ -67,8 +89,63 @@ function TVDetails() {
 
   return (
     <div>
+
+<style>
+        {`
+          .navbar1 {
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 999;
+          }
+
+          .navbar1.show {
+            opacity: 1;
+          }
+
+          .navbar2{
+            display: none;
+          }
+
+          .details{
+            background-image: url(https://image.tmdb.org/t/p/original/${show.poster_path});
+           }
+        
+           @media screen and (min-width: 1000px){
+            .details{
+              background-image: url(https://image.tmdb.org/t/p/original/${show.backdrop_path});
+             }
+           }
+
+           @media screen and (max-width: 1195px){
+            .navbar1.show{
+              opacity: 0;
+            }
+            .navbar2{
+              display: block;
+            }
+           }
+        `}
+      </style>
+
+      {video ? (
+      <div className="navbar2">
+        <Navbar />
+      </div>
+      ):(
+        <></>
+      )
+      }
+
       {/* Display the show trailer if it is available */}
-      {video && (
+      {video ? (
+      <>
+        <div className={`navbar1 ${showNavbar ? 'show' : ''}`}>
+          <Navbar />
+        </div>
+
         <iframe
           className="trailer"
           title={`${show.original_name}`}
@@ -76,21 +153,12 @@ function TVDetails() {
           allow="accelerometer; autoplay; encrypted-media; gyroscope;"
           allowFullScreen
         />
+      </>
+    ) : (
+      <div className="navbar2 d-lg-block">
+        <Navbar />
+      </div>
       )}
-
-<style>
-  {`
-   .details{
-    background-image: url(https://image.tmdb.org/t/p/original/${show.poster_path});
-   }
-
-   @media screen and (min-width: 1000px){
-    .details{
-      background-image: url(https://image.tmdb.org/t/p/original/${show.backdrop_path});
-     }
-   }
-  `}
-</style>
       
       <div className="details">
 
@@ -111,7 +179,7 @@ function TVDetails() {
           <div className="d-flex show-head">
 
             <div className="col-8 col-lg-10">
-              {/* TV title */}
+              {/* TV original_name */}
           <h2 className="fs-1 ms-4 me-4 trailer-link" style={{ zIndex: "7", fontFamily:'Montserrat'}}>
             {show.original_name}
           </h2>
@@ -190,7 +258,7 @@ function TVDetails() {
     <img src={`https://image.tmdb.org/t/p/w500/${actor.profile_path}`} alt={actor.name} style={{width:'130px', height:'160px',borderRadius:'1vh'}}/>
     </Link>
   <div className="card-body mt-1">
-    <h5 className="show-title fw-bolder text-white text-center" style={{fontSize: '2.15vw', width:'130px'}}>{actor.name}</h5>
+    <h5 className="show-original_name fw-bolder text-white text-center" style={{fontSize: '2.15vw', width:'130px'}}>{actor.name}</h5>
     <p className="card-text liked text-center" style={{fontSize: '2.05vw', width:'130px'}}>{actor.character}</p>
   </div>
     </div>
@@ -297,9 +365,31 @@ function TVDetails() {
 
 </div>
 
+<h3 className="mt-4 mt-xl-5 reviews text-white position-relative" style={{fontFamily: 'Montserrat', zIndex:'9'}}>Similar Shows :</h3>
+    <div className="d-flex flex-wrap reviews mb-4 justify-content-center justify-content-md-start position-relative" style={{zIndex:'9'}}>
+    {similar.slice(0,8).map(shows => (
+              shows.poster_path && shows.original_language && (
+        <div key={shows.id}>
+          <Link to={`/tv/${shows.id}`}>
+          <img className='ms-4 me-4 mt-5' style={{width:'220px', height: '320px'}} src={`https://image.tmdb.org/t/p/w500/${shows.poster_path}`} alt={shows.original_language} />
+          </Link>
+          <p className='liked fw-bolder ms-4 me-4 mt-2 mb-0 text-center' style={{width:'220px'}}>{Math.round((shows.vote_average + Number.EPSILON)*1000)/100}% Liked This</p>
+          <p className='movie-original_language ms-4 me-4 text-white fw-bolder mt-1 text-center' style={{width:'220px', fontFamily:"Poppins"}}>{shows.original_language}</p>
+        </div>
+              )
+      ))}
+    </div>
+
+    <Link to={`/tv/${show.id}/similar`}>
+    <div className="d-flex trailer-link position-relative justify-content-center justify-content-lg-end text-decoration-underline mb-5" style={{zIndex:'9'}}>
+    <p>View More</p><img className="mt-1 ms-1 me-md-5" src={arrow} width="17px" height="16px" alt={show.original_name}/>
+    </div>
+    </Link>
+
       </div>
   
       </div>
+
       <Footer/>
 </div>
 

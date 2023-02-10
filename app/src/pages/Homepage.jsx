@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React from "react";
 import Footer from "../components/footer";
 import Latest from "../components/latest";
 import LatestTV from "../components/latestTv";
@@ -14,17 +14,10 @@ import TrendingShows from "../components/trendingTV";
 import Upcoming from "../components/upcoming";
 
 function Homepage() {
-
-  const [isScrolled, setIsScrolled] = useState(false);
-
-  window.onscroll = () => {
-    setIsScrolled(window.pageYOffset === 0 ? false : true);
-    return () => (window.onscroll = null);
-  };
   
   return (
       <>
-      <Navbar isScrolled={isScrolled} />
+      <Navbar/>
       <Trending/>
       <TrendingMovies/>
       <TrendingShows/>

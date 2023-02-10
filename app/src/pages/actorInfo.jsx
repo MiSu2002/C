@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useParams, Link } from 'react-router-dom';
 import { API_KEY } from "../utils/constants";
 import Footer from "../components/footer";
+import Navbar from "../components/navbar";
 
 function ActorInfo() {
   // Destructure the id from the URL parameters
@@ -36,7 +37,10 @@ function ActorInfo() {
   }, [actorId]); // Re-run the effect only when the actorId changes
 
   return (
-    <div className="actorInfo text-white">
+    <div>
+      <Navbar />
+
+      <div className="actorInfo text-white">
       
       <div className="d-lg-none mx-auto" style={{width: "80%"}}>
         <div className="d-flex justify-content-center mt-5">
@@ -96,8 +100,10 @@ function ActorInfo() {
 </div>
 
       </div>
-      <Footer className='mt-5'/>
   </div>
+  <Footer className='mt-5'/>
+    </div>
+    
   );
 }
 

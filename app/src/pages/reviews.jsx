@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { API_KEY } from "../utils/constants";
 import Footer from "../components/footer";
+import Navbar from "../components/navbar";
 
 function Reviews() {
   // Destructure the id from the URL parameters
@@ -27,6 +28,7 @@ function Reviews() {
 
   return (
       <div>
+        <Navbar/>
         <div className="mt-4 mt-xxl-5" style={{marginLeft: "7%", marginRight:"7%"}}>
     <h3 className="trailer-link" style={{fontFamily: 'Montserrat'}}>Reviews :</h3>
 

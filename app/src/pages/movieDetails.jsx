@@ -5,6 +5,7 @@ import arrow from '../assets/icons/right-arrow.png';
 import { API_KEY } from "../utils/constants";
 import { languageCodes } from "../utils/languageCodes";
 import Footer from "../components/footer";
+import Navbar from "../components/navbar";
 
 function MovieDetails() {
   // Destructure the id from the URL parameters
@@ -19,6 +20,7 @@ function MovieDetails() {
   const [director, setDirector] = useState([]);
   const [reviews, setReviews] = useState([]);
   const [similar, setSimilar] = useState([]);
+  const [showNavbar, setShowNavbar] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const isLastIndex = currentIndex + 6 >= cast.length;
   const isFirstIndex = currentIndex <= 0;
@@ -55,6 +57,22 @@ function MovieDetails() {
     fetchData();
   }, [id]); // Re-run the effect only when the id changes
 
+  useEffect(() => {
+    const handleScroll = () => {
+      if ((window.scrollY < window.innerHeight * 0.5) || (window.scrollY > window.innerHeight * 0.95)) {
+        setShowNavbar(false);
+      } else {
+        setShowNavbar(true);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
   // This function toggles the state of the like button between liked and not liked
   const handleClick = () => {
     setIsLiked(!isLiked);
@@ -72,30 +90,75 @@ function MovieDetails() {
 
   return (
     <div>
-      {/* Display the movie trailer if it is available */}
-      {video && (
+      <style>
+        {`
+          .navbar1 {
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 999;
+          }
+
+          .navbar1.show {
+            opacity: 1;
+          }
+
+          .navbar2{
+            display: none;
+          }
+
+          .details{
+            background-image: url(https://image.tmdb.org/t/p/original/${movie.poster_path});
+           }
+        
+           @media screen and (min-width: 1000px){
+            .details{
+              background-image: url(https://image.tmdb.org/t/p/original/${movie.backdrop_path});
+             }
+           }
+
+           @media screen and (max-width: 1195px){
+            .navbar1.show{
+              opacity: 0;
+            }
+            .navbar2{
+              display: block;
+            }
+           }
+        `}
+      </style>
+
+      {video ? (
+      <div className="navbar2">
+        <Navbar />
+      </div>
+      ):(
+        <></>
+      )
+      }
+
+      {/* Display the show trailer if it is available */}
+      {video ? (
+      <>
+        <div className={`navbar1 ${showNavbar ? 'show' : ''}`}>
+          <Navbar />
+        </div>
+
         <iframe
           className="trailer"
           title={`${movie.title}`}
           src={`https://www.youtube.com/embed/${video.key}?rel=0`}
-          allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in- picture"
+          allow="accelerometer; autoplay; encrypted-media; gyroscope;"
           allowFullScreen
         />
+      </>
+    ) : (
+      <div className="navbar2 d-lg-block">
+        <Navbar />
+      </div>
       )}
-
-<style>
-  {`
-   .details{
-    background-image: url(https://image.tmdb.org/t/p/original/${movie.poster_path});
-   }
-
-   @media screen and (min-width: 1000px){
-    .details{
-      background-image: url(https://image.tmdb.org/t/p/original/${movie.backdrop_path});
-     }
-   }
-  `}
-</style>
       
       <div className="details">
 
@@ -295,7 +358,7 @@ function MovieDetails() {
 
 <h3 className="mt-4 mt-xl-5 reviews text-white position-relative" style={{fontFamily: 'Montserrat', zIndex:'9'}}>Similar Movies :</h3>
     <div className="d-flex flex-wrap reviews mb-4 justify-content-center justify-content-md-start position-relative" style={{zIndex:'9'}}>
-    {similar.slice(0,6).map(movies => (
+    {similar.slice(0,8).map(movies => (
               movies.poster_path && movies.title && (
         <div key={movies.id}>
           <Link to={`/movie/${movies.id}`}>
@@ -307,7 +370,12 @@ function MovieDetails() {
               )
       ))}
     </div>
-    <p className="trailer-link position-relative mb-5 text-end me-4 e-md-5" style={{zIndex:'9'}}>View More</p>
+
+    <Link to={`/movie/${movie.id}/similar`}>
+    <div className="d-flex trailer-link position-relative justify-content-center justify-content-lg-end text-decoration-underline mb-5" style={{zIndex:'9'}}>
+    <p>View More</p><img className="mt-1 ms-1 me-md-5" src={arrow} width="17px" height="16px" alt={movie.title}/>
+    </div>
+    </Link>
 
       </div>
   
