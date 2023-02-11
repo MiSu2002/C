@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import axios from 'axios';
 import { Link, useParams } from 'react-router-dom';
-import arrow from '../assets/icons/right-arrow.png';
-import { API_KEY } from "../utils/constants";
-import { languageCodes } from "../utils/languageCodes";
-import Footer from "../components/footer";
-import Navbar from "../components/navbar";
+import arrow from '../../../assets/icons/right-arrow.png';
+import { API_KEY } from "../../../utils/constants";
+import { languageCodes } from "../../../utils/languageCodes";
+import Footer from "../../../components/footer";
+import Navbar from "../../../components/navbar";
 
 function TVDetails() {
   // Destructure the id from the URL parameters
@@ -17,11 +17,12 @@ function TVDetails() {
   const [genres, setGenres] = useState([]);
   const [isLiked, setIsLiked] = useState(false);
   const [cast, setCast] = useState([]);
-  const [director, setDirector] = useState([]);
+  const [directorName, setDirectorName] = useState(null);
   const [reviews, setReviews] = useState([]);
   const [showNavbar, setShowNavbar] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [similar, setSimilar] = useState([]);
+  const [providers, setProviders] = useState([]);
   const [recommendations, setRecommendations] = useState([]);
   const isLastIndex = currentIndex + 6 >= cast.length;
   const isFirstIndex = currentIndex <= 0;
@@ -38,11 +39,15 @@ function TVDetails() {
         // Fetch show cast
         const castResponse = await axios.get(`https://api.themoviedb.org/3/tv/${id}/credits?api_key=${API_KEY}&language=en-US`);
         setCast(castResponse.data.cast);
-        setDirector(castResponse.data.crew.find(member => member.job === 'Director').name);
+        const director = castResponse.data.crew
+  ? castResponse.data.crew.find(member => member.job === 'Director')
+  : null;
+  setDirectorName(director ? director.name : 'No director available');
+
 
         // Fetch show video
         const videoResponse = await axios.get(`https://api.themoviedb.org/3/tv/${id}/videos?api_key=${API_KEY}&language=en-US`);
-        const trailer = videoResponse.data.results.find((video) => video.type === "Trailer");
+        const trailer = videoResponse.data.results.find((videos) => videos.type === "Trailer");
         setVideo(trailer || videoResponse.data.results[0]);
 
         const reviewResponse = await axios.get(`https://api.themoviedb.org/3/tv/${id}/reviews?api_key=${API_KEY}`);
@@ -53,6 +58,10 @@ function TVDetails() {
 
         const recommendationsResponse = await axios.get(`https://api.themoviedb.org/3/tv/${id}/recommendations?api_key=${API_KEY}&language=en-US&page=1`);
         setRecommendations(recommendationsResponse.data.results);
+
+        const providerResponse = await axios.get(`https://api.themoviedb.org/3/tv/${id}/watch/providers?api_key=${API_KEY}`);
+        const flatrate = providerResponse.data.results.AR ? providerResponse.data.results.AR.flatrate : [];
+setProviders(flatrate);
       } catch (error) {
         console.error(error);
       }
@@ -216,7 +225,7 @@ function TVDetails() {
           {/* Display show director */}
           <h6 className="text-white details-overview ms-4 mt-4 me-5 d-flex" style={{fontWeight: '900'}}>
             <p className="me-2 trailer-link">Director: </p>
-            {director.length ? director : <p>No Director Available</p>}
+            {directorName}
           </h6>
           
           {/* Display show cast */}
@@ -246,6 +255,12 @@ function TVDetails() {
             <div className="col">
             <p className="me-2 d-flex"><p className="me-2 trailer-link">Episodes:</p> {show.number_of_episodes}</p>
             </div>
+          </h6>
+
+          {/* Display show provider */}
+          <h6 className="text-white details-overview ms-4 mt-4 me-5 d-flex" style={{fontWeight: '900'}}>
+            <p className="me-2 trailer-link">Providers: </p>
+            {providers.length ? providers.map(provider => provider.provider_name).join(", ") : 'No providers available'}
           </h6>
         </div>
   </div>
@@ -282,8 +297,8 @@ function TVDetails() {
             <img src={`https://image.tmdb.org/t/p/w500/${actor.profile_path}`} alt={actor.name} style={{width:"130px", height:"140px"}}/>
           </Link>
           <div className="card-body mt-2">
-            <h5 className="fw-bolder text-white text-center" style={{fontSize: '2.1vh', width:"130px"}}>{actor.name}</h5>
-            <p className="card-text liked text-center" style={{fontSize: '2vh', width:"130px"}}>{actor.character}</p>
+            <h5 className="fw-bolder text-white text-center" style={{fontSize: '18px', width:"130px"}}>{actor.name}</h5>
+            <p className="card-text liked text-center" style={{fontSize: '15px', width:"130px"}}>{actor.character}</p>
           </div>
         </div>
     ) : null

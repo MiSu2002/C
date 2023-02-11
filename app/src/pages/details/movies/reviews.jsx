@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import { API_KEY } from "../utils/constants";
-import Footer from "../components/footer";
-import Navbar from "../components/navbar";
+import { API_KEY } from "../../../utils/constants";
+import Footer from "../../../components/footer";
+import Navbar from "../../../components/navbar";
 
-function ReviewsShows() {
+function Reviews() {
   // Destructure the id from the URL parameters
   const { id } = useParams();
 
@@ -17,7 +17,7 @@ function ReviewsShows() {
     const fetchData = async () => {
       try {
         // Fetch movie reviews
-        const reviewResponse = await axios.get(`https://api.themoviedb.org/3/tv/${id}/reviews?api_key=${API_KEY}`);
+        const reviewResponse = await axios.get(`https://api.themoviedb.org/3/movie/${id}/reviews?api_key=${API_KEY}`);
         setReviews(reviewResponse.data.results);
       } catch (error) {
         console.error(error);
@@ -51,4 +51,4 @@ function ReviewsShows() {
   );
 }
 
-export default ReviewsShows;
+export default Reviews;

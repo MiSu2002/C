@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import arrow from '../assets/icons/right-arrow.png';
-import { API_KEY } from "../utils/constants";
+import arrow from '../../assets/icons/right-arrow.png';
+import { API_KEY } from "../../utils/constants";
 
-const PopularTV = () => {
+const OngoingTV = () => {
   const [data, setData] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const isLastIndex = currentIndex + 6 >= data.length;
@@ -11,7 +11,7 @@ const PopularTV = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const url = `https://api.themoviedb.org/3/tv/popular?api_key=${API_KEY}&language=en-US&page=1`;
+      const url = `https://api.themoviedb.org/3/tv/on_the_air?api_key=${API_KEY}&language=en-US`;
       try {
         const response = await fetch(url);
         const json = await response.json();
@@ -34,14 +34,14 @@ const PopularTV = () => {
   return (
     <div className='mt-5 mb-5' style={{borderRight: "3px solid #FFF0C8"}}>
         <div className="trailer-link mb-4 mb-md-5 me-4 me-md-5 d-flex justify-content-end">
-        <h2 className='trending-week mt-2'>Popular Now - Series</h2>
+        <h2 className='trending-week mt-2'>Ongoing Series</h2>
         </div>
 
         {/* Slider for larger screens */}
       <div className="trending-slider ms-5 me-0">
       {data.slice(currentIndex, currentIndex + 7).map(movie => (
         <div key={movie.id}>
-          <Link to={`/tv/${movie.id}`}>
+          <Link to={`/movie/${movie.id}`}>
           <img className='me-4' style={{width:'15vw'}} src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`} alt={movie.name} />
           </Link>
           <p className='liked fw-bolder me-4 mt-2 mb-0 text-center' style={{width:'15vw'}}>{Math.round((movie.vote_average + Number.EPSILON)*1000)/100}% Liked This</p>
@@ -65,7 +65,7 @@ const PopularTV = () => {
       <div className="trending-slider-sm ms-1 me-1">
       {data.map(movie => (
         <div key={movie.id}>
-          <Link to={`/tv/${movie.id}`}>
+          <Link to={`/movie/${movie.id}`}>
           <img className='me-3 ms-3' style={{width:'180px', height:"270px"}} src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`} alt={movie.name} />
           </Link>
           <p className='liked fw-bolder me-3 ms-3 mt-2 mb-0 text-center' style={{width:'180px'}}>{Math.round((movie.vote_average + Number.EPSILON)*1000)/100}% Liked This</p>
@@ -77,4 +77,4 @@ const PopularTV = () => {
   );
 };
 
-export default PopularTV;
+export default OngoingTV;

@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import axios from 'axios';
 import { Link, useParams } from 'react-router-dom';
-import { API_KEY } from "../utils/constants";
-import Footer from "../components/footer";
-import Navbar from "../components/navbar";
+import { API_KEY } from "../../../utils/constants";
+import Footer from "../../../components/footer";
+import Navbar from "../../../components/navbar";
 
 // RecommendationsMovies component to display recommended movies based on the movie id
 const RecommendationsMovies = () => {

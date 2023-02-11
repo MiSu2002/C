@@ -6,7 +6,17 @@ const Navbar = () => {
   const location = useLocation();
   const isHomePage = location.pathname === "/";
   const isAboutPage = location.pathname === "/about";
-  const isDiscoverPage = location.pathname === "/movies" || location.pathname === "/shows";
+  const isDiscoverPage = (
+  location.pathname === "/movies" ||
+  location.pathname === "/shows" || 
+  location.pathname === "/trending" ||
+  location.pathname === "/popular/movies" || 
+  location.pathname === "/popular/shows" ||
+  location.pathname === "/top-rated/movies" || 
+  location.pathname === "/top-rated/shows" ||
+  location.pathname === "/upcoming/movies" || 
+  location.pathname === "/airing-today/shows"
+  );
   const isWatchPage = location.pathname === "/watchlist";
   const isProfilePage = location.pathname === "/profile";
   const isReviewPage = location.pathname === "/reviews";
@@ -111,6 +121,11 @@ const Navbar = () => {
                         <li className="dropdown-item">Shows</li>
                       </NavLink>
 
+                      {/* Trending link */}
+                      <NavLink to="/trending" style={{ textDecoration: "none" }}>
+                        <li className="dropdown-item">Trending</li>
+                      </NavLink>
+
                       {/* Recommended link */}
                       <NavLink
                         to="/recommended"
@@ -118,25 +133,49 @@ const Navbar = () => {
                       >
                         <li className="dropdown-item">Recommended</li>
                       </NavLink>
+
+                      {/* Ongoing link */}
+                      <NavLink
+                        to="/upcoming/movies"
+                        style={{ textDecoration: "none" }}
+                      >
+                        <li className="dropdown-item">Upcoming Movies</li>
+                      </NavLink>
+
                     </div>
 
                     <div className="col-6">
+
                       {/* Popular link */}
-                      <NavLink to="/popular" style={{ textDecoration: "none" }}>
-                        <li className="dropdown-item">Popular</li>
+                      <NavLink to="/popular/movies" style={{ textDecoration: "none" }}>
+                        <li className="dropdown-item">Popular Movies</li>
                       </NavLink>
 
-                      {/* Trending link */}
-                      <NavLink to="/trending" style={{ textDecoration: "none" }}>
-                        <li className="dropdown-item">Trending</li>
+                      <NavLink to="/popular/shows" style={{ textDecoration: "none" }}>
+                        <li className="dropdown-item">Popular Shows</li>
                       </NavLink>
 
                       {/* Top Rated link */}
                       <NavLink
-                        to="/top-rated"
+                        to="/top-rated/movies"
                         style={{ textDecoration: "none" }}
                       >
-                        <li className="dropdown-item">Top Rated</li>
+                        <li className="dropdown-item">Top Rated Movies</li>
+                      </NavLink>
+
+                      <NavLink
+                        to="/top-rated/shows"
+                        style={{ textDecoration: "none" }}
+                      >
+                        <li className="dropdown-item">Top Rated Shows</li>
+                      </NavLink>
+
+                      {/* Airing Today Movies */}
+                      <NavLink
+                        to="/airing-today/shows"
+                        style={{ textDecoration: "none" }}
+                      >
+                        <li className="dropdown-item">Airing Today</li>
                       </NavLink>
 
                     </div>

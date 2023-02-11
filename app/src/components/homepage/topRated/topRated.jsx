@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import arrow from '../assets/icons/right-arrow.png';
-import { API_KEY } from "../utils/constants";
+import arrow from '../../../assets/icons/right-arrow.png';
+import { API_KEY } from "../../../utils/constants";
 
-const TrendingMovies = () => {
+const TopRated = () => {
   const [data, setData] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const isLastIndex = currentIndex + 6 >= data.length;
@@ -11,7 +11,7 @@ const TrendingMovies = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const url = `https://api.themoviedb.org/3/trending/movie/week?api_key=${API_KEY}`;
+      const url = `https://api.themoviedb.org/3/movie/top_rated?api_key=${API_KEY}&language=en-US&page=1`;
       try {
         const response = await fetch(url);
         const json = await response.json();
@@ -32,9 +32,9 @@ const TrendingMovies = () => {
   }
 
   return (
-    <div className='mb-5' style={{borderLeft: "3px solid #FFF0C8", marginTop: '10vh'}}>
+    <div className='mt-5 mb-5' style={{borderLeft: "3px solid #FFF0C8"}}>
         <div className="trailer-link mb-4 mb-md-5 ms-4 ms-md-5 d-flex">
-        <h2 className='trending-week mt-2'>Trending Movies</h2>
+        <h2 className='trending-week mt-2'>Top Rated Movies</h2>
         </div>
 
         {/* Slider for larger screens */}
@@ -77,4 +77,4 @@ const TrendingMovies = () => {
   );
 };
 
-export default TrendingMovies
+export default TopRated;

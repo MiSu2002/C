@@ -3,7 +3,7 @@ import axios from 'axios';
 import {Link} from 'react-router-dom';
 import Carousel from 'react-bootstrap/Carousel';
 
-import { API_KEY } from '../utils/constants';
+import { API_KEY } from '../../../utils/constants';
 
 const MovieCarousel = () => {
   const [movies, setMovies] = useState([]);
@@ -14,7 +14,7 @@ const MovieCarousel = () => {
   useEffect(() => {
     setLoading(true);
     setError(null);
-    axios.get(`https://api.themoviedb.org/3/trending/movie/week?api_key=${API_KEY}&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1`)
+    axios.get(`https://api.themoviedb.org/3/trending/all/day?api_key=${API_KEY}&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1`)
       .then(res => {
         setMovies(res.data.results);
         setLoading(false);
@@ -64,7 +64,7 @@ const MovieCarousel = () => {
       <Carousel activeIndex={activeIndex} onSelect={handleSelect} indicators={false} interval={8000}>
         {movies.map(movie => (
           <Carousel.Item key={movie.id}>
-            <Link to={`/movie/${movies[activeIndex].id}`}>
+            <Link to={movie.title ? `/movie/${movies[activeIndex].id}` : `/tv/${movies[activeIndex].id}`}>
             <img
               className="d-block w-100"
               src={`https://image.tmdb.org/t/p/original/${movie.backdrop_path}`}
@@ -72,7 +72,7 @@ const MovieCarousel = () => {
             />
             </Link>
   <div>
-      <p className='title pe-4 fs-4 m-4 d-xl-none'>{movies.length ? <p>{movies[activeIndex].title}</p> : null}</p>
+      <p className='title pe-4 fs-4 m-4 d-xl-none'>{movies.length ? <p>{movies[activeIndex].title} {movies[activeIndex].name}</p> : null}</p>
     <p className='overview ms-4 pe-4 mb-4 me-4 d-xl-none'>{movies.length ? <p>{overview}<Link to={`/movie/${movies[activeIndex].id}`} className='ms-4 trailer-link'>Know More</Link></p> : null}</p>
       </div>
             </Carousel.Item>
@@ -96,7 +96,7 @@ const MovieCarousel = () => {
   <div className="col-xl-4 d-none d-xl-block text-white">
     <div>
       <h1 className='index mb-5 justify-content-center trailer-link'>{activeIndex + 1}</h1>
-      <p className='title ms-4 pe-5 me-4 d-flex'>{movies.length ? <p>{movies[activeIndex].title}</p> : null}</p>
+      <p className='title ms-4 pe-5 me-4 d-flex'>{movies.length ? <p>{movies[activeIndex].title} {movies[activeIndex].name}</p> : null}</p>
     <p className='overview ms-4 pe-5 me-4'>{movies.length ? <p>{overview}<Link to={`/movie/${movies[activeIndex].id}`} className='ms-4 trailer-link'>Know More</Link></p> : null}</p>
       </div>
   </div>

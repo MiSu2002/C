@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import axios from 'axios';
 import { Link, useParams } from 'react-router-dom';
-import arrow from '../assets/icons/right-arrow.png';
-import { API_KEY } from "../utils/constants";
-import { languageCodes } from "../utils/languageCodes";
-import Footer from "../components/footer";
-import Navbar from "../components/navbar";
+import arrow from "../../../assets/icons/right-arrow.png";
+import { API_KEY } from "../../../utils/constants";
+import { languageCodes } from "../../../utils/languageCodes";
+import Footer from "../../../components/footer";
+import Navbar from "../../../components/navbar";
 
 function MovieDetails() {
   // Destructure the id from the URL parameters
@@ -17,7 +17,7 @@ function MovieDetails() {
   const [genres, setGenres] = useState([]);
   const [isLiked, setIsLiked] = useState(false);
   const [cast, setCast] = useState([]);
-  const [director, setDirector] = useState([]);
+  const [directorName, setDirectorName] = useState([]);
   const [reviews, setReviews] = useState([]);
   const [similar, setSimilar] = useState([]);
   const [showNavbar, setShowNavbar] = useState(false);
@@ -39,7 +39,10 @@ function MovieDetails() {
         // Fetch movie cast
         const castResponse = await axios.get(`https://api.themoviedb.org/3/movie/${id}/credits?api_key=${API_KEY}&language=en-US`);
         setCast(castResponse.data.cast);
-        setDirector(castResponse.data.crew.find(member => member.job === 'Director').name);
+        const director = castResponse.data.crew
+  ? castResponse.data.crew.find(member => member.job === 'Director')
+  : null;
+  setDirectorName(director ? director.name : 'No director available');
 
         // Fetch movie video
         const videoResponse = await axios.get(`https://api.themoviedb.org/3/movie/${id}/videos?api_key=${API_KEY}&language=en-US`);
@@ -56,7 +59,8 @@ function MovieDetails() {
         setRecommendations(recommendationsResponse.data.results);
 
         const providerResponse = await axios.get(`https://api.themoviedb.org/3/movie/${id}/watch/providers?api_key=${API_KEY}`);
-        setProviders(providerResponse.data.results.AR.flatrate);
+        const flatrate = providerResponse.data.results.AR ? providerResponse.data.results.AR.flatrate : [];
+setProviders(flatrate);
 
       } catch (error) {
         console.error(error);
@@ -220,7 +224,7 @@ function MovieDetails() {
           {/* Display movie director */}
           <h6 className="text-white details-overview ms-4 mt-4 me-5 d-flex" style={{fontWeight: '900'}}>
             <p className="me-2 trailer-link">Director: </p>
-            {director}
+            {directorName}
           </h6>
           
           {/* Display movie cast */}

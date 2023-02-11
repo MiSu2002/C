@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import arrow from '../assets/icons/right-arrow.png';
-import { API_KEY } from "../utils/constants";
+import arrow from '../../../assets/icons/right-arrow.png';
+import { API_KEY } from "../../../utils/constants";
 
-const Popular = () => {
+const TrendingShows = () => {
   const [data, setData] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const isLastIndex = currentIndex + 6 >= data.length;
@@ -11,7 +11,7 @@ const Popular = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const url = `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=en-US&page=1`;
+      const url = `https://api.themoviedb.org/3/trending/tv/week?api_key=${API_KEY}`;
       try {
         const response = await fetch(url);
         const json = await response.json();
@@ -32,9 +32,9 @@ const Popular = () => {
   }
 
   return (
-    <div className='mt-5 mb-5' style={{borderLeft: "3px solid #FFF0C8"}}>
-        <div className="trailer-link mb-4 mb-md-5 ms-4 ms-md-5 d-flex">
-        <h2 className='trending-week mt-2'>Popular Now - Movies</h2>
+    <div className='mb-5' style={{borderRight: "3px solid #FFF0C8"}}>
+        <div className="trailer-link mb-4 mb-md-5 me-4 me-md-5 d-flex justify-content-end">
+        <h2 className='trending-week mt-2'>Trending Shows</h2>
         </div>
 
         {/* Slider for larger screens */}
@@ -42,10 +42,10 @@ const Popular = () => {
       {data.slice(currentIndex, currentIndex + 7).map(movie => (
         <div key={movie.id}>
           <Link to={`/movie/${movie.id}`}>
-          <img className='me-4' style={{width:'15vw'}} src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`} alt={movie.title} />
+          <img className='me-4' style={{width:'15vw'}} src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`} alt={movie.name} />
           </Link>
           <p className='liked fw-bolder me-4 mt-2 mb-0 text-center' style={{width:'15vw'}}>{Math.round((movie.vote_average + Number.EPSILON)*1000)/100}% Liked This</p>
-          <p className='movie-title me-4 text-white fw-bolder mt-1 text-center' style={{width:'15vw', fontFamily:"Poppins"}}>{movie.title}</p>
+          <p className='movie-name me-4 text-white fw-bolder mt-1 text-center' style={{width:'15vw', fontFamily:"Poppins"}}>{movie.name}</p>
         </div>
       ))}
       <div>
@@ -66,10 +66,10 @@ const Popular = () => {
       {data.map(movie => (
         <div key={movie.id}>
           <Link to={`/movie/${movie.id}`}>
-          <img className='me-3 ms-3' style={{width:'180px', height:"270px"}} src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`} alt={movie.title} />
+          <img className='me-3 ms-3' style={{width:'180px', height:"270px"}} src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`} alt={movie.name} />
           </Link>
           <p className='liked fw-bolder me-3 ms-3 mt-2 mb-0 text-center' style={{width:'180px'}}>{Math.round((movie.vote_average + Number.EPSILON)*1000)/100}% Liked This</p>
-          <p className='movie-title me-3 ms-3 text-white mt-1 text-center' style={{width:'180px', fontFamily:"Poppins"}}>{movie.title}</p>
+          <p className='movie-name me-3 ms-3 text-white mt-1 text-center' style={{width:'180px', fontFamily:"Poppins"}}>{movie.name}</p>
         </div>
       ))}
       </div>
@@ -77,4 +77,4 @@ const Popular = () => {
   );
 };
 
-export default Popular;
+export default TrendingShows;

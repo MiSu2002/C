@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import axios from 'axios';
 import { useParams, Link } from 'react-router-dom';
-import { API_KEY } from "../utils/constants";
-import Footer from "../components/footer";
-import Navbar from "../components/navbar";
+import { API_KEY } from "../../utils/constants";
+import Footer from "../../components/footer";
+import Navbar from "../../components/navbar";
 
 function ActorInfo() {
   // Destructure the id from the URL parameters
