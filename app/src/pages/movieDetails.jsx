@@ -22,6 +22,8 @@ function MovieDetails() {
   const [similar, setSimilar] = useState([]);
   const [showNavbar, setShowNavbar] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [providers, setProviders] = useState([]);
+  const [recommendations, setRecommendations] = useState([]);
   const isLastIndex = currentIndex + 6 >= cast.length;
   const isFirstIndex = currentIndex <= 0;
 
@@ -49,6 +51,12 @@ function MovieDetails() {
 
         const similarResponse = await axios.get(`https://api.themoviedb.org/3/movie/${id}/similar?api_key=${API_KEY}&language=en-US&adult=false&page=1`);
         setSimilar(similarResponse.data.results);
+
+        const recommendationsResponse = await axios.get(`https://api.themoviedb.org/3/movie/${id}/recommendations?api_key=${API_KEY}&language=en-US&page=1`);
+        setRecommendations(recommendationsResponse.data.results);
+
+        const providerResponse = await axios.get(`https://api.themoviedb.org/3/movie/${id}/watch/providers?api_key=${API_KEY}`);
+        setProviders(providerResponse.data.results.AR.flatrate);
 
       } catch (error) {
         console.error(error);
@@ -95,10 +103,8 @@ function MovieDetails() {
           .navbar1 {
             opacity: 0;
             transition: opacity 0.5s ease-in-out;
-            position: fixed;
             top: 0;
-            width: 100%;
-            z-index: 999;
+            z-index: 15;
           }
 
           .navbar1.show {
@@ -107,6 +113,7 @@ function MovieDetails() {
 
           .navbar2{
             display: none;
+            z-Index: 16;
           }
 
           .details{
@@ -120,7 +127,7 @@ function MovieDetails() {
            }
 
            @media screen and (max-width: 1195px){
-            .navbar1.show{
+            .navbar1.show {
               opacity: 0;
             }
             .navbar2{
@@ -131,7 +138,7 @@ function MovieDetails() {
       </style>
 
       {video ? (
-      <div className="navbar2">
+      <div className="navbar2 w-100 position-relative">
         <Navbar />
       </div>
       ):(
@@ -142,7 +149,7 @@ function MovieDetails() {
       {/* Display the show trailer if it is available */}
       {video ? (
       <>
-        <div className={`navbar1 ${showNavbar ? 'show' : ''}`}>
+        <div className={`navbar1 w-100 position-fixed ${showNavbar ? 'show' : ''}`}>
           <Navbar />
         </div>
 
@@ -155,7 +162,7 @@ function MovieDetails() {
         />
       </>
     ) : (
-      <div className="navbar2 d-lg-block">
+      <div className="navbar2 w-100 position-relative d-lg-block">
         <Navbar />
       </div>
       )}
@@ -233,6 +240,12 @@ function MovieDetails() {
           <h6 className="text-white details-overview ms-4 mt-4 me-5 d-flex" style={{fontWeight: '900'}}>
             <p className="me-2 trailer-link">Language: </p>
             {languageName}
+          </h6>
+
+          {/* Display movie provider */}
+          <h6 className="text-white details-overview ms-4 mt-4 me-5 d-flex" style={{fontWeight: '900'}}>
+            <p className="me-2 trailer-link">Providers: </p>
+            {providers.length ? providers.map(provider => provider.provider_name).join(", ") : 'No providers available'}
           </h6>
           
         </div>
@@ -356,9 +369,14 @@ function MovieDetails() {
 
 </div>
 
-<h3 className="mt-4 mt-xl-5 reviews text-white position-relative" style={{fontFamily: 'Montserrat', zIndex:'9'}}>Similar Movies :</h3>
+</div>
+  
+      </div>
+      
+      <div className="details-content">
+      <h3 className="mt-4 mt-xl-5 reviews text-white position-relative" style={{fontFamily: 'Montserrat', zIndex:'9'}}>Similar Movies :</h3>
     <div className="d-flex flex-wrap reviews mb-4 justify-content-center justify-content-md-start position-relative" style={{zIndex:'9'}}>
-    {similar.slice(0,8).map(movies => (
+    {similar.slice(0,4).map(movies => (
               movies.poster_path && movies.title && (
         <div key={movies.id}>
           <Link to={`/movie/${movies.id}`}>
@@ -377,9 +395,28 @@ function MovieDetails() {
     </div>
     </Link>
 
+    <h3 className="mt-4 mt-xl-5 reviews text-white position-relative" style={{fontFamily: 'Montserrat', zIndex:'9'}}>Recommended Movies :</h3>
+    <div className="d-flex flex-wrap reviews mb-4 justify-content-center justify-content-md-start position-relative" style={{zIndex:'9'}}>
+    {recommendations.slice(0,4).map(movies => (
+              movies.poster_path && movies.title && (
+        <div key={movies.id}>
+          <Link to={`/movie/${movies.id}`}>
+          <img className='ms-4 me-4 mt-5' style={{width:'220px', height: '320px'}} src={`https://image.tmdb.org/t/p/w500/${movies.poster_path}`} alt={movies.title} />
+          </Link>
+          <p className='liked fw-bolder ms-4 me-4 mt-2 mb-0 text-center' style={{width:'220px'}}>{Math.round((movies.vote_average + Number.EPSILON)*1000)/100}% Liked This</p>
+          <p className='movie-title ms-4 me-4 text-white fw-bolder mt-1 text-center' style={{width:'220px', fontFamily:"Poppins"}}>{movies.title}</p>
+        </div>
+              )
+      ))}
+    </div>
+
+    <Link to={`/movie/${movie.id}/recommendations`}>
+    <div className="d-flex trailer-link position-relative justify-content-center justify-content-lg-end text-decoration-underline mb-5" style={{zIndex:'9'}}>
+    <p>View More</p><img className="mt-1 ms-1 me-md-5" src={arrow} width="17px" height="16px" alt={movie.title}/>
+    </div>
+    </Link>
       </div>
-  
-      </div>
+
       <Footer/>
 </div>
 

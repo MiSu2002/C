@@ -9,6 +9,9 @@ import DiscoverMovies from './pages/discoverMovies';
 import DiscoverShows from './pages/discoverShows';
 import SimilarMovies from './pages/similarMovies';
 import SimilarShows from './pages/similarShows';
+import RecommendationsShows from './pages/recommendedShows';
+import RecommendationsMovies from './pages/recommendedMovies.jsx';
+import ReviewsShows from './pages/reviewsShows';
 
 function App() {
   return (
@@ -21,6 +24,9 @@ function App() {
       <Route path="/actor/:actorId" element={<ActorInfo/>}/>
       <Route path="/tv/:id" element={<TVDetails/>}/>
       <Route path="/tv/:id/similar" element={<SimilarShows/>}/>
+      <Route path="/tv/:id/recommendations" element={<RecommendationsShows/>}/>
+      <Route path="/movie/:id/recommendations" element={<RecommendationsMovies/>}/>
+      <Route path="/tv/:id/reviews" element={<ReviewsShows/>}/>
       <Route path="/movies" element={<DiscoverMovies/>}/>
       <Route path="/shows" element={<DiscoverShows/>}/>
       </Routes>

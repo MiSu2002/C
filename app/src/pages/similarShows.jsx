@@ -10,6 +10,8 @@ function SimilarShows() {
   const { id } = useParams();
 
   const [similar, setSimilar] = useState([]);
+  const [index, setIndex] = useState(1);
+  const [page, setPage] = useState();
   const [tv, setTv] = useState([]);
 
   useEffect(() => {
@@ -18,15 +20,28 @@ function SimilarShows() {
         const movieResponse = await axios.get(`https://api.themoviedb.org/3/tv/${id}?api_key=${API_KEY}`);
         setTv(movieResponse.data);
 
-        const similarResponse = await axios.get(`https://api.themoviedb.org/3/tv/${id}/similar?api_key=${API_KEY}&language=en-US&adult=false`);
+        const similarResponse = await axios.get(`https://api.themoviedb.org/3/tv/${id}/similar?api_key=${API_KEY}&language=en-US&adult=false&page=${index}`);
         setSimilar(similarResponse.data.results);
+        setPage(similarResponse.data.total_pages);
 
       } catch (error) {
         console.error(error);
       }
     };
     fetchData();
-  }, [id]); // Re-run the effect only when the id changes
+  }, [id, index]); // Re-run the effect only when the id changes
+
+  const handlePreviousPage = () => {
+    if (index > 1) {
+        setIndex(index - 1);
+      }
+  }
+  
+  const handleNextPage = () => {
+    if (index < page) {
+        setIndex(index + 1);
+      }
+  }
 
   return (
     
@@ -34,22 +49,27 @@ function SimilarShows() {
 <div>
 <Navbar/>
 
-<h3 className="mt-4 mt-xl-5 d-flex reviews text-white position-relative" style={{fontFamily: 'Montserrat', zIndex:'9'}}>Movies Similar to 
-<Link to={`/tv/${tv.id}`} style={{textDecorationColor:"#FFF0C8"}}><p className="ms-2 fw-bold trailer-link me-2" >'{tv.original_name}'</p></Link>
- :</h3>
+<div className="m-4 mt-xl-5 ms-lg-5 text-center text-lg-start text-white fs-3 position-relative" style={{fontFamily: 'Montserrat', zIndex:'9'}}>Shows Similar to 
+<Link to={`/tv/${tv.id}`} className='ms-2 me-2 trailer-link fw-bold'>{tv.name}</Link>
+ :</div>
 <div className="d-flex justify-content-center ms-4 ms-md-5 me-md-5 me-4 mb-5 flex-wrap">
             {similar.map(movies => (
-              movies.poster_path && movies.original_name && (
+              movies.poster_path && movies.name && (
         <div key={movies.id}>
           <Link to={`/tv/${movies.id}`}>
-          <img className='me-4 mt-4' style={{width:'220px', height: '320px'}} src={`https://image.tmdb.org/t/p/w500/${movies.poster_path}`} alt={movies.original_name} />
+          <img className='me-4 mt-4' style={{width:'220px', height: '320px'}} src={`https://image.tmdb.org/t/p/w500/${movies.poster_path}`} alt={movies.name} />
           </Link>
           <p className='liked fw-bolder me-4 mt-2 mb-0 text-center' style={{width:'220px'}}>{Math.round((movies.vote_average + Number.EPSILON)*1000)/100}% Liked This</p>
-          <p className='tv-original_name me-4 text-white fw-bolder mt-1 text-center' style={{width:'220px', fontFamily:"Poppins"}}>{movies.original_name}</p>
+          <p className='tv-original_name me-4 text-white fw-bolder mt-1 text-center' style={{width:'220px', fontFamily:"Poppins"}}>{movies.name}</p>
         </div>
               )
       ))}
-            </div>
+      </div>
+            <div className="d-flex justify-content-between align-items-center mt-3 mb-5">
+  <button className="ms-4 ms-md-5 btn btn-dark" onClick={handlePreviousPage}>Previous</button>
+  <p className="text-secondary mt-3">Page {index} / {page}</p>
+  <button className="me-4 me-md-5 btn btn-dark" onClick={handleNextPage}>Next</button>
+</div>
 
       <Footer/>
 </div>

@@ -22,6 +22,7 @@ function TVDetails() {
   const [showNavbar, setShowNavbar] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [similar, setSimilar] = useState([]);
+  const [recommendations, setRecommendations] = useState([]);
   const isLastIndex = currentIndex + 6 >= cast.length;
   const isFirstIndex = currentIndex <= 0;
 
@@ -47,8 +48,11 @@ function TVDetails() {
         const reviewResponse = await axios.get(`https://api.themoviedb.org/3/tv/${id}/reviews?api_key=${API_KEY}`);
         setReviews(reviewResponse.data.results);
 
-        const similarResponse = await axios.get(`https://api.themoviedb.org/3/tv/${id}/similar?api_key=${API_KEY}&language=en-US&adult=false`);
+        const similarResponse = await axios.get(`https://api.themoviedb.org/3/tv/${id}/similar?api_key=${API_KEY}&language=en-US&adult=false&page=1`);
         setSimilar(similarResponse.data.results);
+
+        const recommendationsResponse = await axios.get(`https://api.themoviedb.org/3/tv/${id}/recommendations?api_key=${API_KEY}&language=en-US&page=1`);
+        setRecommendations(recommendationsResponse.data.results);
       } catch (error) {
         console.error(error);
       }
@@ -95,10 +99,8 @@ function TVDetails() {
           .navbar1 {
             opacity: 0;
             transition: opacity 0.5s ease-in-out;
-            position: fixed;
             top: 0;
-            width: 100%;
-            z-index: 999;
+            z-index: 15;
           }
 
           .navbar1.show {
@@ -106,6 +108,7 @@ function TVDetails() {
           }
 
           .navbar2{
+            z-Index: 16;
             display: none;
           }
 
@@ -131,7 +134,7 @@ function TVDetails() {
       </style>
 
       {video ? (
-      <div className="navbar2">
+      <div className="navbar2 w-100 position-relative">
         <Navbar />
       </div>
       ):(
@@ -142,20 +145,20 @@ function TVDetails() {
       {/* Display the show trailer if it is available */}
       {video ? (
       <>
-        <div className={`navbar1 ${showNavbar ? 'show' : ''}`}>
+        <div className={`navbar1 w-100 position-fixed ${showNavbar ? 'show' : ''}`}>
           <Navbar />
         </div>
 
         <iframe
           className="trailer"
-          title={`${show.original_name}`}
+          title={`${show.name}`}
           src={`https://www.youtube.com/embed/${video.key}?rel=0`}
           allow="accelerometer; autoplay; encrypted-media; gyroscope;"
           allowFullScreen
         />
       </>
     ) : (
-      <div className="navbar2 d-lg-block">
+      <div className="navbar2 w-100 position-relative d-lg-block">
         <Navbar />
       </div>
       )}
@@ -170,7 +173,7 @@ function TVDetails() {
         {/* Display the show poster */}
         <img className="details-img d-flex"
               src={`https://image.tmdb.org/t/p/w500/${show.poster_path}`}
-              alt={show.original_name}
+              alt={show.name}
             />
         </div>
 
@@ -179,9 +182,9 @@ function TVDetails() {
           <div className="d-flex show-head">
 
             <div className="col-8 col-lg-10">
-              {/* TV original_name */}
+              {/* TV name */}
           <h2 className="fs-1 ms-4 me-4 trailer-link" style={{ zIndex: "7", fontFamily:'Montserrat'}}>
-            {show.original_name}
+            {show.name}
           </h2>
             </div>
           
@@ -258,7 +261,7 @@ function TVDetails() {
     <img src={`https://image.tmdb.org/t/p/w500/${actor.profile_path}`} alt={actor.name} style={{width:'130px', height:'160px',borderRadius:'1vh'}}/>
     </Link>
   <div className="card-body mt-1">
-    <h5 className="show-original_name fw-bolder text-white text-center" style={{fontSize: '2.15vw', width:'130px'}}>{actor.name}</h5>
+    <h5 className="show-name fw-bolder text-white text-center" style={{fontSize: '2.15vw', width:'130px'}}>{actor.name}</h5>
     <p className="card-text liked text-center" style={{fontSize: '2.05vw', width:'130px'}}>{actor.character}</p>
   </div>
     </div>
@@ -364,17 +367,21 @@ function TVDetails() {
     </div>
 
 </div>
+      </div>
+  
+      </div>
 
-<h3 className="mt-4 mt-xl-5 reviews text-white position-relative" style={{fontFamily: 'Montserrat', zIndex:'9'}}>Similar Shows :</h3>
+      <div className="details-content">
+      <h3 className="mt-4 mt-xl-5 reviews text-white position-relative" style={{fontFamily: 'Montserrat', zIndex:'9'}}>Similar Shows :</h3>
     <div className="d-flex flex-wrap reviews mb-4 justify-content-center justify-content-md-start position-relative" style={{zIndex:'9'}}>
-    {similar.slice(0,8).map(shows => (
-              shows.poster_path && shows.original_language && (
+    {similar.slice(0,4).map(shows => (
+              shows.poster_path && shows.name && (
         <div key={shows.id}>
           <Link to={`/tv/${shows.id}`}>
-          <img className='ms-4 me-4 mt-5' style={{width:'220px', height: '320px'}} src={`https://image.tmdb.org/t/p/w500/${shows.poster_path}`} alt={shows.original_language} />
+          <img className='ms-4 me-4 mt-5' style={{width:'220px', height: '320px'}} src={`https://image.tmdb.org/t/p/w500/${shows.poster_path}`} alt={shows.name} />
           </Link>
           <p className='liked fw-bolder ms-4 me-4 mt-2 mb-0 text-center' style={{width:'220px'}}>{Math.round((shows.vote_average + Number.EPSILON)*1000)/100}% Liked This</p>
-          <p className='movie-original_language ms-4 me-4 text-white fw-bolder mt-1 text-center' style={{width:'220px', fontFamily:"Poppins"}}>{shows.original_language}</p>
+          <p className='movie-original_language ms-4 me-4 text-white fw-bolder mt-1 text-center' style={{width:'220px', fontFamily:"Poppins"}}>{shows.name}</p>
         </div>
               )
       ))}
@@ -382,12 +389,30 @@ function TVDetails() {
 
     <Link to={`/tv/${show.id}/similar`}>
     <div className="d-flex trailer-link position-relative justify-content-center justify-content-lg-end text-decoration-underline mb-5" style={{zIndex:'9'}}>
-    <p>View More</p><img className="mt-1 ms-1 me-md-5" src={arrow} width="17px" height="16px" alt={show.original_name}/>
+    <p>View More</p><img className="mt-1 ms-1 me-md-5" src={arrow} width="17px" height="16px" alt={show.name}/>
     </div>
     </Link>
 
-      </div>
-  
+    <h3 className="mt-4 mt-xl-5 reviews text-white position-relative" style={{fontFamily: 'Montserrat', zIndex:'9'}}>Recommended Shows :</h3>
+    <div className="d-flex flex-wrap reviews mb-4 justify-content-center justify-content-md-start position-relative" style={{zIndex:'9'}}>
+    {recommendations.slice(0,4).map(shows => (
+              shows.poster_path && shows.name && (
+        <div key={shows.id}>
+          <Link to={`/tv/${shows.id}`}>
+          <img className='ms-4 me-4 mt-5' style={{width:'220px', height: '320px'}} src={`https://image.tmdb.org/t/p/w500/${shows.poster_path}`} alt={shows.name} />
+          </Link>
+          <p className='liked fw-bolder ms-4 me-4 mt-2 mb-0 text-center' style={{width:'220px'}}>{Math.round((shows.vote_average + Number.EPSILON)*1000)/100}% Liked This</p>
+          <p className='movie-original_language ms-4 me-4 text-white fw-bolder mt-1 text-center' style={{width:'220px', fontFamily:"Poppins"}}>{shows.name}</p>
+        </div>
+              )
+      ))}
+    </div>
+
+    <Link to={`/tv/${show.id}/recommendations`}>
+    <div className="d-flex trailer-link position-relative justify-content-center justify-content-lg-end text-decoration-underline mb-5" style={{zIndex:'9'}}>
+    <p>View More</p><img className="mt-1 ms-1 me-md-5" src={arrow} width="17px" height="16px" alt={show.name}/>
+    </div>
+    </Link>
       </div>
 
       <Footer/>
