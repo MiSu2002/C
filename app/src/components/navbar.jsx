@@ -1,5 +1,6 @@
 import React from "react";
 import { NavLink, Link, useLocation } from "react-router-dom";
+import SearchBar from "./searchbar";
 
 const Navbar = () => {
 
@@ -31,15 +32,8 @@ const Navbar = () => {
           <div className="container-fluid mt-lg-2">
             
             {/* -------- Searchbar for larger devices -------- */}
-            <div className="searchbar-div p-0 g-0 m-0">
-              <form className="d-flex" role="search">
-                <input
-                  className="searchbar ms-4 d-none d-lg-block"
-                  type="search"
-                  placeholder="  Search for movies, genres and more..."
-                  aria-label="Search"
-                />
-              </form>
+            <div className="searchbar-div p-0 g-0 m-0 d-none d-lg-block">
+            <SearchBar placeholder=" Search for movies, shows and more..."/> 
             </div>
 
             {/* ---- Sign In/Register link if the user is not logged in ---- */}
@@ -213,21 +207,14 @@ const Navbar = () => {
 
               {/* Signin/Register link for smaller devices */}
               <NavLink className={"ms-auto me-auto"} to="/signin" style={{ textDecoration: "none" }}>
-                <li className="nav-item me-4 d-lg-none d-block">
+                <li className="nav-item me-1 d-lg-none d-block">
                   <li className="nav-link">SIGN IN/REGISTER</li>
                 </li>
               </NavLink>
 
               {/* Searchbar for smaller devices */}
               <li className="nav-item mt-3 d-block d-lg-none">
-                <form className="d-flex" role="search">
-                  <input
-                    className="search-expand ms-auto me-auto"
-                    type="search"
-                    placeholder="    Search for movies, genres and more..."
-                    aria-label="Search"
-                  />
-                </form>
+                <SearchBar placeholder=" Search for movies, shows and more..."/> 
               </li>
             </ul>
           </div>

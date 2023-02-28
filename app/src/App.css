@@ -33,10 +33,35 @@ html, body, .App{
   background-color: #ffffff41;
   width: 22vw;
   font-family: Forum;
+  color: #FFF0C8;
+  text-indent: 1vh;
 }
 
 .searchbar, li .sign{
   font-size: 0.9rem;
+}
+
+.searchbar::placeholder, .search-expand::placeholder {
+  color: #ccc;
+}
+
+.searchbar:focus, .search-expand:focus {
+  color: #fff;
+  text-indent: 1vh;
+  outline: none;
+  box-shadow: none;
+  border: 0.01rem solid #FFF0C8;
+}
+
+.search-content{
+  width: 85%;
+  border-radius: 5px;
+}
+
+@media screen and (min-width: 1200px){
+  .search-content{
+      width: 70%;
+  }
 }
 
 li .sign{
@@ -228,6 +253,9 @@ li .sign{
     font-size: 5rem;
     line-height: 6.5rem;
   }
+  .search-content{
+    width: 60%;
+}
 }
 
 @media screen and (min-width: 2100px){
@@ -235,6 +263,9 @@ li .sign{
     font-size: 6.5rem;
     line-height: 7.5rem;
   }
+  .search-content{
+    width: 60%;
+}
 }
 
 .carousel-xxl{

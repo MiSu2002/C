@@ -21,7 +21,7 @@ function MovieDetails() {
   const [reviews, setReviews] = useState([]);
   const [similar, setSimilar] = useState([]);
   const [showNavbar, setShowNavbar] = useState(false);
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(0)
   const [providers, setProviders] = useState([]);
   const [recommendations, setRecommendations] = useState([]);
   const isLastIndex = currentIndex + 6 >= cast.length;
@@ -86,8 +86,16 @@ setProviders(flatrate);
   }, []);
 
   // This function toggles the state of the like button between liked and not liked
-  const handleClick = () => {
-    setIsLiked(!isLiked);
+  const handleClick = async () => {
+    try {
+      setIsLiked(true);
+      await axios.post('/watchlist', {
+        title: movie.title,
+        liked: true
+      });
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const handleClicked = () => {
@@ -198,13 +206,16 @@ setProviders(flatrate);
           
           <div className="col d-flex justify-content-end">
             {/* Like button to like the movie */}
-          <svg viewBox="0 0 512 512" onClick={handleClick} className='mt-2 me-5 likeButton'>
+            {!isLiked &&
+          <svg viewBox="0 0 512 512" onClick={handleClick} disabled={isLiked} className='mt-2 me-5 likeButton'>
             <path 
             d="M462.3 62.6C407.5 15.9 326 24.3 275.7 76.2L256 96.5l-19.7-20.3C186.1 24.3 104.5 15.9 49.7 62.6c-62.8 53.6-66.1 149.8-9.9 207.9l193.5 199.8c12.5 12.9 32.8 12.9 45.3 0l193.5-199.8c56.3-58.1 53-154.3-9.8-207.9z" 
             fill={isLiked ? "#FFEF9F" : "white"}
             style={isLiked ? { opacity: '1' } : { opacity: '0.3' }}
             />
+            
           </svg>
+}
           </div>
 
           </div>

@@ -19,12 +19,15 @@ import TopRatedMovies from './pages/discover/topRatedMovies';
 import TopRatedShows from './pages/discover/topRatedShows';
 import UpcomingMovies from './pages/discover/upcomingMovies';
 import TodayShows from './pages/discover/airingToday';
+import WatchList from './pages/discover/watchlist';
+import SearchResults from './pages/searchResults';
 
 function App() {
   return (
       <div className="App">
       <Routes>
       <Route path="/" exact element={<Homepage/>}/>
+      <Route path="/search-results/:query" element={<SearchResults/>}/>
       <Route path="/movie/:id" element={<MovieDetails/>}/>
       <Route path="/movie/:id/similar" element={<SimilarMovies/>}/>
       <Route path="/movie/:id/reviews" element={<Reviews/>}/>
@@ -43,6 +46,7 @@ function App() {
       <Route path="/popular/shows" element={<PopularShows/>}/>
       <Route path="/top-rated/shows" element={<TopRatedShows/>}/>
       <Route path="/airing-today/shows" element={<TodayShows/>}/>
+      <Route path="/watchlist" element={<WatchList/>}/>
       </Routes>
       </div>
   );
