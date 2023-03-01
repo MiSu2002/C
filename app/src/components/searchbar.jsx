@@ -1,26 +1,35 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function SearchBar(props) {
   const [query, setQuery] = useState('');
+  const navigate = useNavigate();
 
-  function handleInputChange(event) {
-    try {
-      const newQuery = String(event.target.value);
-      setQuery(newQuery);
-    } catch (error) {
-      console.error('Error setting query:', error);
-    }
-  }
+  const handleSearch = (event) => {
+    event.preventDefault();
+    navigate(`/search-results/${query}`);
+  };
 
   return (
     <div>
-      <form action={`/search-results/${query}`} method='get'>
-        <input type="text" value={query} onChange={handleInputChange} placeholder={props.placeholder} className="searchbar ms-4 d-none d-lg-block"/>
-      </form>
-
-      <form action={`/search-results/${query}`} method='get'>
-        <input type="text" value={query} onChange={handleInputChange} placeholder={props.placeholder} className="search-expand ms-auto me-auto d-block d-lg-none"/>
-      </form>
+      <form onSubmit={handleSearch}>
+      <input
+        type="text"
+        placeholder={props.placeholder}
+        className="searchbar ms-4 d-none d-lg-block"
+        value={query}
+        onChange={(event) => setQuery(event.target.value)}
+      />
+    </form>
+    <form onSubmit={handleSearch}>
+    <input
+        type="text"
+        placeholder={props.placeholder}
+        className="search-expand ms-auto me-auto d-block d-lg-none"
+        value={query}
+        onChange={(event) => setQuery(event.target.value)}
+      />
+    </form>
     </div>
   );
 }

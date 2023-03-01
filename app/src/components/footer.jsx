@@ -2,11 +2,16 @@ import React from "react";
 
 const Footer = () => {
     return(
-        <div className="footer" style={{backgroundColor:'#2a2a47'}}>
+        <div className="footer">
             <style>
             {`
             .footer{
                 height: 5vh;
+                background-color: #2a2a47;
+                position: absolute;
+                width: 100%;
+                bottom: 0;
+                left: 0;
             }
             @media screen and (max-width: 768px){
                 .footer{
