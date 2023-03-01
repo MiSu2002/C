@@ -24,3 +24,5 @@ yarn-error.log*
 
 #.env file
 /models/.env
+/src/utils/firebaseConfigure.js
+/src/utils/.env
