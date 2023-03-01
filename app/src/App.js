@@ -27,6 +27,7 @@ function App() {
       <div className="App">
       <Routes>
       <Route path="/" exact element={<Homepage/>}/>
+      <Route path="/signin" exact element={<SignIn/>}/>
       <Route path="/search-results/:query" element={<SearchResults/>}/>
       <Route path="/movie/:id" element={<MovieDetails/>}/>
       <Route path="/movie/:id/similar" element={<SimilarMovies/>}/>
