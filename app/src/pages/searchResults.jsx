@@ -97,6 +97,7 @@ function SearchResults() {
                 <h3 className='trailer-link me-3'>{result.title}</h3>
                 <p className='overview mt-3 me-3' style={{maxHeight: '20vh', overflow: 'hidden', lineHeight: '2'}}>{result.overview}</p>
                 <p className='overview'>...</p>
+                <p className='overview mt-3' style={{color: '#FA9'}}>Movie</p>
               </div>
             </div>
             </Link>
@@ -114,6 +115,7 @@ function SearchResults() {
                 <h3 className='trailer-link me-3'>{result.title}</h3>
                 <p className='overview mt-3 me-3' style={{maxHeight: '20vh', overflow: 'hidden', lineHeight: '2'}}>{result.overview}</p>
                 <p className='overview'>...</p>
+                <p className='overview mt-3' style={{color: '#FA9'}}>TV / Show</p>
               </div>
             </div>
             </Link>
