@@ -4,7 +4,12 @@ function SearchBar(props) {
   const [query, setQuery] = useState('');
 
   function handleInputChange(event) {
-    setQuery(event.target.value);
+    try {
+      const newQuery = String(event.target.value);
+      setQuery(newQuery);
+    } catch (error) {
+      console.error('Error setting query:', error);
+    }
   }
 
   return (
