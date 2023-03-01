@@ -21,6 +21,7 @@ import UpcomingMovies from './pages/discover/upcomingMovies';
 import TodayShows from './pages/discover/airingToday';
 import WatchList from './pages/discover/watchlist';
 import SearchResults from './pages/searchResults';
+import SignIn from './pages/signIn';
 
 function App() {
   return (
