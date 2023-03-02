@@ -15,7 +15,6 @@ function MovieDetails() {
   const [movie, setMovie] = useState({});
   const [video, setVideo] = useState(null);
   const [genres, setGenres] = useState([]);
-  const [isLiked, setIsLiked] = useState(false);
   const [cast, setCast] = useState([]);
   const [directorName, setDirectorName] = useState([]);
   const [reviews, setReviews] = useState([]);
@@ -84,19 +83,6 @@ setProviders(flatrate);
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
-
-  // This function toggles the state of the like button between liked and not liked
-  const handleClick = async () => {
-    try {
-      setIsLiked(true);
-      await axios.post('/watchlist', {
-        title: movie.title,
-        liked: true
-      });
-    } catch (error) {
-      console.error(error);
-    }
-  };
 
   const handleClicked = () => {
     setCurrentIndex(prevCurrentIndex => prevCurrentIndex + 6);
@@ -196,26 +182,10 @@ setProviders(flatrate);
         <div className="col-8 mt-4 mt-xl-5 ps-2" style={{zIndex: '9'}}>
 
           <div className="d-flex movie-head">
-
-            <div className="col-9 col-lg-10">
               {/* Movie title */}
           <h2 className="fs-1 ms-4 me-4 trailer-link" style={{ zIndex: "7", fontFamily:'Montserrat'}}>
             {movie.title}
           </h2>
-            </div>
-          
-          <div className="col d-flex justify-content-end">
-            {/* Like button to like the movie */}
-          <svg viewBox="0 0 512 512" onClick={handleClick} className='mt-2 me-5 likeButton'>
-            <path 
-            d="M462.3 62.6C407.5 15.9 326 24.3 275.7 76.2L256 96.5l-19.7-20.3C186.1 24.3 104.5 15.9 49.7 62.6c-62.8 53.6-66.1 149.8-9.9 207.9l193.5 199.8c12.5 12.9 32.8 12.9 45.3 0l193.5-199.8c56.3-58.1 53-154.3-9.8-207.9z" 
-            fill={isLiked ? "#FFEF9F" : "white"}
-            style={isLiked ? { opacity: '1' } : { opacity: '0.3' }}
-            />
-          </svg>
-
-          </div>
-
           </div>
 
 
@@ -258,7 +228,7 @@ setProviders(flatrate);
           {/* Display movie provider */}
           <h6 className="text-white details-overview ms-4 mt-4 me-5 d-flex" style={{fontWeight: '900'}}>
             <p className="me-2 trailer-link">Providers: </p>
-            {providers.length ? providers.map(provider => provider.provider_name).join(", ") : 'No providers available'}
+            {providers ? providers.map(provider => provider.provider_name).join(", ") : 'No providers available'}
           </h6>
           
         </div>

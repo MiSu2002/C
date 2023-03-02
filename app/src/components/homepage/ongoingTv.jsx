@@ -41,7 +41,7 @@ const OngoingTV = () => {
       <div className="trending-slider ms-5 me-0">
       {data.slice(currentIndex, currentIndex + 7).map(movie => (
         <div key={movie.id}>
-          <Link to={`/movie/${movie.id}`}>
+          <Link to={`/tv/${movie.id}`}>
           <img className='me-4' style={{width:'15vw'}} src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`} alt={movie.name} />
           </Link>
           <p className='liked fw-bolder me-4 mt-2 mb-0 text-center' style={{width:'15vw'}}>{Math.round((movie.vote_average + Number.EPSILON)*1000)/100}% Liked This</p>
@@ -65,7 +65,7 @@ const OngoingTV = () => {
       <div className="trending-slider-sm ms-1 me-1">
       {data.map(movie => (
         <div key={movie.id}>
-          <Link to={`/movie/${movie.id}`}>
+          <Link to={`/tv/${movie.id}`}>
           <img className='me-3 ms-3' style={{width:'180px', height:"270px"}} src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`} alt={movie.name} />
           </Link>
           <p className='liked fw-bolder me-3 ms-3 mt-2 mb-0 text-center' style={{width:'180px'}}>{Math.round((movie.vote_average + Number.EPSILON)*1000)/100}% Liked This</p>
