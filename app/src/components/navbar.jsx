@@ -1,8 +1,22 @@
 import React from "react";
+import firebase from "firebase/compat/app";
+import 'firebase/compat/auth';
 import { NavLink, Link, useLocation } from "react-router-dom";
 import SearchBar from "./searchbar";
 
-const Navbar = () => {
+const Navbar = (props) => {
+
+  const { isSignedIn, setIsSignedIn } = props;
+
+  const handleLogout = () => {
+    firebase.auth().signOut()
+      .then(() => {
+        setIsSignedIn(false);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   const location = useLocation();
   const isHomePage = location.pathname === "/";
@@ -38,11 +52,17 @@ const Navbar = () => {
 
             {/* ---- Sign In/Register link if the user is not logged in ---- */}
             <div className="signin-div p-0 g-0 m-0">
+            {isSignedIn ? (
+                <li className="nav-item me-4 d-none d-lg-block ms-auto">
+                  <li className="nav-link sign" onClick={handleLogout}>LOGOUT</li>
+                </li>
+            ) : (
               <NavLink to="/signin" style={{ textDecoration: "none" }}>
                 <li className="nav-item me-4 d-none d-lg-block ms-auto">
                   <li className="nav-link sign">SIGN IN/REGISTER</li>
                 </li>
               </NavLink>
+            )}
             </div>
           </div>
         </nav>
@@ -206,11 +226,17 @@ const Navbar = () => {
               </NavLink>
 
               {/* Signin/Register link for smaller devices */}
+              {isSignedIn ? (
+                <li className="nav-item me-4 d-lg-none d-block  me-auto ms-auto">
+                  <li className="nav-link sign" onClick={handleLogout}>LOGOUT</li>
+                </li>
+            ) : (
               <NavLink className={"ms-auto me-auto"} to="/signin" style={{ textDecoration: "none" }}>
                 <li className="nav-item me-1 d-lg-none d-block">
                   <li className="nav-link">SIGN IN/REGISTER</li>
                 </li>
               </NavLink>
+            )}
 
               {/* Searchbar for smaller devices */}
               <li className="nav-item mt-3 d-block d-lg-none">

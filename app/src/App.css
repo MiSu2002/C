@@ -134,14 +134,18 @@ li .sign{
   letter-spacing: 0.2rem;
 }
 
-.details{
+.details, .signup{
   position: relative;
   background-size: cover;
   font-family: Poppins;
   background-repeat: no-repeat;
 }
 
-.details::before{
+.signup{
+  height: 98vh;
+}
+
+.details::before, .signup::before{
   position: absolute;
   top: 0;
   left: 0;
@@ -345,6 +349,15 @@ li .sign{
   cursor: pointer;
 }
 
+.register{
+  width: 25%;
+  margin-top: 32vh;
+  z-index: 9;
+  font-family: Montserrat;
+  left: 0;
+  right: 0;
+}
+
 @media screen and (max-width: 1650px){
   .index{
     display: none;
@@ -358,6 +371,9 @@ li .sign{
   }
   .details-img{
     width: 70%;
+  }
+  .register{
+    width: 35%;
   }
 }
 
@@ -379,6 +395,9 @@ li .sign{
   }
   .details-img{
     width: 80%;
+  }
+  .register{
+    width: 45%;
   }
 }
 
@@ -412,6 +431,9 @@ li .sign{
   .details-img{
     width: 100%;
     margin-left: 10%;
+  }
+  .register{
+    width: 80%;
   }
 }
 

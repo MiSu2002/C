@@ -22,6 +22,7 @@ import TodayShows from './pages/discover/airingToday';
 import WatchList from './pages/discover/watchlist';
 import SearchResults from './pages/searchResults';
 import SignIn from './pages/signIn';
+import Register from './pages/register';
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
       <Routes>
       <Route path="/" exact element={<Homepage/>}/>
       <Route path="/signin" exact element={<SignIn/>}/>
+      <Route path="/register" exact element={<Register/>}/>
       <Route path="/search-results/:query" element={<SearchResults/>}/>
       <Route path="/movie/:id" element={<MovieDetails/>}/>
       <Route path="/movie/:id/similar" element={<SimilarMovies/>}/>

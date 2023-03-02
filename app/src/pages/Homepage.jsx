@@ -1,4 +1,5 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
+import firebase from "firebase/compat/app";
 import Footer from "../components/footer";
 import Latest from "../components/homepage/latest/latest";
 import LatestTV from "../components/homepage/latest/latestTv";
@@ -14,10 +15,23 @@ import TrendingShows from "../components/homepage/trending/trendingTV";
 import Upcoming from "../components/homepage/upcoming";
 
 function Homepage() {
+
+  const [isSignedIn, setIsSignedIn] = useState(false);
+  useEffect(() => {
+    const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        setIsSignedIn(true);
+      } else {
+        setIsSignedIn(false);
+      }
+    });
+
+    return unsubscribe;
+  }, []);
   
   return (
       <>
-      <Navbar/>
+      <Navbar isSignedIn={isSignedIn}/>
       <Trending/>
       <TrendingMovies/>
       <TrendingShows/>
