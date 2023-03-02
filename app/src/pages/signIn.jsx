@@ -1,7 +1,6 @@
 import React from 'react';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
-// import firebaseConfig from '../utils/firebaseConfig';
 
 const firebaseConfig = {
     apiKey: process.env.REACT_APP_API_KEY,
@@ -27,12 +26,14 @@ function SignIn() {
     } catch (error) {
       // handle error
       console.log(error.message);
+      console.log(process.env.REACT_APP_PROJECT_ID);
     }
   };
 
   return (
     <div>
       <button onClick={handleSignIn}>Sign in with Google</button>
+      {process.env.REACT_APP_PROJECT_ID}
     </div>
   );
 };
