@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import axios from 'axios';
+import firebase from "firebase/compat/app";
 import { Link, useParams } from 'react-router-dom';
 import { API_KEY } from "../../../utils/constants";
 import Footer from "../../../components/footer";
 import Navbar from "../../../components/navbar";
+import SignIn from "../../signIn";
 
 // RecommendationsMovies component to display recommended movies based on the movie id
 const RecommendationsMovies = () => {
@@ -15,6 +17,18 @@ const RecommendationsMovies = () => {
   const [index, setIndex] = useState(1);
   const [page, setPage] = useState();
   const [movie, setshow] = useState([]);
+
+  const [isSignedIn, setIsSignedIn] = useState(false);
+  useEffect(() => {
+    const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        setIsSignedIn(true);
+      } else {
+        setIsSignedIn(false);
+      }
+    });
+    return unsubscribe;
+  }, []);
 
   // useEffect hook to fetch the data for the movie and its recommended movies
   useEffect(() => {
@@ -52,49 +66,53 @@ const RecommendationsMovies = () => {
 
   return (
     <div>
-      {/* Navbar component */}
-      <Navbar/>
-
-      {/* Recommendations header */}
-      <div className="m-4 mt-xl-5 ms-lg-5 text-center text-lg-start text-white fs-3 position-relative" style={{fontFamily: 'Montserrat', zIndex:'9'}}>
-        Recommendations - 
-        {/* Link to the movie detail page */}
-        <Link to={`/movie/${movie.id}`} className='ms-2 me-2 trailer-link fw-bold'>{movie.title}</Link>
-        :
+      {isSignedIn ? (
+        <div>
+        {/* Navbar component */}
+        <Navbar/>
+  
+        {/* Recommendations header */}
+        <div className="m-4 mt-xl-5 ms-lg-5 text-center text-lg-start text-white fs-3 position-relative" style={{fontFamily: 'Montserrat', zIndex:'9'}}>
+          Recommendations - 
+          {/* Link to the movie detail page */}
+          <Link to={`/movie/${movie.id}`} className='ms-2 me-2 trailer-link fw-bold'>{movie.title}</Link>
+          :
+        </div>
+        
+        {/* Display the recommended movies */}
+        <div className="d-flex justify-content-center ms-4 ms-md-5 me-md-5 me-4 mb-5 flex-wrap">
+          {recommendations.map(movies => (
+              movies.poster_path && movies.title && (
+              //  wrapper div for each movie
+              <div key={movies.id}>
+                  {/* Link to the movie detail page */}
+                  <Link to={`/movie/${movies.id}`}>
+                      {/* Display the movie poster */}
+                      <img className='me-4 mt-4' style={{width:'220px', height: '320px'}} src={`https://image.tmdb.org/t/p/w500/${movies.poster_path}`} alt={movies.title} />
+                      </Link>
+                      {/* Display the movie like percentage */}
+                      <p className='liked fw-bolder me-4 mt-2 mb-0 text-center' style={{width:'220px'}}>{Math.round((movies.vote_average + Number.EPSILON)*1000)/100}% Liked This</p>
+                      {/* Display the movie title */}
+                      <p className='movie-original_name me-4 text-white fw-bolder mt-1 text-center' style={{width:'220px', fontFamily:"Poppins"}}>{movies.title}</p>
+              </div>
+              )
+        ))}
+        </div>
+        {/* wrapper for the page navigation buttons */}
+        <div className="d-flex justify-content-between align-items-center mt-3 mb-5">
+          {/* Previous page button */}
+          <button className="ms-4 ms-md-5 btn btn-dark" onClick={handlePreviousPage}>Previous</button>
+          {/* Display the current page number */}
+          <p className="text-secondary mt-3">Page {index} / {page}</p>
+          {/* Next page button */}
+          <button className="me-4 me-md-5 btn btn-dark" onClick={handleNextPage}>Next</button>
       </div>
-      
-      {/* Display the recommended movies */}
-      <div className="d-flex justify-content-center ms-4 ms-md-5 me-md-5 me-4 mb-5 flex-wrap">
-        {recommendations.map(movies => (
-            movies.poster_path && movies.title && (
-            //  wrapper div for each movie
-            <div key={movies.id}>
-                {/* Link to the movie detail page */}
-                <Link to={`/movie/${movies.id}`}>
-                    {/* Display the movie poster */}
-                    <img className='me-4 mt-4' style={{width:'220px', height: '320px'}} src={`https://image.tmdb.org/t/p/w500/${movies.poster_path}`} alt={movies.title} />
-                    </Link>
-                    {/* Display the movie like percentage */}
-                    <p className='liked fw-bolder me-4 mt-2 mb-0 text-center' style={{width:'220px'}}>{Math.round((movies.vote_average + Number.EPSILON)*1000)/100}% Liked This</p>
-                    {/* Display the movie title */}
-                    <p className='movie-original_name me-4 text-white fw-bolder mt-1 text-center' style={{width:'220px', fontFamily:"Poppins"}}>{movies.title}</p>
-            </div>
-            )
-      ))}
-      </div>
-      {/* wrapper for the page navigation buttons */}
-      <div className="d-flex justify-content-between align-items-center mt-3 mb-5">
-        {/* Previous page button */}
-        <button className="ms-4 ms-md-5 btn btn-dark" onClick={handlePreviousPage}>Previous</button>
-        {/* Display the current page number */}
-        <p className="text-secondary mt-3">Page {index} / {page}</p>
-        {/* Next page button */}
-        <button className="me-4 me-md-5 btn btn-dark" onClick={handleNextPage}>Next</button>
+  
+        {/* Footer component */}
+        <Footer/>
+  </div>
+      ) : <SignIn/>}
     </div>
-
-      {/* Footer component */}
-      <Footer/>
-</div>
 
 
   );

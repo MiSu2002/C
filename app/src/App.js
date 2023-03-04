@@ -19,10 +19,11 @@ import TopRatedMovies from './pages/discover/topRatedMovies';
 import TopRatedShows from './pages/discover/topRatedShows';
 import UpcomingMovies from './pages/discover/upcomingMovies';
 import TodayShows from './pages/discover/airingToday';
-import WatchList from './pages/discover/watchlist';
 import SearchResults from './pages/searchResults';
 import SignIn from './pages/signIn';
 import Register from './pages/register';
+import Recommended from './pages/discover/recommended';
+import Profile from './pages/profile';
 
 function App() {
   return (
@@ -40,7 +41,7 @@ function App() {
       <Route path="/tv/:id/similar" element={<SimilarShows/>}/>
       <Route path="/tv/:id/recommendations" element={<RecommendationsShows/>}/>
       <Route path="/movie/:id/recommendations" element={<RecommendationsMovies/>}/>
-      <Route path="/tv/:id/reviews" element={<ReviewsShows/>}/>
+      <Route path="/show/:id/reviews" element={<ReviewsShows/>}/>
       <Route path="/movies" element={<DiscoverMovies/>}/>
       <Route path="/shows" element={<DiscoverShows/>}/>
       <Route path="/trending" element={<Trending/>}/>
@@ -50,7 +51,8 @@ function App() {
       <Route path="/popular/shows" element={<PopularShows/>}/>
       <Route path="/top-rated/shows" element={<TopRatedShows/>}/>
       <Route path="/airing-today/shows" element={<TodayShows/>}/>
-      <Route path="/watchlist" element={<WatchList/>}/>
+      <Route path="/todays-recommendations" element={<Recommended/>}/>
+      <Route path="/profile" element={<Profile/>}/>
       </Routes>
       </div>
   );

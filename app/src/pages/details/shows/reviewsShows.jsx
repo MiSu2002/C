@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import firebase from "firebase/compat/app";
 import { API_KEY } from "../../../utils/constants";
 import Footer from "../../../components/footer";
 import Navbar from "../../../components/navbar";
+import SignIn from "../../signIn";
 
 function ReviewsShows() {
   // Destructure the id from the URL parameters
@@ -11,6 +13,19 @@ function ReviewsShows() {
 
   // State variables to store movie reviews
   const [reviews, setReviews] = useState([]);
+
+  const [isSignedIn, setIsSignedIn] = useState(false);
+  useEffect(() => {
+    const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        setIsSignedIn(true);
+      } else {
+        setIsSignedIn(false);
+      }
+    });
+
+    return unsubscribe;
+  }, []);
 
   // Use effect to fetch the data for movie details, video, genres and cast
   useEffect(() => {
@@ -27,7 +42,9 @@ function ReviewsShows() {
   }, [id]); // Re-run the effect only when the id changes
 
   return (
-      <div>
+    <div>
+      {isSignedIn ? (
+        <div>
         <Navbar/>
         <div className="mt-4 mt-xxl-5" style={{marginLeft: "7%", marginRight:"7%"}}>
     <h3 className="trailer-link" style={{fontFamily: 'Montserrat'}}>Reviews :</h3>
@@ -47,7 +64,8 @@ function ReviewsShows() {
       </div>
       <Footer className='mt-5'/>
       </div>
-
+      ) : <SignIn/>}
+    </div>
   );
 }
 

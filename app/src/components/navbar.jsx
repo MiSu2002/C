@@ -1,12 +1,23 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import firebase from "firebase/compat/app";
 import 'firebase/compat/auth';
 import { NavLink, Link, useLocation } from "react-router-dom";
 import SearchBar from "./searchbar";
 
-const Navbar = (props) => {
+const Navbar = () => {
 
-  const { isSignedIn, setIsSignedIn } = props;
+  const [isSignedIn, setIsSignedIn] = useState(false);
+    useEffect(() => {
+      const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
+        if (user) {
+          setIsSignedIn(true);
+        } else {
+          setIsSignedIn(false);
+        }
+      });
+  
+      return unsubscribe;
+    }, []);
 
   const handleLogout = () => {
     firebase.auth().signOut()
@@ -30,11 +41,10 @@ const Navbar = (props) => {
   location.pathname === "/top-rated/movies" || 
   location.pathname === "/top-rated/shows" ||
   location.pathname === "/upcoming/movies" || 
+  location.pathname === "/todays-recommendations" ||
   location.pathname === "/airing-today/shows"
   );
-  const isWatchPage = location.pathname === "/watchlist";
   const isProfilePage = location.pathname === "/profile";
-  const isReviewPage = location.pathname === "/reviews";
 
   return (
     <div className="navbar-section">
@@ -92,7 +102,7 @@ const Navbar = (props) => {
 
           {/* Collapsible Menu List */}
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul className="navbar-nav ms-auto me-auto mb-2 mb-lg-0">
+            <ul className="navbar-nav mx-auto mb-2 mb-lg-0">
 
               {/* Home link */}
               <NavLink className={"ms-auto me-auto"} to="/" style={{ textDecoration: "none" }}>
@@ -100,13 +110,6 @@ const Navbar = (props) => {
                   <li className={"nav-link" + (isHomePage ? " active" : "")} aria-current="page">
                     HOME
                   </li>
-                </li>
-              </NavLink>
-
-              {/* About link */}
-              <NavLink className={"ms-auto me-auto"} to="/about" style={{ textDecoration: "none" }}>
-                <li className="nav-item me-lg-5">
-                  <li className={"nav-link" + (isAboutPage ? " active" : "")}>ABOUT</li>
                 </li>
               </NavLink>
 
@@ -142,7 +145,7 @@ const Navbar = (props) => {
 
                       {/* Recommended link */}
                       <NavLink
-                        to="/recommended"
+                        to="/todays-recommendations"
                         style={{ textDecoration: "none" }}
                       >
                         <li className="dropdown-item">Recommended</li>
@@ -198,30 +201,23 @@ const Navbar = (props) => {
               </li>
 
               {/* Nabar Brand for larger devices */}
-              <Link to='/' className="navbar-brand ms-auto me-auto me-lg-5 d-none d-lg-block text-decoration-none">
+              <Link to='/' className="navbar-brand mx-auto me-lg-5 d-none d-lg-block text-decoration-none">
                 CINÈRA
               </Link>
 
-              {/* Watchlist link */}
-              <NavLink className={"ms-auto me-auto"} to="/watchlist" style={{ textDecoration: "none" }}>
-                <li className="nav-item me-lg-5">
-                  <li className={"nav-link watchlist" + (isWatchPage ? " active" : "")}>WATCHLIST</li>
+              {/* About link */}
+              <NavLink className={"ms-auto me-auto"} to="/about" style={{ textDecoration: "none" }}>
+                <li className="nav-item me-lg-5 ms-xxl-5">
+                  <li className={"nav-link" + (isAboutPage ? " active" : "")}>ABOUT</li>
                 </li>
               </NavLink>
 
               {/* Profile link */}
               <NavLink className={"ms-auto me-auto"} to="/profile" style={{ textDecoration: "none" }}>
-                <li className="nav-item me-lg-5">
+                <li className="nav-item">
                   <li className={"nav-link" + (isProfilePage ? " active" : "")} role="button" aria-expanded="false">
                     PROFILE
                   </li>
-                </li>
-              </NavLink>
-
-              {/* Review link */}
-              <NavLink className={"ms-auto me-auto"} to="/review" style={{ textDecoration: "none" }}>
-                <li className="nav-item">
-                  <li className={"nav-link review" + (isReviewPage ? " active" : "")}>REVIEW</li>
                 </li>
               </NavLink>
 

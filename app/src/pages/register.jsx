@@ -20,6 +20,7 @@ firebase.initializeApp(firebaseConfig);
 function Register() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [username, setUsername] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
     const [isRegistrationSuccess, setIsRegistrationSuccess] = useState(false);
@@ -79,6 +80,9 @@ function Register() {
       }
       try {
         const result = await firebase.auth().createUserWithEmailAndPassword(email, password);
+        await result.user.updateProfile({
+          displayName: username // add username to user object
+        });
         console.log(result.user);
         setIsRegistrationSuccess(true);
       } catch (error) {
@@ -123,6 +127,7 @@ function Register() {
         <h2 className='mb-5 justify-content-center d-flex text-warning fw-bold'>Register Now</h2>
           <div style={{fontFamily: 'Forum'}}>
           {errorMessage && <p style={{color: 'rgb(255,100,10)'}}>{errorMessage}</p>}
+          <input className='d-flex w-100 mb-3 form-control' type="text" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} />
           <input className='d-flex w-100 mb-3 form-control' type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
           <div className="d-flex mb-3 justify-content-center">
             <input className='me-4 form-control' style={{width: '48%'}} type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />

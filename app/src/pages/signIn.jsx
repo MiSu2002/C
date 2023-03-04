@@ -67,12 +67,27 @@ function SignIn() {
     }
   };
 
+  const handleForgotPassword = () => {
+    firebase.auth().sendPasswordResetEmail(email)
+      .then(() => {
+        // Password reset email sent successfully
+        alert('Password reset email sent!');
+        setErrorMessage('Password reset email sent!');
+      })
+      .catch((error) => {
+        // Error sending password reset email
+        console.error(error);
+        alert('Error sending password reset email.');
+        setErrorMessage('Provide email address in the email input box and then click on forgot password link. Please try again later if already done.');
+      });
+  };
+  
+
   if (redirectToHome) {
     return (
       <>
         <Navbar isSignedIn={isSignedIn} className="d-none"/>
         <Navigate to="/" />
-        {isSignedIn ? 2 : 6}
       </>
     );
   }
@@ -90,8 +105,8 @@ function SignIn() {
         <h2 className='mb-5 justify-content-center d-flex text-warning fw-bold'>Login</h2>
           <div style={{fontFamily: 'Forum'}}>
           {errorMessage && <p style={{color: 'rgb(255,100,10)'}}>{errorMessage}</p>}
-          <input className='d-flex w-100 mb-3 form-control' type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
-            <input className='me-4 d-flex mb-3 justify-content-center form-control' style={{width: '48%'}} type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
+          <input className='d-flex mb-3 form-control' type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
+            <input className='me-4 d-flex mb-3 justify-content-center form-control' type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
           </div>
           <div className="d-flex mt-4">
           <button className='btn btn-warning me-4 h-50' onClick={handleSignIn}>Sign In</button>
@@ -108,6 +123,9 @@ function SignIn() {
         });
       }}>Sign in with Google</button>
           </div>
+          <button className='btn btn-link text-light p-0 mt-3' onClick={handleForgotPassword}>
+  Forgot Password?
+</button>
           <div className='d-flex mt-4'>
           <p className='text-white me-2'>Not registered?</p>
           <Link to='/register' style={{color: '#FA9'}}>Register Now</Link>

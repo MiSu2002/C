@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import axios from 'axios';
+import firebase from "firebase/compat/app";
 import { Link, useParams } from 'react-router-dom';
 import arrow from "../../../assets/icons/right-arrow.png";
 import { API_KEY } from "../../../utils/constants";
 import { languageCodes } from "../../../utils/languageCodes";
 import Footer from "../../../components/footer";
 import Navbar from "../../../components/navbar";
+import SignIn from "../../signIn";
 
 function MovieDetails() {
   // Destructure the id from the URL parameters
@@ -25,6 +27,19 @@ function MovieDetails() {
   const [recommendations, setRecommendations] = useState([]);
   const isLastIndex = currentIndex + 6 >= cast.length;
   const isFirstIndex = currentIndex <= 0;
+
+  const [isSignedIn, setIsSignedIn] = useState(false);
+  useEffect(() => {
+    const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        setIsSignedIn(true);
+      } else {
+        setIsSignedIn(false);
+      }
+    });
+
+    return unsubscribe;
+  }, []);
 
   // Use effect to fetch the data for movie details, video, genres and cast
   useEffect(() => {
@@ -96,198 +111,245 @@ setProviders(flatrate);
 
   return (
     <div>
-      <style>
-        {`
-          .navbar1 {
-            opacity: 0;
-            transition: opacity 0.5s ease-in-out;
-            top: 0;
-            z-index: 15;
-          }
-
-          .navbar1.show {
-            opacity: 1;
-          }
-
-          .navbar2{
-            display: none;
-            z-Index: 16;
-          }
-
-          .details{
-            background-image: url(https://image.tmdb.org/t/p/original/${movie.poster_path});
-           }
-        
-           @media screen and (min-width: 1000px){
-            .details{
-              background-image: url(https://image.tmdb.org/t/p/original/${movie.backdrop_path});
-             }
-           }
-
-           @media screen and (max-width: 1195px){
-            .navbar1.show {
+      {isSignedIn ? (
+        <div>
+        <style>
+          {`
+            .navbar1 {
               opacity: 0;
+              transition: opacity 0.5s ease-in-out;
+              top: 0;
+              z-index: 15;
             }
+  
+            .navbar1.show {
+              opacity: 1;
+            }
+  
             .navbar2{
-              display: block;
+              display: none;
+              z-Index: 16;
             }
-           }
-        `}
-      </style>
-
-      {video ? (
-      <div className="navbar2 w-100 position-relative">
-        <Navbar />
-      </div>
-      ):(
-        <></>
-      )
-      }
-
-      {/* Display the show trailer if it is available */}
-      {video ? (
-      <>
-        <div className={`navbar1 w-100 position-fixed ${showNavbar ? 'show' : ''}`}>
-          <Navbar />
+  
+            .details{
+              background-image: url(https://image.tmdb.org/t/p/original/${movie.poster_path});
+             }
+          
+             @media screen and (min-width: 1000px){
+              .details{
+                background-image: url(https://image.tmdb.org/t/p/original/${movie.backdrop_path});
+               }
+             }
+  
+             @media screen and (max-width: 1195px){
+              .navbar1.show {
+                opacity: 0;
+              }
+              .navbar2{
+                display: block;
+              }
+             }
+          `}
+        </style>
+  
+        {video ? (
+        <div className="navbar2 w-100 position-relative">
+          <Navbar/>
         </div>
-
-        <iframe
-          className="trailer"
-          title={`${movie.title}`}
-          src={`https://www.youtube.com/embed/${video.key}?rel=0`}
-          allow="accelerometer; autoplay; encrypted-media; gyroscope;"
-          allowFullScreen
-        />
-      </>
-    ) : (
-      <div className="navbar2 w-100 position-relative d-lg-block">
-        <Navbar />
-      </div>
-      )}
-      
-      <div className="details mt-3">
-
-      <div className="details-content">
-
-      <div className="row">
-        <div className="col-4 mt-4 mt-xl-5 mb-4 mb-xl-5" style={{zIndex: '9'}}>
-
-        {/* Display the movie poster */}
-        <img className="details-img d-flex"
-              src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
-              alt={movie.title}
-            />
-        </div>
-
-        <div className="col-8 mt-4 mt-xl-5 ps-2" style={{zIndex: '9'}}>
-
-          <div className="d-flex movie-head">
-              {/* Movie title */}
-          <h2 className="fs-1 ms-4 me-4 trailer-link" style={{ zIndex: "7", fontFamily:'Montserrat'}}>
-            {movie.title}
-          </h2>
+        ):(
+          <></>
+        )
+        }
+  
+        {/* Display the show trailer if it is available */}
+        {video ? (
+        <>
+          <div className={`navbar1 w-100 position-fixed ${showNavbar ? 'show' : ''}`}>
+            <Navbar />
           </div>
-
-
-          {/* Overview of movie */}
-          <h6 className="text-white details-overview ms-4 mt-2 mt-xl-4">
-            {movie.overview}
-          </h6>
-
-          {/* Display movie genres */}
-          <h6 className="text-white details-overview ms-4 mt-4 me-5 d-flex" style={{fontWeight: '900'}}>
-            <p className="me-2 trailer-link">Genres: </p>
-            {genres.length ? genres.map(genre => genre.name).join(", ") : 'No genres available'}
-          </h6>
-
-          {/* Display movie director */}
-          <h6 className="text-white details-overview ms-4 mt-4 me-5 d-flex" style={{fontWeight: '900'}}>
-            <p className="me-2 trailer-link">Director: </p>
-            {directorName}
-          </h6>
-          
-          {/* Display movie cast */}
-          <h6 className="text-white details-overview ms-4 mt-4 me-5 d-flex" style={{fontWeight: '900'}}>
-            <p className="me-2 trailer-link">Cast: </p>
-            {cast.length > 0 ? cast.slice(0, 4).map(c => c.name).join(", ") : 'No cast information available'}
-          </h6>
-          
-          {/* Display movie rating */}
-          <h6 className="text-white details-overview ms-4 mt-4 me-5 d-flex" style={{fontWeight: '900'}}>
-            <p className="me-2 trailer-link">Rating: </p>
-            {Math.round(movie.vote_average)} / 10
-            <p className="ms-2 text-light">( {(movie.vote_count/1000).toFixed(2)}k votes )</p>
-          </h6>
-
-          {/* Language of movie */}
-          <h6 className="text-white details-overview ms-4 mt-4 me-5 d-flex" style={{fontWeight: '900'}}>
-            <p className="me-2 trailer-link">Language: </p>
-            {languageName}
-          </h6>
-
-          {/* Display movie provider */}
-          <h6 className="text-white details-overview ms-4 mt-4 me-5 d-flex" style={{fontWeight: '900'}}>
-            <p className="me-2 trailer-link">Providers: </p>
-            {providers ? providers.map(provider => provider.provider_name).join(", ") : 'No providers available'}
-          </h6>
-          
+  
+          <iframe
+            className="trailer"
+            title={`${movie.title}`}
+            src={`https://www.youtube.com/embed/${video.key}?rel=0`}
+            allow="accelerometer; autoplay; encrypted-media; gyroscope;"
+            allowFullScreen
+          />
+        </>
+      ) : (
+        <div className="navbar2 w-100 position-relative d-lg-block">
+          <Navbar/>
         </div>
-  </div>
-
-           <h3 className="mt-4 cast text-white position-relative" style={{fontFamily: 'Montserrat', zIndex:'9'}}>Cast :</h3>
-
-<div className="trending-slider-sm m-4 position-relative">
-
-{cast.map((actor, index) => (
-  actor.profile_path ? (
-    <div className="me-4" key={actor.id} style={{zIndex: '9'}}>
-    <Link to={`/actor/${actor.id}`}>
-    <img src={`https://image.tmdb.org/t/p/w500/${actor.profile_path}`} alt={actor.name} style={{width:'130px', height:'160px',borderRadius:'1vh'}}/>
-    </Link>
-  <div className="card-body mt-1">
-    <h5 className="movie-title fw-bolder text-white text-center" style={{fontSize: '15px', width:'130px'}}>{actor.name}</h5>
-    <p className="card-text liked text-center" style={{fontSize: '13px', width:'130px'}}>{actor.character}</p>
-  </div>
+        )}
+        
+        <div className="details mt-3">
+  
+        <div className="details-content">
+  
+        <div className="row">
+          <div className="col-4 mt-4 mt-xl-5 mb-4 mb-xl-5" style={{zIndex: '9'}}>
+  
+          {/* Display the movie poster */}
+          <img className="details-img d-flex"
+                src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
+                alt={movie.title}
+              />
+          </div>
+  
+          <div className="col-8 mt-4 mt-xl-5 ps-2" style={{zIndex: '9'}}>
+  
+            <div className="d-flex movie-head">
+                {/* Movie title */}
+            <h2 className="fs-1 ms-4 me-4 trailer-link" style={{ zIndex: "7", fontFamily:'Montserrat'}}>
+              {movie.title}
+            </h2>
+            </div>
+  
+  
+            {/* Overview of movie */}
+            <h6 className="text-white details-overview ms-4 mt-2 mt-xl-4">
+              {movie.overview}
+            </h6>
+  
+            {/* Display movie genres */}
+            <h6 className="text-white details-overview ms-4 mt-4 me-5 d-flex" style={{fontWeight: '900'}}>
+              <p className="me-2 trailer-link">Genres: </p>
+              {genres.length ? genres.map(genre => genre.name).join(", ") : 'No genres available'}
+            </h6>
+  
+            {/* Display movie director */}
+            <h6 className="text-white details-overview ms-4 mt-4 me-5 d-flex" style={{fontWeight: '900'}}>
+              <p className="me-2 trailer-link">Director: </p>
+              {directorName}
+            </h6>
+            
+            {/* Display movie cast */}
+            <h6 className="text-white details-overview ms-4 mt-4 me-5 d-flex" style={{fontWeight: '900'}}>
+              <p className="me-2 trailer-link">Cast: </p>
+              {cast.length > 0 ? cast.slice(0, 4).map(c => c.name).join(", ") : 'No cast information available'}
+            </h6>
+            
+            {/* Display movie rating */}
+            <h6 className="text-white details-overview ms-4 mt-4 me-5 d-flex" style={{fontWeight: '900'}}>
+              <p className="me-2 trailer-link">Rating: </p>
+              {Math.round(movie.vote_average)} / 10
+              <p className="ms-2 text-light">( {(movie.vote_count/1000).toFixed(2)}k votes )</p>
+            </h6>
+  
+            {/* Language of movie */}
+            <h6 className="text-white details-overview ms-4 mt-4 me-5 d-flex" style={{fontWeight: '900'}}>
+              <p className="me-2 trailer-link">Language: </p>
+              {languageName}
+            </h6>
+  
+            {/* Display movie provider */}
+            <h6 className="text-white details-overview ms-4 mt-4 me-5 d-flex" style={{fontWeight: '900'}}>
+              <p className="me-2 trailer-link">Providers: </p>
+              {providers ? providers.map(provider => provider.provider_name).join(", ") : 'No providers available'}
+            </h6>
+            
+          </div>
     </div>
-) : null
-))}
-  </div>
-
-  <div className="trending-slider mt-4">
-  { !isFirstIndex && 
-    <button className="me-4 me-md-5" style={{border: 'none', backgroundColor: 'transparent', marginTop:'-5vh', zIndex:'10'}} onClick={handleClickedBack}>
-      <img src={arrow} className='d-flex details-arrow position-relative' style={{marginTop:'4.5%', rotate: '180deg'}} alt='slide back'/>
-    </button>
-  }
-  {cast.slice(currentIndex, currentIndex + 6).map((actor) => (
+  
+             <h3 className="mt-4 cast text-white position-relative" style={{fontFamily: 'Montserrat', zIndex:'9'}}>Cast :</h3>
+  
+  <div className="trending-slider-sm m-4 position-relative">
+  
+  {cast.map((actor, index) => (
     actor.profile_path ? (
-        <div className="me-4 me-xl-5" key={actor.id} style={{zIndex: '9'}}>
-          <Link to={`/actor/${actor.id}`}>
-            <img src={`https://image.tmdb.org/t/p/w500/${actor.profile_path}`} alt={actor.name} style={{width:"130px", height:"140px"}}/>
-          </Link>
-          <div className="card-body mt-2">
-            <h5 className="fw-bolder text-white text-center" style={{fontSize: '1.8vh', width:"130px"}}>{actor.name}</h5>
-            <p className="card-text liked text-center" style={{fontSize: '1.6vh', width:"130px"}}>{actor.character}</p>
-          </div>
-        </div>
-    ) : null
+      <div className="me-4" key={actor.id} style={{zIndex: '9'}}>
+      <Link to={`/actor/${actor.id}`}>
+      <img src={`https://image.tmdb.org/t/p/w500/${actor.profile_path}`} alt={actor.name} style={{width:'130px', height:'160px',borderRadius:'1vh'}}/>
+      </Link>
+    <div className="card-body mt-1">
+      <h5 className="movie-title fw-bolder text-white text-center" style={{fontSize: '15px', width:'130px'}}>{actor.name}</h5>
+      <p className="card-text liked text-center" style={{fontSize: '13px', width:'130px'}}>{actor.character}</p>
+    </div>
+      </div>
+  ) : null
   ))}
-  { !isLastIndex && 
-    <button className="ms-4 ms-xl-2" style={{border: 'none', backgroundColor: 'transparent', marginTop:'-5vh', zIndex:'10'}} onClick={handleClicked}>
-      <img src={arrow} className='details-arrow position-relative' style={{marginTop:'10.5%'}} alt='slide next'/>
-    </button>
-  }
-</div>
-
-<h3 className="mt-4 mt-xl-5 reviews text-white position-relative" style={{fontFamily: 'Montserrat', zIndex:'9'}}>Reviews :</h3>
-
-        <div className="text-white review position-relative pb-5" style={{zIndex: '9'}}>
-
-    <div className="mt-4 d-md-none" key={reviews.id} style={{width: '95%', fontWeight:'900', fontSize:'2.4vw', backgroundColor: "rgb(0,0,0,0.3)"}}>
-    {reviews.length ? (
-      reviews.slice(0,1).map((review) => (
+    </div>
+  
+    <div className="trending-slider mt-4">
+    { !isFirstIndex && 
+      <button className="me-4 me-md-5" style={{border: 'none', backgroundColor: 'transparent', marginTop:'-5vh', zIndex:'10'}} onClick={handleClickedBack}>
+        <img src={arrow} className='d-flex details-arrow position-relative' style={{marginTop:'4.5%', rotate: '180deg'}} alt='slide back'/>
+      </button>
+    }
+    {cast.slice(currentIndex, currentIndex + 6).map((actor) => (
+      actor.profile_path ? (
+          <div className="me-4 me-xl-5" key={actor.id} style={{zIndex: '9'}}>
+            <Link to={`/actor/${actor.id}`}>
+              <img src={`https://image.tmdb.org/t/p/w500/${actor.profile_path}`} alt={actor.name} style={{width:"130px", height:"140px"}}/>
+            </Link>
+            <div className="card-body mt-2">
+              <h5 className="fw-bolder text-white text-center" style={{fontSize: '1.8vh', width:"130px"}}>{actor.name}</h5>
+              <p className="card-text liked text-center" style={{fontSize: '1.6vh', width:"130px"}}>{actor.character}</p>
+            </div>
+          </div>
+      ) : null
+    ))}
+    { !isLastIndex && 
+      <button className="ms-4 ms-xl-2" style={{border: 'none', backgroundColor: 'transparent', marginTop:'-5vh', zIndex:'10'}} onClick={handleClicked}>
+        <img src={arrow} className='details-arrow position-relative' style={{marginTop:'10.5%'}} alt='slide next'/>
+      </button>
+    }
+  </div>
+  
+  <h3 className="mt-4 mt-xl-5 reviews text-white position-relative" style={{fontFamily: 'Montserrat', zIndex:'9'}}>Reviews :</h3>
+  
+          <div className="text-white review position-relative pb-5" style={{zIndex: '9'}}>
+  
+      <div className="mt-4 d-md-none" key={reviews.id} style={{width: '95%', fontWeight:'900', fontSize:'2.4vw', backgroundColor: "rgb(0,0,0,0.3)"}}>
+      {reviews.length ? (
+        reviews.slice(0,1).map((review) => (
+          <div key={review.id}>
+            <p className="mt-3 trailer-link" style={{fontSize:"1rem"}}>
+            {review.content.length > 500
+              ? `${review.content.substring(0, 500)}...`
+              : review.content}
+          </p>
+          <div className="d-flex">
+          <p>~ {review.author}</p>
+          <Link to={`/movie/${movie.id}/reviews`}>
+          <p className="ms-4 text-decoration-underline text-warning">Read more</p>
+          </Link>
+          </div>
+          </div>
+      ))
+      ) : (
+        <p>No Reviews Available</p>
+      )}
+      </div>
+  
+      <div className="mt-4 details-overview review-1 d-none d-md-block" key={reviews.id} style={{fontWeight:'900', backgroundColor: "rgb(0,0,0,0.3)"}}>
+      {reviews.length ? (
+        reviews.slice(0,1).map((review) => (
+          <div key={review.id}>
+            <p className="mt-3 trailer-link" style={{fontSize:"1rem"}}>
+            {review.content.length > 800
+              ? `${review.content.substring(0, 800)}...`
+              : review.content}
+          </p>
+          <div className="d-flex">
+          <p>~ {review.author}</p>
+          <Link to={`/movie/${movie.id}/reviews`}>
+        <p className="ms-4 text-decoration-underline d-xxl-none text-warning">Read more</p>
+        </Link>
+          </div>
+          </div>
+      ))
+      ) : (
+        <p>No Reviews Available</p>
+      )}
+      </div>
+  
+  
+      <div className="mt-4 details-overview review-1 d-none d-xxl-block" key={reviews.id} style={{fontWeight:'900', backgroundColor: "rgb(0,0,0,0.3)"}}>
+      {reviews.length ? (
+        reviews.slice(1,2).map((review) => (
         <div key={review.id}>
-          <p className="mt-3 trailer-link" style={{fontSize:"1rem"}}>
+          <p className="trailer-link">
           {review.content.length > 500
             ? `${review.content.substring(0, 500)}...`
             : review.content}
@@ -299,110 +361,66 @@ setProviders(flatrate);
         </Link>
         </div>
         </div>
-    ))
-    ) : (
-      <p>No Reviews Available</p>
-    )}
-    </div>
-
-    <div className="mt-4 details-overview review-1 d-none d-md-block" key={reviews.id} style={{fontWeight:'900', backgroundColor: "rgb(0,0,0,0.3)"}}>
-    {reviews.length ? (
-      reviews.slice(0,1).map((review) => (
-        <div key={review.id}>
-          <p className="mt-3 trailer-link" style={{fontSize:"1rem"}}>
-          {review.content.length > 800
-            ? `${review.content.substring(0, 800)}...`
-            : review.content}
-        </p>
-        <div className="d-flex">
-        <p>~ {review.author}</p>
-        <Link to={`/movie/${movie.id}/reviews`}>
-      <p className="ms-4 text-decoration-underline d-xxl-none text-warning">Read more</p>
-      </Link>
-        </div>
-        </div>
-    ))
-    ) : (
-      <p>No Reviews Available</p>
-    )}
-    </div>
-
-
-    <div className="mt-4 details-overview review-1 d-none d-xxl-block" key={reviews.id} style={{fontWeight:'900', backgroundColor: "rgb(0,0,0,0.3)"}}>
-    {reviews.length ? (
-      reviews.slice(1,2).map((review) => (
-      <div key={review.id}>
-        <p className="trailer-link">
-        {review.content.length > 500
-          ? `${review.content.substring(0, 500)}...`
-          : review.content}
-      </p>
-      <div className="d-flex">
-      <p>~ {review.author}</p>
-      <Link to={`/movie/${movie.id}/reviews`}>
-      <p className="ms-4 text-decoration-underline text-warning">Read more</p>
-      </Link>
+        ))
+      ) : (
+        <p>No Reviews Available</p>
+      )}
       </div>
-      </div>
-      ))
-    ) : (
-      <p>No Reviews Available</p>
-    )}
-    </div>
-
-</div>
-
-</div>
   
-      </div>
-      
-      <div className="details-content">
-      <h3 className="mt-4 mt-xl-5 reviews text-white position-relative" style={{fontFamily: 'Montserrat', zIndex:'9'}}>Similar Movies :</h3>
-    <div className="d-flex flex-wrap reviews mb-4 justify-content-center justify-content-md-start position-relative" style={{zIndex:'9'}}>
-    {similar.slice(0,4).map(movies => (
-              movies.poster_path && movies.title && (
-        <div key={movies.id}>
-          <Link to={`/movie/${movies.id}`}>
-          <img className='ms-4 me-4 mt-5' style={{width:'220px', height: '320px'}} src={`https://image.tmdb.org/t/p/w500/${movies.poster_path}`} alt={movies.title} />
-          </Link>
-          <p className='liked fw-bolder ms-4 me-4 mt-2 mb-0 text-center' style={{width:'220px'}}>{Math.round((movies.vote_average + Number.EPSILON)*1000)/100}% Liked This</p>
-          <p className='movie-title ms-4 me-4 text-white fw-bolder mt-1 text-center' style={{width:'220px', fontFamily:"Poppins"}}>{movies.title}</p>
+  </div>
+  
+  </div>
+    
         </div>
-              )
-      ))}
-    </div>
-
-    <Link to={`/movie/${movie.id}/similar`}>
-    <div className="d-flex trailer-link position-relative justify-content-center justify-content-lg-end text-decoration-underline mb-5" style={{zIndex:'9'}}>
-    <p>View More</p><img className="mt-1 ms-1 me-md-5" src={arrow} width="17px" height="16px" alt={movie.title}/>
-    </div>
-    </Link>
-
-    <h3 className="mt-4 mt-xl-5 reviews text-white position-relative" style={{fontFamily: 'Montserrat', zIndex:'9'}}>Recommended Movies :</h3>
-    <div className="d-flex flex-wrap reviews mb-4 justify-content-center justify-content-md-start position-relative" style={{zIndex:'9'}}>
-    {recommendations.slice(0,4).map(movies => (
-              movies.poster_path && movies.title && (
-        <div key={movies.id}>
-          <Link to={`/movie/${movies.id}`}>
-          <img className='ms-4 me-4 mt-5' style={{width:'220px', height: '320px'}} src={`https://image.tmdb.org/t/p/w500/${movies.poster_path}`} alt={movies.title} />
-          </Link>
-          <p className='liked fw-bolder ms-4 me-4 mt-2 mb-0 text-center' style={{width:'220px'}}>{Math.round((movies.vote_average + Number.EPSILON)*1000)/100}% Liked This</p>
-          <p className='movie-title ms-4 me-4 text-white fw-bolder mt-1 text-center' style={{width:'220px', fontFamily:"Poppins"}}>{movies.title}</p>
-        </div>
-              )
-      ))}
-    </div>
-
-    <Link to={`/movie/${movie.id}/recommendations`}>
-    <div className="d-flex trailer-link position-relative justify-content-center justify-content-lg-end text-decoration-underline mb-5" style={{zIndex:'9'}}>
-    <p>View More</p><img className="mt-1 ms-1 me-md-5" src={arrow} width="17px" height="16px" alt={movie.title}/>
-    </div>
-    </Link>
+        
+        <div className="details-content">
+        <h3 className="mt-4 mt-xl-5 reviews text-white position-relative" style={{fontFamily: 'Montserrat', zIndex:'9'}}>Similar Movies :</h3>
+      <div className="d-flex flex-wrap reviews mb-4 justify-content-center justify-content-md-start position-relative" style={{zIndex:'9'}}>
+      {similar.slice(0,4).map(movies => (
+                movies.poster_path && movies.title && (
+          <div key={movies.id}>
+            <Link to={`/movie/${movies.id}`}>
+            <img className='ms-4 me-4 mt-5' style={{width:'220px', height: '320px'}} src={`https://image.tmdb.org/t/p/w500/${movies.poster_path}`} alt={movies.title} />
+            </Link>
+            <p className='liked fw-bolder ms-4 me-4 mt-2 mb-0 text-center' style={{width:'220px'}}>{Math.round((movies.vote_average + Number.EPSILON)*1000)/100}% Liked This</p>
+            <p className='movie-title ms-4 me-4 text-white fw-bolder mt-1 text-center' style={{width:'220px', fontFamily:"Poppins"}}>{movies.title}</p>
+          </div>
+                )
+        ))}
       </div>
-
-      <Footer/>
-</div>
-
+  
+      <Link to={`/movie/${movie.id}/similar`}>
+      <div className="d-flex trailer-link position-relative justify-content-center justify-content-lg-end text-decoration-underline mb-5" style={{zIndex:'9'}}>
+      <p>View More</p><img className="mt-1 ms-1 me-md-5" src={arrow} width="17px" height="16px" alt={movie.title}/>
+      </div>
+      </Link>
+  
+      <h3 className="mt-4 mt-xl-5 reviews text-white position-relative" style={{fontFamily: 'Montserrat', zIndex:'9'}}>Recommended Movies :</h3>
+      <div className="d-flex flex-wrap reviews mb-4 justify-content-center justify-content-md-start position-relative" style={{zIndex:'9'}}>
+      {recommendations.slice(0,4).map(movies => (
+                movies.poster_path && movies.title && (
+          <div key={movies.id}>
+            <Link to={`/movie/${movies.id}`}>
+            <img className='ms-4 me-4 mt-5' style={{width:'220px', height: '320px'}} src={`https://image.tmdb.org/t/p/w500/${movies.poster_path}`} alt={movies.title} />
+            </Link>
+            <p className='liked fw-bolder ms-4 me-4 mt-2 mb-0 text-center' style={{width:'220px'}}>{Math.round((movies.vote_average + Number.EPSILON)*1000)/100}% Liked This</p>
+            <p className='movie-title ms-4 me-4 text-white fw-bolder mt-1 text-center' style={{width:'220px', fontFamily:"Poppins"}}>{movies.title}</p>
+          </div>
+                )
+        ))}
+      </div>
+  
+      <Link to={`/movie/${movie.id}/recommendations`}>
+      <div className="d-flex trailer-link position-relative justify-content-center justify-content-lg-end text-decoration-underline mb-5" style={{zIndex:'9'}}>
+      <p>View More</p><img className="mt-1 ms-1 me-md-5" src={arrow} width="17px" height="16px" alt={movie.title}/>
+      </div>
+      </Link>
+        </div>
+  
+        <Footer/>
+  </div>
+      ) : <SignIn/>}
+    </div>
   );
 }
 

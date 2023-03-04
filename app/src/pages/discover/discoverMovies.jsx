@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import firebase from "firebase/compat/app";
 import Footer from "../../components/footer";
 import Navbar from "../../components/navbar";
 import { API_KEY } from "../../utils/constants";
 import { Link } from "react-router-dom";
+import SignIn from "../signIn";
 
 const DiscoverMovies = () =>{
     const [movie, setMovie] = useState([]);
@@ -11,6 +13,19 @@ const DiscoverMovies = () =>{
     const [genre, setGenre] = useState();
     const [selectedGenre, setSelectedGenre] = useState("Genres");
     const [page, setPage] = useState();
+
+    const [isSignedIn, setIsSignedIn] = useState(false);
+    useEffect(() => {
+      const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
+        if (user) {
+          setIsSignedIn(true);
+        } else {
+          setIsSignedIn(false);
+        }
+      });
+  
+      return unsubscribe;
+    }, []);
 
 // Use effect to fetch the data for movies
 useEffect(() => {
@@ -46,6 +61,8 @@ useEffect(() => {
 
     return(
         <div>
+          {isSignedIn ? (
+            <div>
             <Navbar/>
             <div className="d-flex mt-5 mb-4 ">
             <h2 className="ms-4 ms-md-5 trailer-link" style={{fontFamily:'Montserrat'}}>Discover Movies</h2>
@@ -96,6 +113,8 @@ useEffect(() => {
   <button className="me-4 me-md-5 btn btn-dark" onClick={handleNextPage}>Next</button>
 </div>
             <Footer/>
+        </div>
+          ) : <SignIn/>}
         </div>
     )
 }
