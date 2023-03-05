@@ -24,6 +24,7 @@ import SignIn from './pages/signIn';
 import Register from './pages/register';
 import Recommended from './pages/discover/recommended';
 import Profile from './pages/profile';
+import About from './pages/about';
 
 function App() {
   return (
@@ -53,6 +54,7 @@ function App() {
       <Route path="/airing-today/shows" element={<TodayShows/>}/>
       <Route path="/todays-recommendations" element={<Recommended/>}/>
       <Route path="/profile" element={<Profile/>}/>
+      <Route path="/about" element={<About/>}/>
       </Routes>
       </div>
   );

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import arrow from '../../../assets/icons/right-arrow.png';
-import { API_KEY } from "../../../utils/constants";
+import { API_KEY } from '../../../utils/constants';
 
 const Latest = () => {
   const [data, setData] = useState([]);
